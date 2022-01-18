@@ -5,4 +5,5 @@ from django.http import HttpResponse
 # request handler / action
 
 def say_hello(request):
-    return HttpResponse('Hello World')
+    return render(request, "mainpage.html", {"name": "WanJing"})
+    
