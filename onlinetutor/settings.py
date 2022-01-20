@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'onlinetutorapp',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+
+INTERNAL_IPS = [
+    '127.0.0.1',
 ]
 
 ROOT_URLCONF = 'onlinetutor.urls'
@@ -76,8 +82,12 @@ WSGI_APPLICATION = 'onlinetutor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'onlinetutor',
+        'USER': 'user123',
+        'PASSWORD': 'user123',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
