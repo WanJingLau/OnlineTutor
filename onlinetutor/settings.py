@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'onlinetutor.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+# wanjing: the website of django&mysql , https://www.plus2net.com/python/dj-mysql.php
 
 DATABASES = {
     'default': {
@@ -116,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Malaysia'
 
 USE_I18N = True
 
