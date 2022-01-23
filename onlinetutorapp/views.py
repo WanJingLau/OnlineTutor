@@ -7,6 +7,9 @@ from django.contrib.auth import login, authenticate
 # Create your views here.
 # request -> response
 # request handler / action
+# Lau Wan Jing: https://itsourcecode.com/free-projects/python-projects/django-login-and-registration-with-source-code/
+# Lau Wan Jing: https://ordinarycoders.com/blog/article/django-user-register-login-logout
+
 
 def mainpage(request, user):
     return render(request, "mainpage.html", user)
@@ -28,3 +31,4 @@ def login(request):
             messages.error(request,"Invalid username or password.")
 
     return render(request=request, template_name="login.html")
+

@@ -2,7 +2,8 @@
 https://www.w3schools.com/Css/css_navbar_horizontal.asp -- Develop navigation bar
 https://www.javatpoint.com/how-to-bold-text-in-css -- font weight to bold
 https://stackoverflow.com/questions/30624709/css-html-navigation-and-logo-on-same-line -- "E-Tutor" word on navigation bar
-https://www.w3schools.com/Css/css_font.asp -- font type */
+https://www.w3schools.com/Css/css_font.asp -- font type 
+https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color*/
 
 /* body */
 body {background-color:#dfedd6;}
@@ -32,7 +33,7 @@ body {background-color:#dfedd6;}
     color: black;
 }
 
-/* Page title: Log In */
+/* Page title: Log In, Register, Home Page, .... */
 .p3 {
     font-family: "Times New Roman", Times, serif;
     font-size: xx-large;
@@ -46,7 +47,7 @@ body {background-color:#dfedd6;}
     text-indent: 15px;
 }
 
-/* Normal words */
+/* Normal words, instructions*/
 .p4 {
     font-family: "Times New Roman", Times, serif;
     font-size: medium;
