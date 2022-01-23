@@ -1,59 +1,227 @@
 <html>
 <head>
+<!DOCTYPE html>
 <style>
 
-/* https://www.w3schools.com/Css/css_navbar_horizontal.asp 
-WanJing: Link above used to write the navigation bar*/
+/* Lau Wan Jing:
+https://www.w3schools.com/Css/css_navbar_horizontal.asp -- Develop navigation bar
+https://www.javatpoint.com/how-to-bold-text-in-css -- font weight to bold
+https://stackoverflow.com/questions/30624709/css-html-navigation-and-logo-on-same-line -- "E-Tutor" word on navigation bar
+https://www.w3schools.com/Css/css_font.asp -- font type */
 
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #333;
-    }
 
-    li a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 15px;
-        text-decoration: none;
-    }
+/* E-Tutor */
+.p1 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: larger;
+    font-weight: bold;
+    padding: 9px;
+    margin: 9px;
+    text-align: center;
+    display:inline-block;
+    vertical-align: top left;
+    color: rgb(144, 215, 248);
+}
 
-    li a:hover {
-        background-color: rgb(105, 165, 233);
-    }
+/* Welcome to E-Tutor! */
+.p2 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: larger;
+    font-weight: bold;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    display: block;
+    color: black;
+}
 
-    li {
-        float: right;
-        display: inline;
-    }
+/* Page title: Log In */
+.p3 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: xx-large;
+    font-weight: bold;
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+    display: block;
+    color: black;
+    /* Lau Wan Jing: https://www.w3schools.com/Css/tryit.asp?filename=trycss_text-indent -- indentation of text */
+    text-indent: 15px;
+}
 
-    li a {
-        display: margin;
-        padding: 30px;
-        background-color: #000000;
-    }
+/* Normal words */
+.p4 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: medium;
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+    display: block;
+    color: black;
+}
 
-    .active {
-        background-color: #6e86f0;
-    }
-    </style>
-    </head>
-    <body>
+/* Input words */
+.p5 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: large;
+    font-weight: bold;
+    padding: 0px;
+    margin: 0px;
+    text-align: left;
+    display: block;
+    color: black;
+}
 
-    <ul>
-        <li><a href="#Register">Register</a></li>
-        <li><a href="#Login">Login</a></li>
-        <li><a href="#Home Page">HomePage</a></li>
-     </ul>
+/* First navigation bar */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    font-family: "Times New Roman", Times, serif;
+}
+
+/* Items on navigation bar */
+li a {
+    display: block;
+    font-size: medium;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    font-family: "Times New Roman", Times, serif;
+}
+
+li a:hover {
+    background-color: rgb(105, 165, 233);
+}
+
+li {
+    float: right;
+    display: inline;
+}
+
+li a {
+    display: margin;
+    padding: 20px;
+    background-color: #000000;
+}
+
+.active {
+    background-color: rgb(105, 165, 233);
+}
+
+/* Lau Wan Jing: https://www.w3schools.com/csS/css3_buttons.asp -- button */
+.button {
+    background-color: #3d8af7;
+    border: none;
+    color: white;
+    padding: 10px 30px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: solid;
+    display: block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    float: left;
+}
+
+.button:hover {
+    background-color: rgb(57, 43, 255);
+    color: white;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.button:active {
+    background-color: black;
+    box-shadow: 0 5px #666;
+    transform: translateY(2px);
+}
+
+.submit {
+    background-color: #0844a4;
+    border: none;
+    color: white;
+    padding: 10px 30px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: solid;
+    display: block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    float: right;
+}
+
+.submit:hover {
+    background-color: rgb(57, 43, 255);
+    color: white;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.submit:active {
+    background-color: black;
+    box-shadow: 0 5px #666;
+    transform: translateY(2px);
+}
+
+</style>
+</head>
+<body>
+
+<!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
+<body style="background-color:#dfedd6;">
+
+<ul>
+    <p class="p1">E-Tutor</p>
+    <li><a href="#Register">Register</a></li>
+    <li><a href="#Login">Login</a></li>
+    <li><a href="#Home Page">Home Page</a></li>
+</ul>
+
+<!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images </p> -->
+<p>
+<img src="C:\Users\lauwa\OneDrive\Documents\4007CEM\OnlineTutor\INTI.png" alt="Inti Penang Logo"
+style="float:right;width:160px;height:90px;">
+<br><br>
+</p>
+<p class="p2">Welcome to E-Tutor!</p>
+<p>
+<img src="profile.png" alt="Login_icon"
+style="float:left;width:40px;height:40px;">
+<p class="p3">Log In</p>
+<br>
+<p class="p4">Please enter your username and password to access your online tutor account.</p>
+<br>
+<br>
+<p class="p5">Lecturer/Student ID</p>
+<input type="text" id="ID" name="Lecturer/Student ID">
+<br>
+<br>
+<p class="p5">Password</p>
+<input type="text" id="password" name="Password">
+<br>
+<br>
+<a href="/forgotpassword">Forgot your password?</a>.</p>
+<a href="/loginhelp">Login Help?</a>.</p>
+<br>
+<br>
+<br>
+<br>
+<a href="#cancel" class="button">Cancel</a>
+<br>
+<a href="#submit" class="submit">Submit</a>
+
+<br>
+<br>
 
 <html>
     <body>
-        <!--Login--> 
         <div class="container py-5">
-        <h1>Login</h1>
         <form method="POST">
             <label for="username">Username: </label>
             <input type="text" id="username" name = "username">
