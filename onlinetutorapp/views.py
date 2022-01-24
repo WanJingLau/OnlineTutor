@@ -11,8 +11,8 @@ from django.contrib.auth import login, authenticate
 # Lau Wan Jing: https://ordinarycoders.com/blog/article/django-user-register-login-logout
 
 
-def mainpage(request, user):
-    return render(request, "mainpage.html", user)
+def mainpage(request):
+    return render(request, "login.html")
 
 def login(request):
     if request.method == "POST":
