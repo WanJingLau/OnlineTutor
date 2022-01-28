@@ -7,10 +7,10 @@
         </head>
 
         <body>
-
+        <div>
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register">Register</a></li>
+                <li><a>Register</a></li>
                 <li><a href="/login">Login</a></li>
                 <li><a href="/">Home Page</a></li>
             </ul>
@@ -88,9 +88,15 @@
             <br>
             <br>
             <br>
+            <br>
+            <br>
+            <br>
+            <br>
 
-            <a href="#cancel" class="button">Cancel</a>
+            <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+            <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
             <button type="submit" class="submit">Submit</a>
-        </form>
+            
+        </div>
         <body>
     <html>

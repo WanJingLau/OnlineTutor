@@ -7,12 +7,13 @@
         </head>
 
         <body>
+        <div>
             <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
         
             <ul>
                 <p class="p1">E-Tutor</p>
                 <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
+                <li><a>Login</a></li>
                 <li><a href="/">Home Page</a></li>
             </ul>
 
@@ -80,9 +81,15 @@
                 <br>
                 <br>
                 <br>
-
-                <a href="#cancel" class="button">Cancel</a>
+                <br>
+                <br>
+                <br>
+                <br>
+                
+                <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
                 <button type="submit" class="submit">Submit</a>
             </form>
+        </div>
         <body>
     <html>
