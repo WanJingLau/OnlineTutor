@@ -13,7 +13,7 @@
                 <p class="p1">E-Tutor</p>
                 <li><a href="/register">Register</a></li>
                 <li><a href="/login">Login</a></li>
-                <li><a href="">Home Page</a></li>
+                <li><a href="/">Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
@@ -48,46 +48,41 @@
             <br>
             <br>
 
-            <p class="p5">
-                Lecturer/Student ID
-            </p>
-
-            <input type="text"" id="ID" name="Lecturer/Student ID">
+            <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
 
             <form action="register" method="post">
-                {% crsf_token %}
+                {% csrf_token %}
+
+                <p class="p5">
+                    Lecturer/Student ID
+                </p>
+
                 <input type="text"" id="staffid" name="staffid">
-            </form>
             
-            <br>
-            <br>
-            
-            <p class="p5">
-                Password
-            </p>
-
-            <form action="register" method="post">
-                {% crsf_token %}
-                <input type="text" id="password" name="password">
-            </form>
-
-            <br>
-            <br>
-
-            <p>
-                <a href="/onlinetutorapp/templates/forgotpassword.html">Forgot your password?</a>.</p>
                 <br>
-                <a href="/onlinetutorapp/templates/helpdesk.html">Login Help?</a>.</p>
-            <p>
+                <br>
+            
+                <p class="p5">
+                    Password
+                </p>
 
-            <br>
-            <br>
-            <br>
-            <br>
+                <input type="text" id="password" name="password">
 
-            <a href="#cancel" class="button">Cancel</a>
-            <br>
-            <a href="#submit" class="submit">Submit</a>
+                <br>
+                <br>
 
+                <p>
+                    <a href="/forgotpassword">Forgot your password?</a>.</p>
+                    <a href="/helpdesk">Login Help?</a>.</p>
+                <p>
+
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <a href="#cancel" class="button">Cancel</a>
+                <button type="submit" class="submit">Submit</a>
+            </form>
         <body>
     <html>

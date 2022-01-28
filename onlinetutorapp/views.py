@@ -31,7 +31,8 @@ def login(request):
             print("They used username: {PXXXXXXXX} and password: {iicpXXXXXXXXXXXX}".format(staffid,password))
             return HttpResponse("Invalid login details given")
     else:
-        return HttpResponseRedirect('Error handler content', status=403) #add error page link
+        form = FormUser(None)
+    return render(request, 'login.html', { 'form' : form })
     
     
 
@@ -59,6 +60,7 @@ def login(request):
 
     return render(request=request, template_name="login.html")'''
 
+# Lau Wan Jing: https://stackoverflow.com/questions/67629441/django-view-returning-post-instead-of-get-request -- as reference of register function
 def register(request):
     if request.method == 'POST':
         form = FormUser(request.POST)
