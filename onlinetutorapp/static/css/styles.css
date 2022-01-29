@@ -3,7 +3,8 @@ https://www.w3schools.com/Css/css_navbar_horizontal.asp -- Develop navigation ba
 https://www.javatpoint.com/how-to-bold-text-in-css -- font weight to bold
 https://stackoverflow.com/questions/30624709/css-html-navigation-and-logo-on-same-line -- "E-Tutor" word on navigation bar
 https://www.w3schools.com/Css/css_font.asp -- font type 
-https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color */
+https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color 
+Some links are attached in each rows*/
 
 /* body */
 body {background-color:#dfedd6;}
@@ -36,7 +37,7 @@ body {background-color:#dfedd6;}
 /* Page title: Log In, Register, Home Page, .... */
 .p3 {
     font-family: "Times New Roman", Times, serif;
-    font-size: xx-large;
+    font-size: larger;
     font-weight: bold;
     padding: 0px;
     margin: 0px;
@@ -61,7 +62,7 @@ body {background-color:#dfedd6;}
 /* Input words */
 .p5 {
     font-family: "Times New Roman", Times, serif;
-    font-size: large;
+    font-size: normal;
     font-weight: bold;
     padding: 0px;
     margin: 0px;
@@ -110,6 +111,50 @@ li a {
     background-color: rgb(105, 165, 233);
 }
 
+/* Second navigation bar */
+ul2 {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(151, 213, 248);
+    font-family: "Times New Roman", Times, serif;
+    position: sticky;
+    top: auto;
+    width: 100%;
+}
+
+/* Items on navigation bar */
+li a {
+    display: block;
+    font-size: medium;
+    color: black;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    font-family: "Times New Roman", Times, serif;
+}
+
+li a:hover {
+    background-color: grey;
+}
+
+li {
+    float: right;
+    display: inline;
+}
+
+li a {
+    display: margin;
+    padding: 20px;
+    background-color: #000000;
+}
+
+.active {
+    background-color: rgb(105, 165, 233);
+}
+
+
 /* Lau Wan Jing: https://www.w3schools.com/csS/css3_buttons.asp -- button */
 .button {
     background-color: #3d8af7;
@@ -124,7 +169,6 @@ li a {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
-    float: left;
 }
 
 .button:hover {
@@ -152,7 +196,6 @@ li a {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
-    float: right;
 }
 
 .submit:hover {

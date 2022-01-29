@@ -1,12 +1,46 @@
-<html>
-    <body>
-        <h1>Online Tutor Application</h1>
+<!DOCTYPE html>
+    <html>
+        {% load static %}
 
-        {% if name %}
-        <h2>Welcome back, {{name}}</h2>
-        {% else %}
-        <h2>Welcome back, Annonymous</h2>
-        {% endif %}
-        
-    </body>
-</html>
+        <head>
+            <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        </head>
+
+        <body>
+        <div>
+
+            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
+
+            <ul>
+                <p class="p1">E-Tutor</p>
+                <li><a href="/register">Register</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/">Home Page</a></li>
+            </ul>
+
+            <!-- <p> Lau Wan Jing: second narvar bar </p> -->
+
+
+
+
+
+            <p>
+                <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
+                https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
+                <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
+                style="float:right;width:160px;height:90px;">
+            </p>
+            
+            <br>
+
+            <p class="p2">
+                Welcome to E-Tutor!
+                <br>
+                Enjoy your college life!
+            </p>
+
+            
+            
+        </div>
+        </body>
+    </html>
