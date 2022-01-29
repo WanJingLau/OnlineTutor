@@ -37,7 +37,7 @@ body {background-color:#dfedd6;}
 /* Page title: Log In, Register, Home Page, .... */
 .p3 {
     font-family: "Times New Roman", Times, serif;
-    font-size: larger;
+    font-size: xx-large;
     font-weight: bold;
     padding: 0px;
     margin: 0px;
@@ -79,10 +79,15 @@ ul {
     overflow: hidden;
     background-color: #333;
     font-family: "Times New Roman", Times, serif;
-}
+ }
 
-/* Items on navigation bar */
-li a {
+ li {
+    float: right;
+    display: inline;
+ }
+
+ /* Items on navigation bar */
+ li a {
     display: block;
     font-size: medium;
     color: white;
@@ -90,72 +95,78 @@ li a {
     padding: 15px;
     text-decoration: none;
     font-family: "Times New Roman", Times, serif;
-}
+ }
 
-li a:hover {
-    background-color: rgb(105, 165, 233);
-}
+ li a:hover {
+    background-color: rgb(144, 215, 248);
+ }
 
-li {
-    float: right;
-    display: inline;
-}
-
-li a {
+ li a {
     display: margin;
     padding: 20px;
-    background-color: #000000;
+    background-color: black;
 }
 
-.active {
-    background-color: rgb(105, 165, 233);
-}
-
-/* Second navigation bar */
-ul2 {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+/* Lau Wan Jing: Second navigation bar-- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_tabs_open */
+.tab {
     overflow: hidden;
-    background-color: rgb(151, 213, 248);
-    font-family: "Times New Roman", Times, serif;
-    position: sticky;
-    top: auto;
-    width: 100%;
-}
+    border: 1px solid #c9f1fd;
+    background-color: #c9f1fd;
+  }
 
-/* Items on navigation bar */
-li a {
-    display: block;
+ /* Style the buttons inside the tab */
+ .tab button {
+    background-color: inherit;
+    float: centre;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
     font-size: medium;
-    color: black;
-    text-align: center;
-    padding: 15px;
-    text-decoration: none;
     font-family: "Times New Roman", Times, serif;
-}
+  }
+  
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+    background-color: rgb(144, 215, 248);
+  }
+  
+  /* Create an active/current tablink class */
+  .tab button.active {
+    background-color: rgb(144, 215, 248);
+  }
+  
+  /* Style the tab content */
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s;
+  }
+  
+  /* Fade in tabs */
+  @-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
 
-li a:hover {
-    background-color: grey;
-}
+  /* The sticky class is added to the navbar with JS when it reaches its scroll position --https://www.w3schools.com/howto/howto_js_navbar_sticky.asp*/
 
-li {
-    float: right;
-    display: inline;
-}
+  .sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
 
-li a {
-    display: margin;
-    padding: 20px;
-    background-color: #000000;
-}
+/* Lau Wan Jing: https://www.w3schools.com/csS/css3_buttons.asp -- button 
+    https://www.w3schools.com/css/tryit.asp?filename=trycss_image_text_bottom_left --bottom button*/
 
-.active {
-    background-color: rgb(105, 165, 233);
-}
-
-
-/* Lau Wan Jing: https://www.w3schools.com/csS/css3_buttons.asp -- button */
 .button {
     background-color: #3d8af7;
     border: none;
@@ -169,15 +180,18 @@ li a {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
-}
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+ }
 
-.button:hover {
+ .button:hover {
     background-color: rgb(57, 43, 255);
     color: white;
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-}
+ }
 
-.button:active {
+ .button:active {
     background-color: black;
     box-shadow: 0 5px #666;
     transform: translateY(2px);
@@ -196,15 +210,18 @@ li a {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 8px;
-}
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+ }
 
-.submit:hover {
+ .submit:hover {
     background-color: rgb(57, 43, 255);
     color: white;
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-}
+ }
 
-.submit:active {
+ .submit:active {
     background-color: black;
     box-shadow: 0 5px #666;
     transform: translateY(2px);
