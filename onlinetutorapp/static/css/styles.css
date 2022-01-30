@@ -117,14 +117,15 @@ ul {
  /* Style the buttons inside the tab */
  .tab button {
     background-color: inherit;
-    float: centre;
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
+    padding: 12px 16px;
     font-size: medium;
     font-family: "Times New Roman", Times, serif;
+    display: inline;
+    color: black;
+    text-align: center;
   }
   
   /* Change background color of buttons on hover */
@@ -132,35 +133,12 @@ ul {
     background-color: rgb(144, 215, 248);
   }
   
-  /* Create an active/current tablink class */
-  .tab button.active {
-    background-color: rgb(144, 215, 248);
-  }
-  
-  /* Style the tab content */
-  .tabcontent {
-    display: none;
-    padding: 6px 12px;
-    -webkit-animation: fadeEffect 1s;
-    animation: fadeEffect 1s;
-  }
-  
-  /* Fade in tabs */
-  @-webkit-keyframes fadeEffect {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
-  
-  @keyframes fadeEffect {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
 
-  /* The sticky class is added to the navbar with JS when it reaches its scroll position --https://www.w3schools.com/howto/howto_js_navbar_sticky.asp*/
+  /* The sticky position --https://www.w3schools.com/howto/howto_js_navbar_sticky.asp*/
 
   .sticky {
-    position: fixed;
-    top: 0;
+    position: sticky;
+    top: 20px;
     width: 100%;
   }
 
