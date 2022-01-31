@@ -7,5 +7,5 @@ urlpatterns = [
     path('', views.mainpage, name="mainpage"),
     path('register', views.register, name="register"),
     # path('helpdesk/', views.helpdesk, name="helpdesk"),
-    # path('forgotpassword/', views.forgotpassword, name="forgotpassword")
+    path('forgotpassword', views.forgotpassword, name="forgotpassword")
 ]

@@ -78,3 +78,18 @@ def register(request):
         form = FormUser(None)
     return render(request, 'register.html', { 'form' : form })
 
+def forgotpassword(request):
+    if request.method == 'POST':
+        form = FormUser(request.POST)
+        email = request.POST.get('email')
+        User = authenticate(email=email)
+        if User.isactive():
+            user = form.save()
+            user.save()
+            user = authenticate(staffid=user.staffid, email=user.email)
+            login(request, user)
+            return redirect('login.html')
+    else:
+        form = FormUser(None)
+    return render(request, 'forgotpassword.html', { 'form' : form })
+
