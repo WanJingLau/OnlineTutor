@@ -93,3 +93,17 @@ def forgotpassword(request):
         form = FormUser(None)
     return render(request, 'forgotpassword.html', { 'form' : form })
 
+def helpdesk(request):
+    if request.method == 'POST':
+        form = FormUser(request.POST)
+        question = request.POST.get('question')
+        User = authenticate()
+        if User.isactive():
+            user = form.save()
+            user.save()
+            user = authenticate(staffid=user.staffid, email=user.email)
+            login(request, user)
+            return redirect('homepage.html')
+    else:
+        form = FormUser(None)
+    return render(request, 'helpdesk.html', { 'form' : form })
