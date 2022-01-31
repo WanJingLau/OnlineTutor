@@ -107,3 +107,18 @@ def helpdesk(request):
     else:
         form = FormUser(None)
     return render(request, 'helpdesk.html', { 'form' : form })
+
+def settings(request):
+    if request.method == 'POST':
+        form = FormUser(request.POST)
+        password_hash = request.POST.get('password_hash')
+        User = authenticate()
+        if User.isactive():
+            user = form.save()
+            user.save()
+            user = authenticate(password_hash=password_hash)
+            login(request, user)
+            return redirect('homepage.html')
+    else:
+        form = FormUser(None)
+    return render(request, 'settings.html', { 'form' : form })

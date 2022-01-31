@@ -72,61 +72,61 @@
             <br>
             <br>
 
-            <p class="p2">
-                Welcome to E-Tutor!
-                <br>
-                Enjoy your college life!
-            </p>
-            
-            <!-- <p> Lau Wan Jing: https://www.w3schools.com/w3css/w3css_cards.asp -- cards </p> -->
-            
-            <div class=container>
-                <div class="card">
-                    <img src="{% static 'img/homepage1.png' %}" alt="Ask Question" style="width:110px;height:110px;padding:20px 20px">
-                    <div class="cardcontent">
-                        <p>Free to ask questions when you are facing problems in academic.</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="{% static 'img/homepage2.png' %}" alt="Discussion" style="width:140px;height:110px;padding:20px 20px">
-                    <div class="cardcontent">
-                        <p>Have a discussion between classmates to solve your problems.</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src="{% static 'img/homepage3.png' %}" alt="Lecturer" style="width:140px;height:110px;padding:20px 20px">
-                    <div class="cardcontent">
-                        <p>Get help from your professional lecturers to learn more here!</p>
-                    </div>
-                </div>
-            </div>
-            
-            <p class="p2">
-                Please comply with the SOP when back to the campus.
-                <br>
-                Let's watch the video clips!
+            <p>
+                <img src="{% static 'img/settings.png' %}" alt="settings_icon"
+                style="float:left;width:40px;height:40px;">
             </p>
 
-            <div class=container>
+            <p class="p3">
+                Settings
+            </p>
 
-                <!-- <p> Lau Wan Jing:https://www.section.io/engineering-education/embedding-a-video-into-a-webpage-using-html-and-css/ -- insert the youtube video </p> -->
+            <br>
 
-                <iframe width="300" height="200" src="https://www.youtube.com/embed/xVu_I6WCsto" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p class="p4">
+                Enter information below to change your password.
+            </p>
+            
+            <br>
+            <br>
 
-                <!-- <p> Lau Wan Jing:https://blog.hubspot.com/website/html-space -- spaces between videos </p> -->
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <form action="settings" method="post">
+                <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
 
-                <iframe width="300" height="200" src="https://www.youtube.com/embed/FC4soCjxSOQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                {% csrf_token %}
 
-            </div>
-            <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/howto_css_icon_bar.asp -- icon bar bottom right </p> -->
-            <div class="icon-bar">
-                <a href="/logout"><i class="fa fa-fw fa-power-off"></i></a>
-                <a href="/settings"><i class="fa fa-fw fa-wrench"></i></a>
-                <a href="/helpdesk"><i class="fa fa-fw fa-question"></i></a> 
-            </div>
+                <p class="p5">
+                    Old Password
+                </p>
+
+                <input type="text" name="oldpass" value="" size="50"/>
+
+                <br>
+                <br>
+
+                <p class="p5">
+                    New Password
+                </p>
+
+                <input type="text" name="newpass" value="" size="50"/>
+            
+                <br> 
+                <br>
+
+                <p class="p5">
+                    Confirm New Password
+                </p>
+
+                <input type="text" name="connewpass" value="" size="50"/>
+
+                <br>
+                <br>
+
+                <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                <button type="submit" class="submit">Submit</a>
+
+            </form>
 
         </div>
         </body>
