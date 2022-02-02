@@ -55,10 +55,14 @@
                 </p>
                 <!-- <p> Lau Wan Jing:https://www.w3schools.com/TAGS/tryit.asp?filename=tryhtml_textarea -- textarea </p> -->
                 <textarea id="question" name="question" rows="5" cols="50"></textarea>
-            
+                <br>
+
                 <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                <button type="submit" class="submit">Submit</a>
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                    <button type="submit" class="submit">Submit</a>
+                </div>
+
             </form>
         </div>
         <body>

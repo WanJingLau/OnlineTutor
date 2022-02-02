@@ -86,8 +86,10 @@
                 <br>
                 
                 <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                <button type="submit" class="submit">Submit</a>
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                    <button type="submit" class="submit">Submit</a>
+                </div>
             </form>
         </div>
         <body>
