@@ -213,7 +213,7 @@ ul {
     text-align: center;
     margin-right: 30px;
 }
-  
+
 .card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
@@ -253,4 +253,28 @@ ul {
   
   .icon-bar a:hover {
     background-color: #c9f1fd;
+}
+
+/*Lau Wan Jing:https://www.w3schools.com/Css/tryit.asp?filename=trycss_table_fancy-- todolist table*/
+#tasktable {
+  font-family: "Times New Roman", Times, serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#tasktable td, #tasktable th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#tasktable tr:nth-child(even){background-color: #f2f2f2;}
+
+#tasktable tr:hover {background-color: #ddd;}
+
+#tasktable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #bcf3df;
+  color: black;
 }

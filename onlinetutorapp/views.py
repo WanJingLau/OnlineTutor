@@ -2,7 +2,7 @@ from unittest import loader
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
-from .forms import FormUser
+from .forms import FormTodolist, FormUser
 
 # Create your views here.
 # request -> response
@@ -97,11 +97,11 @@ def helpdesk(request):
     if request.method == 'POST':
         form = FormUser(request.POST)
         question = request.POST.get('question')
-        User = authenticate()
+        User = authenticate(question)
         if User.isactive():
             user = form.save()
             user.save()
-            user = authenticate(staffid=user.staffid, email=user.email)
+            user = authenticate()
             login(request, user)
             return redirect('homepage.html')
     else:
@@ -122,3 +122,21 @@ def settings(request):
     else:
         form = FormUser(None)
     return render(request, 'settings.html', { 'form' : form })
+
+def todolist(request):
+    if request.method == 'POST':
+        form = FormTodolist(request.POST)
+        task = request.POST.get('task')
+        timeend = request.POST.get('timeend')
+        status = request.POST('status')
+        add = todolist(task=task,timeend=timeend,status=status)
+        add.save()
+        return render(request,"todolist.html",{'add':add})
+    else:
+        form = FormTodolist(None)
+    return render(request, 'todolist.html', { 'form' : form })
+
+def deletetask(id):
+    New = todolist.objects.get(id=id)
+    New.delete()
+    return redirect('/todolist')
