@@ -2,7 +2,7 @@ from unittest import loader
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
-from .forms import FormUser
+from .forms import FormTodolist, FormUser
 
 # Create your views here.
 # request -> response
@@ -78,3 +78,65 @@ def register(request):
         form = FormUser(None)
     return render(request, 'register.html', { 'form' : form })
 
+def forgotpassword(request):
+    if request.method == 'POST':
+        form = FormUser(request.POST)
+        email = request.POST.get('email')
+        User = authenticate(email=email)
+        if User.isactive():
+            user = form.save()
+            user.save()
+            user = authenticate(staffid=user.staffid, email=user.email)
+            login(request, user)
+            return redirect('login.html')
+    else:
+        form = FormUser(None)
+    return render(request, 'forgotpassword.html', { 'form' : form })
+
+def helpdesk(request):
+    if request.method == 'POST':
+        form = FormUser(request.POST)
+        question = request.POST.get('question')
+        User = authenticate(question)
+        if User.isactive():
+            user = form.save()
+            user.save()
+            user = authenticate()
+            login(request, user)
+            return redirect('homepage.html')
+    else:
+        form = FormUser(None)
+    return render(request, 'helpdesk.html', { 'form' : form })
+
+def settings(request):
+    if request.method == 'POST':
+        form = FormUser(request.POST)
+        password_hash = request.POST.get('password_hash')
+        User = authenticate()
+        if User.isactive():
+            user = form.save()
+            user.save()
+            user = authenticate(password_hash=password_hash)
+            login(request, user)
+            return redirect('homepage.html')
+    else:
+        form = FormUser(None)
+    return render(request, 'settings.html', { 'form' : form })
+
+def todolist(request):
+    if request.method == 'POST':
+        form = FormTodolist(request.POST)
+        task = request.POST.get('task')
+        timeend = request.POST.get('timeend')
+        status = request.POST('status')
+        add = todolist(task=task,timeend=timeend,status=status)
+        add.save()
+        return render(request,"todolist.html",{'add':add})
+    else:
+        form = FormTodolist(None)
+    return render(request, 'todolist.html', { 'form' : form })
+
+def deletetask(id):
+    New = todolist.objects.get(id=id)
+    New.delete()
+    return redirect('/todolist')

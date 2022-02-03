@@ -19,12 +19,11 @@
 
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
             https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
-
-            <p>
-                <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
-                style="float:right;width:160px;height:90px;">
-            </p>
-
+            <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
+                style="float:right;width:160px;height:50px;">
+            
+            <br>
+            <br>
             <br>
 
             <p class="p2">
@@ -58,7 +57,7 @@
                     Lecturer/Student ID
                 </p>
 
-                <input type="text"" id="staffid" name="staffid">
+                <input type="text"" id="staffid" name="staffid" size="30">
             
                 <br>
                 <br>
@@ -67,7 +66,7 @@
                     Password
                 </p>
 
-                <input type="text" id="password" name="password">
+                <input type="text" id="password" name="password" size="30">
 
                 <br>
                 <br>
@@ -87,8 +86,10 @@
                 <br>
                 
                 <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                <button type="submit" class="submit">Submit</a>
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                    <button type="submit" class="submit">Submit</a>
+                </div>
             </form>
         </div>
         <body>
