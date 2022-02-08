@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
 from .forms import FormTodolist, FormUser
+from django.core.mail import send_mail
+
 
 # Create your views here.
 # request -> response
@@ -97,16 +99,26 @@ def helpdesk(request):
     if request.method == 'POST':
         form = FormUser(request.POST)
         question = request.POST.get('question')
-        User = authenticate(question)
-        if User.isactive():
-            user = form.save()
-            user.save()
-            user = authenticate()
-            login(request, user)
-            return redirect('homepage.html')
+        question.save()
+        return redirect('homepage.html')
     else:
         form = FormUser(None)
     return render(request, 'helpdesk.html', { 'form' : form })
+
+def send_mail(request):
+    sender_email = "etutor4007@gmail.com"
+    
+    sender_password = "etutorwjwc"
+    
+    receiver_email = "lauwan08@gmail.com"
+    
+    'New question from E-Tutor Helpdesk',
+    
+    '{user}',
+    'etutor4007@gmail.com',
+    ['lauwan08@gmail.com'],
+    
+    fail_silently=False,
 
 def settings(request):
     if request.method == 'POST':

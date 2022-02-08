@@ -5,9 +5,6 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-
-# Lau Wan Jing: https://docs.djangoproject.com/en/dev/howto/legacy-databases/ --auto generated models from mysql
-
 from django.db import models
 
 
@@ -187,6 +184,7 @@ class DjangoSession(models.Model):
 class Helpdesk(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     question = models.CharField(max_length=255)
+    email = models.CharField(max_length=100)
 
     class Meta:
         managed = False
