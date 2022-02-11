@@ -1,7 +1,13 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
         </head>
@@ -80,8 +86,8 @@
                 <p class="p5">
                     Captcha
                 </p>
+
                 {{form.captcha}}
-                <input type="text" id="captcha" name="registercaptcha" size="50">
 
             </form>
 

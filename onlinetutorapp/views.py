@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
 from .forms import FormTodolist, FormUser, FormCaptcha
+from django.contrib import messages
 from django.core.mail import send_mail
 
 
@@ -66,30 +67,32 @@ def login(request):
 def register(request):
     if request.method == 'POST':
         form = FormUser(request.POST)
-        staffid = request.POST.get('staffid')
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        User = authenticate(staffid=staffid, name=name, email=email)
-        if User.isactive():
+        captcha = request.POST.get('registercaptcha')
+        if captcha.is_valid():
+            staffid = request.POST.get('staffid')
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            user = staffid, name, email
             user = form.save()
             user.save()
-            user = authenticate(staffid=user.staffid, email=user.email)
-            login(request, user)
             return redirect('login.html')
+        else:
+            messages.error(request, 'Captcha failed')
     else:
         form = FormUser(None)
     return render(request, 'register.html', { 'form' : form })
 
 def captcha(request):
-       if request.method=="POST":
-           form = FormCaptcha(request.POST)
-           captcha = request.POST.get('registercaptcha')
-           if captcha.is_valid():
-               print("success")
-           else:
-               print("fail")
-               form=FormCaptcha()
-               return render(request,"register.html",{ 'form' : form })
+    if request.method=="POST":
+        form = FormCaptcha(request.POST)
+        captcha = request.POST.get('registercaptcha')
+        if captcha.is_valid():
+            print("success")
+        else:
+            print("fail")
+    else:
+        form=FormCaptcha()
+    return render(request,"register.html",{ 'form' : form })
 
 
 def forgotpassword(request):
