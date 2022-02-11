@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'onlinetutorapp',
     'debug_toolbar',
+    'captcha',
 ]
 
 MIDDLEWARE = [

@@ -2,7 +2,7 @@ from unittest import loader
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
-from .forms import FormTodolist, FormUser
+from .forms import FormTodolist, FormUser, FormCaptcha
 from django.core.mail import send_mail
 
 
@@ -79,6 +79,18 @@ def register(request):
     else:
         form = FormUser(None)
     return render(request, 'register.html', { 'form' : form })
+
+def captcha(request):
+       if request.method=="POST":
+           form = FormCaptcha(request.POST)
+           captcha = request.POST.get('registercaptcha')
+           if captcha.is_valid():
+               print("success")
+           else:
+               print("fail")
+               form=FormCaptcha()
+               return render(request,"register.html",{ 'form' : form })
+
 
 def forgotpassword(request):
     if request.method == 'POST':
