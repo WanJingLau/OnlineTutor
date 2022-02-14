@@ -1,4 +1,3 @@
-
 {% block content %}
 
 <!DOCTYPE html>
@@ -34,63 +33,62 @@
             <br>
             <br>
 
-            <p class="p2">
-                Welcome to E-Tutor!
-            </p>
-
             <p>
-                <img src="{% static 'img/register.png' %}" alt="Register_icon"
-                style="float:left;width:40px;height:40px;">
+                <img src="{% static 'img/edit.png' %}" alt="Edit_icon"
+                style="float:left;width:50px;height:50px;">
 
                 <p class="p3">
-                    Register
+                Edit Home Page
                 </p>
             <p>
 
             <p class="p4">
-                Please fill in your information below and check your email for the password.
+                Edit updates:
             </p>
 
             <br>
-            <br>
 
-            <form action="register" method="post">
+            <form action="edithomepage" method="post">
                 <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
 
                 {% csrf_token %}
 
-                <p class="p5">
-                    Lecturer/Student ID
+                <p class="p5" style="display:inline-flex;">
+                    Title:
                 </p>
 
-                <input type="text" name="staffid" value="" size="50"/>
+                <input type="text" name="title" value="Please comply with the SOP when back to the campus.
+                Let's watch the video clips!" size="100"/>
 
-                <br>
-                <br>
+                <br><br>
 
-                <p class="p5">
-                    Full Name
+                <p class="p5" style="display:inline-flex;">
+                    File:
                 </p>
 
-                <input type="text" name="name" value="" size="50"/>
+                <select class="combo">
+                    <option value="Select">Select....</option>
+                    <option value="file1">File1</option>
+                    <option value="file2">File2</option>
+                </select>
             
                 <br> 
                 <br>
 
-                <p class="p5">
-                    Email Address
+                <p class="p5" style="display:inline-flex;">
+                    Video URL:
                 </p>
 
-                <input type="text" name="email" value="" size="50"/>
+                <input type="text" name="email" value="https://www.youtube.com/watch?v=xVu_I6WCsto&ab_channel=JohnsHopkinsRheumatology" size="100" disabled/>
 
                 <br>
                 <br>
                 
-                <p class="p5">
-                    Captcha
+                <p class="p5" style="display:inline-flex;">
+                    New URL:
                 </p>
-                <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha </p> -->
-                {{form.captcha}}
+                
+                <input type="text" name="email" value="" size="100"/>
 
             </form>
 

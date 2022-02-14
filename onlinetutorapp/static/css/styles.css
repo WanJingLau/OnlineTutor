@@ -185,6 +185,7 @@ ul {
     cursor: pointer;
     border-radius: 8px;
     float: right;
+    font-family: 'Times New Roman', Times, serif;
  }
 
  .submit:hover {
@@ -207,6 +208,7 @@ ul {
   position: absolute;
   bottom: 8px;
   width: 99%;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 /*Lau Wan Jing: https://www.w3schools.com/w3css/w3css_cards.asp -- cards*/
@@ -283,4 +285,8 @@ ul {
   text-align: left;
   background-color: #bcf3df;
   color: black;
+}
+
+.combo{
+  padding:10px;
 }

@@ -1,5 +1,5 @@
 from django import forms
-from onlinetutorapp.models import Helpdesk, Todolist, User
+from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User
 from captcha.fields import CaptchaField
 
 #Lau Wan Jing: https://www.etutorialspoint.com/index.php/255-how-to-insert-data-in-mysql-database-from-an-html-form-using-django
@@ -8,7 +8,7 @@ class FormUser(forms.ModelForm):
     captcha=CaptchaField()
     class Meta:
         model= User
-        fields= ["staffid", "name", "email"]
+        fields= ["staffid", "name", "email", "password_hash", "isactive"]
         
 class FormHelpdesk(forms.ModelForm):
     class Meta:
@@ -20,5 +20,9 @@ class FormTodolist(forms.ModelForm):
         model= Todolist
         fields= ["task","timeend","status","isactive"]
         
-class FormCaptcha(forms.Form):
-   captcha=CaptchaField()
+# Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha
+
+class FormHomePage(forms.ModelForm):
+    class Meta:
+        model= Homepage
+        fields= ["title","file1","file2","isactive"]

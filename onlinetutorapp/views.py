@@ -2,7 +2,7 @@ from unittest import loader
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
-from .forms import FormTodolist, FormUser, FormCaptcha
+from .forms import FormHomePage, FormTodolist, FormUser,FormHomePage
 from django.contrib import messages
 from django.core.mail import send_mail
 
@@ -61,28 +61,68 @@ def login(request):
         else:
             messages.error(request,"Invalid username or password.")
 
-    return render(request=request, template_name="login.html")'''
+    return render(request=request, template_name="login.html")'''    
 
-# Lau Wan Jing: https://stackoverflow.com/questions/67629441/django-view-returning-post-instead-of-get-request -- as reference of register function
-def register(request):
-    if request.method == 'POST':
-        form = FormUser(request.POST)
-        captcha = request.POST.get('registercaptcha')
-        if captcha.is_valid():
-            staffid = request.POST.get('staffid')
-            name = request.POST.get('name')
-            email = request.POST.get('email')
-            user = staffid, name, email
-            user = form.save()
-            user.save()
-            return redirect('login.html')
+def register_page(request):
+    if(request.GET.get('submitbutton')):
+        if request.method == 'POST':
+            captcha = request.POST.get('registercaptcha')
+            if captcha.is_valid():
+                request.GET.get('register')
+                form = FormUser(request.POST)
+                staffid = request.POST.get('staffid')
+                name = request.POST.get('name')
+                email = request.POST.get('email')
+                for i in register_page:
+                    password = User.objects.make_random_password()
+                    i.set_password(password)
+                    i.save(update_fields=['password_hash'])
+                U = User(isactive=True)
+                U.save
+                User = staffid, name, email
+                User = form.save()
+                User.save()
+                return HttpResponseRedirect('login.html')
+            else:  
+                return HttpResponse('Captcha failed.')
         else:
-            messages.error(request, 'Captcha failed')
+            form = FormUser(None)
+            messages.error(request,'Please try again.')
+        return render(request, 'register.html', { 'form' : form })
     else:
         form = FormUser(None)
     return render(request, 'register.html', { 'form' : form })
 
-def captcha(request):
+# Lau Wan Jing: https://stackoverflow.com/questions/67629441/django-view-returning-post-instead-of-get-request -- as reference of register function
+
+    '''def register(request):
+    if(request.GET.get('submitbutton')):
+        if request.method == 'POST':
+            for user in register:
+                password = user.objects.make_random_password()
+                user.set_password(password)
+                user.save(update_fields=['password'])
+            form = FormUser(request.POST)
+            captcha = request.POST.get('registercaptcha')
+            if captcha.is_valid():
+                staffid = request.POST.get('staffid')
+                name = request.POST.get('name')
+                email = request.POST.get('email')
+                user = staffid, name, email, password_hash, isactive
+                user = form.save()
+                user.save()
+                return redirect('login.html')
+            else:
+                messages.error(request, 'Captcha failed')
+        else:
+            form = FormUser(None)
+        return render(request, 'register.html', { 'form' : form })'''
+
+
+
+# Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha 
+
+'''def captcha(request):
     if request.method=="POST":
         form = FormCaptcha(request.POST)
         captcha = request.POST.get('registercaptcha')
@@ -92,7 +132,7 @@ def captcha(request):
             print("fail")
     else:
         form=FormCaptcha()
-    return render(request,"register.html",{ 'form' : form })
+    return render(request,"register.html",{ 'form' : form })'''
 
 
 def forgotpassword(request):
@@ -100,7 +140,7 @@ def forgotpassword(request):
         form = FormUser(request.POST)
         email = request.POST.get('email')
         User = authenticate(email=email)
-        if User.isactive():
+        if User(isactive=True):
             user = form.save()
             user.save()
             user = authenticate(staffid=user.staffid, email=user.email)
@@ -167,3 +207,16 @@ def deletetask(id):
     New = todolist.objects.get(id=id)
     New.delete()
     return redirect('/todolist')
+
+def edithomepage(request):
+    if request.method == 'POST':
+        form = FormHomePage(request.POST)
+        title = request.POST.get('title')
+        file1 = request.POST.get('file1')
+        file2 = request.POST('file2')
+        edit = title,file1,file2
+        edit.save()
+        return render(request,"edithomepage.html")
+    else:
+        form = FormHomePage(None)
+    return render(request, 'edithomepage.html', { 'form' : form })
