@@ -6,6 +6,16 @@
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
         </head>
 
+        <div>
+            {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{message.tags}}">{{message}}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        {% block content %}
+        {% endblock content %}
+
         <body>
         <div>
             <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->

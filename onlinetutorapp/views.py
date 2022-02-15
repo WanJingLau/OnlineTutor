@@ -1,10 +1,15 @@
+
+import random
 from unittest import loader
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
+
+from onlinetutorapp.models import User
 from .forms import FormHomePage, FormTodolist, FormUser,FormHomePage
 from django.contrib import messages
 from django.core.mail import send_mail
+
 
 
 # Create your views here.
@@ -63,76 +68,30 @@ def login(request):
 
     return render(request=request, template_name="login.html")'''    
 
-def register_page(request):
-    if(request.GET.get('submitbutton')):
-        if request.method == 'POST':
-            captcha = request.POST.get('registercaptcha')
-            if captcha.is_valid():
-                request.GET.get('register')
-                form = FormUser(request.POST)
-                staffid = request.POST.get('staffid')
-                name = request.POST.get('name')
-                email = request.POST.get('email')
-                for i in register_page:
-                    password = User.objects.make_random_password()
-                    i.set_password(password)
-                    i.save(update_fields=['password_hash'])
-                U = User(isactive=True)
-                U.save
-                User = staffid, name, email
-                User = form.save()
-                User.save()
-                return HttpResponseRedirect('login.html')
-            else:  
-                return HttpResponse('Captcha failed.')
-        else:
-            form = FormUser(None)
-            messages.error(request,'Please try again.')
-        return render(request, 'register.html', { 'form' : form })
-    else:
-        form = FormUser(None)
-    return render(request, 'register.html', { 'form' : form })
-
 # Lau Wan Jing: https://stackoverflow.com/questions/67629441/django-view-returning-post-instead-of-get-request -- as reference of register function
-
-    '''def register(request):
-    if(request.GET.get('submitbutton')):
-        if request.method == 'POST':
-            for user in register:
-                password = user.objects.make_random_password()
-                user.set_password(password)
-                user.save(update_fields=['password'])
-            form = FormUser(request.POST)
-            captcha = request.POST.get('registercaptcha')
-            if captcha.is_valid():
-                staffid = request.POST.get('staffid')
-                name = request.POST.get('name')
-                email = request.POST.get('email')
-                user = staffid, name, email, password_hash, isactive
-                user = form.save()
-                user.save()
-                return redirect('login.html')
-            else:
-                messages.error(request, 'Captcha failed')
-        else:
-            form = FormUser(None)
-        return render(request, 'register.html', { 'form' : form })'''
-
-
-
 # Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha 
 
-'''def captcha(request):
-    if request.method=="POST":
-        form = FormCaptcha(request.POST)
-        captcha = request.POST.get('registercaptcha')
-        if captcha.is_valid():
-            print("success")
-        else:
-            print("fail")
+def register(request):
+    if request.method == "POST":
+        form = FormUser(request.POST)
+        if form.is_valid():
+            digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"
+            password =""
+            for i in range(0, 8):
+                password = password + random.choice(digits)
+            x = password
+            u = User(password_hash = x, isactive='1')
+            u,form.save()
+            fullname = form.cleaned_data.get('name')
+            messages.success(request, f'Hi {fullname}, your account was created successfully! Please check your email for your password.')
+            return redirect('login')
     else:
-        form=FormCaptcha()
-    return render(request,"register.html",{ 'form' : form })'''
+        form = FormUser()
+    return render(request, 'register.html', {'form': form})
+
+
+
+
 
 
 def forgotpassword(request):
