@@ -8,6 +8,7 @@ django = "*"
 django-debug-toolbar = "*"
 mysqlclient = "*"
 django-simple-captcha = "*"
+django-post-office = "*"
 
 [dev-packages]
 

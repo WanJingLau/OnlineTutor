@@ -1,5 +1,4 @@
 
-import random
 from django import forms
 from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User
 from captcha.fields import CaptchaField
@@ -9,6 +8,7 @@ from captcha.fields import CaptchaField
 class FormUser(forms.ModelForm):
     # Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha
     captcha=CaptchaField()
+    
     class Meta:
         model= User
         fields= ["staffid", "name", "email"]
@@ -18,8 +18,7 @@ class FormUser(forms.ModelForm):
             'name': 'Full Name',
             'email': 'Email Address',
         }
-    
-        
+
 class FormHelpdesk(forms.ModelForm):
     class Meta:
         model= Helpdesk
