@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+    <html>
+        {% load static %}
+
+        <head>
+            <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        </head>
+
+        <body>
+        <div>
+
+            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
+
+            <ul>
+                <p class="p1">E-Tutor</p>
+                <li><a href="/register">Register</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/">Home Page</a></li>
+            </ul>
+
+            <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
+
+            <div class="tab">
+
+                <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
+                <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
+                <button onclick="courselist()">Course List</button>
+
+                <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
+                <i class="fa fa-comments"style="font-size:25px;"></i>
+                <button onclick="discussionboard()">Discussion Board</button>
+
+                <i class="fa fa-star"style="font-size:25px;"></i>
+                <button onclick="grades()">Grades</button>
+
+                <!-- <p> Lau Wan Jing:  </p> -->
+                <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
+                <button onclick="quizzes()">Quizzes</button>
+
+                <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
+                <button onclick="todolist()">To-Do List</button>
+
+            </div>
+
+            <script type = "text/javascript">
+                function courselist() {
+                    window.location = "http://127.0.0.1:8000/courselist";
+                }
+                function discussionboard() {
+                    window.location = "http://127.0.0.1:8000/discussionboard";
+                }
+                function grades() {
+                    window.location = "http://127.0.0.1:8000/grades";
+                }
+                function quizzes() {
+                    window.location = "http://127.0.0.1:8000/quizzes";
+                }
+                function todolist() {
+                    window.location = "http://127.0.0.1:8000/todolist";
+                }
+            </script>
+
+            <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
+            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
+            <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
+                style="float:right;width:160px;height:50px;"
+            >
+            
+            <br>
+            <br>
+            <br>
+
+            <p>
+                <img src="{% static 'img/courselist.png' %}" alt="Course_icon"
+                style="float:left;width:50px;height:50px;">
+            </p>
+            
+            <p class="p3">Computer Architecture and Network</p>
+
+            <br>
+
+            <p class="p4">The subject materials are in three formats: pptx,pdf and mp4 files.</p>
+
+            <br>
+            
+            <!-- Oh Wen Chi:https://stackoverflow.com/questions/15461811/html-canvas-with-scrollbar -->
+            <div style="max-height: 390px;max-width:1500px;overflow: scroll;">
+            <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
+            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 1 - Number System</p>
+                <p>
+                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
+                    <p class="p5">Description:</p>
+                    <p class="p4">A number system is defined as a writing system for expressing numbers. It is a mathematical notation for representing a given set of numbers in a consistent manner with numbers or other symbols. It provides a unique representation of each number and represents the arithmetic and algebraic structure of numbers.</p><br>
+                    <p class="p5">Attached File:</p>
+                    <a href="Chapter 1 - Number Systems.pptx">Chapter 1 - Number System.pptx(1.29MB)</a></p>
+                </p>
+            </div>
+
+            <br>
+
+            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 1 - Number System</p>
+                <p>
+                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
+                    <p class="p5">Description:</p>
+                    <p class="p4">The number system is simply a system to represent or express numbers. There are various types of number systems and the most commonly used ones are decimal number system, binary number system, octal number system, and hexadecimal number system.</p><br>
+                    <p class="p5">Attached File:</p>
+                    <a href="Chapter 2 - Digital Logic and Digital System.pdf">Chapter 1 - Number System.pdf(1.29MB)</a></p>
+                    {% if file.pdf %}
+                        <a href="{{ file.pdf.url }}" download class="btn btn-outline-success">
+                    Download PDF</a>
+                    {% else %}
+                    <span class="text-muted">No PDF</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <br>
+
+            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 1 - Number System</p>
+                <p>
+                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
+                    <p class="p5">Description:</p>
+                    <p class="p4">The video provides a basic introduction to number systems such as decimal, binary, octal, and hexadecimal numbers.</p><br>
+                    <p class="p5">Attached File:</p>
+                    <a href="Introduction to Number System.mp4">Introduction to Number System.mp4(5.8MB)</a></p>
+                </p>
+            </div>
+
+            <br>
+
+            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 2 - Digital Logic and Digital System</p>
+                <p>
+                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
+                    <p class="p5">Description:</p>
+                    <p class="p4">Digital logic is the underlying logic system that drives the design of electronic circuit boards. It is the manipulation of binary values through printed circuit board technology, which uses circuits and logic gates to build implementations of computer operations.</p><br>
+                    <p class="p5">Attached File:</p>
+                    <a href="Chapter 2 - Digital Logic and Digital System.pptx">Chapter 2 - Digital Logic and Digital System.pptx(1.80MB)</a></p>
+                </p>
+            </div>
+
+            <br>
+
+            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 2 - Digital Logic and Digital System</p>
+                <p>
+                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
+                    <p class="p5">Description:</p>
+                    <p class="p4">The underlying logic system that drives the design of electronic circuit boards is digital logic. It operates on binary values through printed circuit board technology, and it uses circuits and logic gates to create computer operations.</p><br>
+                    <p class="p5">Attached File:</p>
+                    <a href="Chapter 2 - Digital Logic and Digital System.pdf">Chapter 2 - Digital Logic and Digital System.pdf(1.80MB)</a></p>
+                </p>
+            </div>
+
+            <br>
+
+            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 2 - Digital Logic and Digital System</p>
+                <p>
+                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
+                    <p class="p5">Description:</p>
+                    <p class="p4">This electronics video provides a basic introduction to logic gates, truth tables, and simplifying boolean algebra expressions.  It discusses logic gates such as the AND, OR, NOT, NAND, and NOR Gates. This video is for an introduction to logic design. </p><br>
+                    <p class="p5">Attached File:</p>
+                    <a href="Introduction to Logic Gates.mp4">Introduction to Logic Gates.mp4(9.0MB)</a></p>
+                </p>
+            </div>
+
+            <canvas width="512px" height="512px"></canvas>
+
+            <br>
+            
+            <div class=buttoncontainer>
+                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+            </div>
+        
+        </div>
+        </body>
+    </html>
