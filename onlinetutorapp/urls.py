@@ -10,4 +10,5 @@ urlpatterns = [
     path('forgotpassword', views.forgotpassword, name="forgotpassword"),
     path('settings', views.settings, name="settings"),
     path('todolist', views.todolist, name="todolist"),
+    path('edithomepage', views.edithomepage, name="edithomepage"),
 ]

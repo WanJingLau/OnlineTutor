@@ -1,3 +1,5 @@
+{% load crispy_forms_tags %}
+
 <!DOCTYPE html>
     <html>
         {% load static %}
@@ -24,7 +26,7 @@
             <br>
             <br>
             <br>
-
+        
             <p class="p2">
                 Welcome to E-Tutor!
             </p>
@@ -42,47 +44,25 @@
                 Please fill in your information below and check your email for the password.
             </p>
 
-            <br>
-            <br>
-
-            <form action="register" method="post">
+            <form action="{% url 'register' %}" method="post">
                 <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
-
                 {% csrf_token %}
-
-                <p class="p5">
-                    Lecturer/Student ID
-                </p>
-
-                <input type="text" name="staffid" value="" size="50"/>
-
-                <br>
                 <br>
 
                 <p class="p5">
-                    Full Name
+                    {{ form|crispy }}
                 </p>
-
-                <input type="text" name="name" value="" size="50"/>
-            
-                <br> 
-                <br>
-
-                <p class="p5">
-                    Email Address
-                </p>
-
-                <input type="text" name="email" value="" size="50"/>
-
-                <br>
-                <br>
                 
-                <p class="p5">
-                    Captcha
-                </p>
-         
-                <input type="text" id="captcha" name="captcha" size="50">
+                <br>
+                <br>
+                <br>
 
+                <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                    <input type="submit" class="submit" value="Submit"></input>
+                </div>
+                
             </form>
 
             <br>
@@ -94,11 +74,7 @@
             <br>
             <br>
 
-            <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
-            <div class=buttoncontainer>
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                <button type="submit" class="submit">Submit</a>
-            </div>
+            
         </div>
         <body>
     <html>
