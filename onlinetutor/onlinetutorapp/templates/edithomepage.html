@@ -1,0 +1,107 @@
+{% block content %}
+
+<!DOCTYPE html>
+    <html>
+        {% load static %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <head>
+            <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        </head>
+
+        <body>
+        <div>
+            <ul>
+                <p class="p1">E-Tutor</p>
+                <li><a>Register</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/">Home Page</a></li>
+            </ul>
+
+            <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
+            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
+            <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
+                style="float:right;width:160px;height:50px;"
+            >
+            
+            <br>
+            <br>
+            <br>
+
+            <p>
+                <img src="{% static 'img/edit.png' %}" alt="Edit_icon"
+                style="float:left;width:50px;height:50px;">
+
+                <p class="p3">
+                Edit Home Page
+                </p>
+            <p>
+
+            <p class="p4">
+                Edit updates:
+            </p>
+
+            <br>
+
+            <form action="edithomepage" method="post">
+                <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
+
+                {% csrf_token %}
+
+                <p class="p5" style="display:inline-flex;">
+                    Title:
+                </p>
+
+                <input type="text" name="title" value="Please comply with the SOP when back to the campus.
+                Let's watch the video clips!" size="100"/>
+
+                <br><br>
+
+                <p class="p5" style="display:inline-flex;">
+                    File:
+                </p>
+
+                <!-- <p> Lau Wan Jing: https://www.educba.com/combobox-in-html/ -- combo box</p> -->
+                <select class="combo">
+                    <option value="Select">Select....</option>
+                    <option value="file1">File1</option>
+                    <option value="file2">File2</option>
+                </select>
+            
+                <br>
+                <br>
+
+                <p class="p5" style="display:inline-flex;">
+                    Video URL:
+                </p>
+
+                <input type="text" name="email" value="https://www.youtube.com/watch?v=xVu_I6WCsto&ab_channel=JohnsHopkinsRheumatology" size="100" disabled/>
+
+                <br>
+                <br>
+                
+                <p class="p5" style="display:inline-flex;">
+                    New URL:
+                </p>
+                
+                <input type="text" name="email" value="" size="100"/>
+
+            </form>
+
+
+
+            <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+            <div class=buttoncontainer>
+                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                <a type="button" class="submit" value="submit" name="submitbutton">Submit</a> 
+            </div>
+        </div>
+        <body>
+    <html>
+
+{% endblock %}

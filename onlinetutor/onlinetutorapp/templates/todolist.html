@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+    <html>
+        {% load static %}
+
+        <head>
+            <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        </head>
+
+        <body>
+        <div>
+
+            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
+
+            <ul>
+                <p class="p1">E-Tutor</p>
+                <li><a href="/register">Register</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/">Home Page</a></li>
+            </ul>
+
+            <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
+
+            <div class="tab">
+
+                <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
+                <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
+                <button onclick="courselist()">Course List</button>
+
+                <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
+                <i class="fa fa-comments"style="font-size:25px;"></i>
+                <button onclick="discussionboard()">Discussion Board</button>
+
+                <i class="fa fa-star"style="font-size:25px;"></i>
+                <button onclick="grades()">Grades</button>
+
+                <!-- <p> Lau Wan Jing:  </p> -->
+                <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
+                <button onclick="quizzes()">Quizzes</button>
+
+                <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
+                <button onclick="todolist()">To-Do List</button>
+
+            </div>
+
+            <script type = "text/javascript">
+                function courselist() {
+                    window.location = "http://127.0.0.1:8000/courselist";
+                }
+                function discussionboard() {
+                    window.location = "http://127.0.0.1:8000/discussionboard";
+                }
+                function grades() {
+                    window.location = "http://127.0.0.1:8000/grades";
+                }
+                function quizzes() {
+                    window.location = "http://127.0.0.1:8000/quizzes";
+                }
+                function todolist() {
+                    window.location = "http://127.0.0.1:8000/todolist";
+                }
+            </script>
+
+            <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
+            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
+            <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
+                style="float:right;width:160px;height:50px;"
+            >
+            
+            <br>
+            <br>
+            <br>
+
+            <p>
+                <img src="{% static 'img/todolist.png' %}" alt="todolist_icon"
+                style="float:left;width:40px;height:40px;">
+            </p>
+
+            <p class="p3">
+                To-Do List
+            </p>
+            
+            <br>
+
+            <form action="settings" method="post">
+                <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
+
+                {% csrf_token %}
+
+                <p class="p5" style="display:inline-flex;">
+                    Add Task:
+                </p>
+
+                <input type="text" name="task" value="" size="50"/>
+
+                <br>
+                <br>
+
+                <p class="p5" style="display:inline-flex;">
+                    Time:
+                </p>
+
+                <!-- <p> Lau Wan Jing: https://www.w3schools.com/tags/tryit.asp?filename=tryhtml5_input_type_datetime-local -- input time </p> -->
+                <input type="datetime-local" id="timeend" name="timeend">
+
+                <br>
+                <br>
+
+                <table id="tasktable">
+                    <tr>
+                      <th>Task</th>
+                      <th>Time</th>
+                      <th>Status</th>
+                      <th>Delete</th>
+                    </tr>
+                    <tr>
+                      <td>Done assignment</td>
+                      <td>
+                        23/2/2022 11:59pm
+                        </td>
+                      <td>
+                        <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_checkbox </p> -->
+                        <label class="containercheckbox">
+                            <input type="checkbox" checked="checked">
+                            <span class="checkmark"></span>
+                        </label>
+                      </td>
+                      <td><button>Delete</button></td>
+                    </tr>
+                  </table>
+            
+                <button type="submit" class="submit">Add</a>
+
+            </form>
+
+        </div>
+        </body>
+    </html>
