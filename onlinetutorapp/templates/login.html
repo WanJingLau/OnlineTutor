@@ -1,6 +1,8 @@
 <!DOCTYPE html>
     <html>
+        {% block content %}
         {% load static %}
+        {% load crispy_forms_tags %}
 
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -13,8 +15,6 @@
             {% endfor %}
             {% endif %}
         </div>
-        {% block content %}
-        {% endblock content %}
 
         <body>
         <div>
@@ -30,7 +30,8 @@
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
             https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
             <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
-                style="float:right;width:160px;height:50px;">
+                style="float:right;width:160px;height:50px;"
+            >
             
             <br>
             <br>
@@ -60,26 +61,12 @@
 
             <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
 
-            <form action="register" method="post">
+            <form action="{% url 'login' %}" method="post">
                 {% csrf_token %}
 
                 <p class="p5">
-                    Lecturer/Student ID
+                    {{ form|crispy }}
                 </p>
-
-                <input type="text"" id="staffid" name="staffid" size="30">
-            
-                <br>
-                <br>
-            
-                <p class="p5">
-                    Password
-                </p>
-
-                <input type="text" id="password" name="password" size="30">
-
-                <br>
-                <br>
 
                 <p>
                     <a href="/forgotpassword">Forgot your password?</a>.</p>
@@ -88,18 +75,14 @@
 
                 <br>
                 <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                
+
                 <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
                 <div class=buttoncontainer>
                     <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                    <button type="submit" class="submit">Submit</a>
+                    <input type="submit" class="submit" value="Submit"></input>
                 </div>
+
+                {% endblock content %}
             </form>
         </div>
         <body>
