@@ -1,4 +1,3 @@
-
 from django import forms
 from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User
 from captcha.fields import CaptchaField
@@ -18,6 +17,22 @@ class FormUser(forms.ModelForm):
             'name': 'Full Name',
             'email': 'Email Address',
         }
+
+class FormUserLogin(forms.ModelForm):
+    
+    class Meta:
+        model= User
+        fields= ["staffid", "password"]
+        # https://stackoverflow.com/questions/38724012/django-crispy-forms-set-label-text-for-multiple-fields
+        labels = {
+            'staffid': 'Lecturer/Student ID',
+            'password': 'Password',
+        }
+        
+class FormForgotPassword(forms.ModelForm):
+    class Meta:
+        model= Helpdesk
+        fields= ["email"]
 
 class FormHelpdesk(forms.ModelForm):
     class Meta:

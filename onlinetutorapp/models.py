@@ -95,7 +95,7 @@ class Coursematerial(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
     file = models.TextField()
-    isactive = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -105,7 +105,7 @@ class Coursematerial(models.Model):
 class Coursesubject(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     name = models.CharField(max_length=255)
-    isactive = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -117,7 +117,7 @@ class Coursetopic(models.Model):
     coursesubject = models.IntegerField()
     name = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
-    isactive = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -130,7 +130,7 @@ class Discussion(models.Model):
     question = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     file1 = models.TextField()
-    isactive = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -142,7 +142,7 @@ class Discussioncomment(models.Model):
     discussionid = models.ForeignKey(Discussion, models.DO_NOTHING, db_column='discussionid')
     comment = models.CharField(max_length=255)
     file1 = models.TextField()
-    isactive = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -300,8 +300,8 @@ class PostOfficeLog(models.Model):
 class Questionselection(models.Model):
     quizquestionid = models.ForeignKey('Quizquestion', models.DO_NOTHING, db_column='quizquestionid')
     selection = models.CharField(max_length=255)
-    answer = models.IntegerField()
-    isactive = models.IntegerField()
+    answer = models.CharField(max_length=255)
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -313,7 +313,7 @@ class Quiz(models.Model):
     title = models.CharField(max_length=100)
     duration = models.TimeField()
     attempt = models.IntegerField()
-    isactive = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -324,7 +324,7 @@ class Quizquestion(models.Model):
     quizid = models.ForeignKey(Quiz, models.DO_NOTHING, db_column='quizid')
     question = models.CharField(max_length=255)
     marks = models.IntegerField()
-    isactive = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -342,9 +342,9 @@ class Role(models.Model):
 class Todolist(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     task = models.CharField(max_length=50)
-    timeend = models.TimeField()
+    timeend = models.DateTimeField()
     status = models.IntegerField()
-    isactive = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -375,7 +375,7 @@ class Userquizselection(models.Model):
     answercorrect = models.IntegerField()
     attemptcount = models.IntegerField()
     score = models.IntegerField()
-    isactive = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
