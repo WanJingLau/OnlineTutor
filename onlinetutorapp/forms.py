@@ -38,7 +38,7 @@ class FormHelpdesk(forms.ModelForm):
     class Meta:
         model= Helpdesk
         fields= ["email", "question"]
-        
+
 class FormTodolist(forms.ModelForm):
     class Meta:
         model= Todolist

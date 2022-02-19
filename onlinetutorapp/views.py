@@ -1,7 +1,8 @@
 from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from onlinetutorapp.models import User, Userrole, Role
+from onlinetutorapp.models import Helpdesk, User, Userrole, Role
 from .forms import FormForgotPassword, FormHelpdesk, FormHomePage, FormMainPage, FormTodolist, FormUser,FormHomePage, FormUserLogin
 from django.contrib import messages
 
@@ -13,10 +14,16 @@ from django.contrib import messages
 def mainpage(request):
     return render(request, "mainpage.html")
 
-def mainpage_user(request):
-    return render(request, "mainpage_user.html")
+def mainpage_user(request, userid):
+    userrole = get_userrole(userid)
+    context = {'roleid' : userrole.roleid_id}
+    return render(request, 'mainpage_user.html', context)
 
-
+def get_userrole(userid):
+    userid = userid
+    content = Userrole.objects.raw('SELECT * FROM userrole WHERE userid = userid limit 1')
+    for userrole in content:
+        return userrole
 
 
 
@@ -87,23 +94,14 @@ def login_verify(request, user, y):
     if user.isactive == 1:
         if user.password == y:
             messages.success(request, f'Welcome, you are logged in as {user.staffid}.')
+            userid = user.id
+            mainpage_user(request, userid)
             return redirect('/mainpage_user/')
             #return redirect(request.GET.get('next','/'))
-            #check_userrole(request, user)
         else:
             messages.error(request, 'Your password is incorrect. Please try again.')
     else:
         messages.error(request, 'Your account is inactive.')
-
-'''def check_userrole(request, user):
-    if user.staffid == 
-        return render(request, 'mainpage_user.html')'''
-
-
-
-
-
-
 
 # Functions below: FORGOT PASSWORD
 def forgotpassword(request):
@@ -131,28 +129,32 @@ def send_email_forgot_password(user):
     email_from = "ebook4006@gmail.com"
     recipient_list = [user.email]
     send_mail( subject, message, email_from, recipient_list )
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 def helpdesk(request):
     if request.method == 'POST':
         form = FormHelpdesk(request.POST)
         email = request.POST.get('email')
-        question = request.POST.get('question')
-        helpdeskinfo = (email, question)
-        helpdeskinfo.save()
-        return redirect('homepage.html')
+        if form.is_valid():
+            form.save()
+            get_helpdesk_info(email)
+            messages.success(request, 'Thanks for you feedback, system owner will contact you via email.')
+        else:
+            messages.error(request, 'Your information is invalid. Please try again.')
     else:
         form = FormUser(None)
     return render(request, 'helpdesk.html', { 'form' : form })
+
+def get_helpdesk_info(email):
+    content = Helpdesk.objects.raw('SELECT * FROM helpdesk WHERE email = %s limit 1', [email])
+    for user in content:
+        send_email_helpdesk(user)
+
+def send_email_helpdesk(user):
+    subject = 'E-Tutor Online Tutor System'
+    message = f'Hi system owner, there is a question from E-Tutor system. From {user.email} and the question is {user.question}'
+    email_from = "ebook4006@gmail.com"
+    # Lau Wan Jing: https://stackoverflow.com/a/48107308 -- error 'to' argument solved
+    send_mail(subject, message, email_from, ["lauwan08@gmail.com"])
 
 def settings(request):
     if request.method == 'POST':
