@@ -23,11 +23,6 @@ class FormUserLogin(forms.ModelForm):
     class Meta:
         model= User
         fields= ["staffid", "password"]
-        # https://stackoverflow.com/questions/38724012/django-crispy-forms-set-label-text-for-multiple-fields
-        labels = {
-            'staffid': 'Lecturer/Student ID',
-            'password': 'Password',
-        }
         
 class FormForgotPassword(forms.ModelForm):
     class Meta:

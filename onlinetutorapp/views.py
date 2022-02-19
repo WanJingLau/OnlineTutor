@@ -13,9 +13,6 @@ from django.contrib import messages
 def mainpage(request):
     return render(request, "mainpage.html")
 
-def mainpage_admin(request):
-    return render(request, "mainpage_admin.html")
-
 def mainpage_user(request):
     return render(request, "mainpage_user.html")
 
@@ -23,7 +20,7 @@ def mainpage_user(request):
 
 
 
-
+# Functions below: REGISTER
 # Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha 
 # Lau Wan Jing: https://www.youtube.com/watch?v=mOS0L5Lb2u0&ab_channel=Desphixs --register function
 def register(request):
@@ -46,7 +43,7 @@ def get_email_pass(staffid):
     content = User.objects.raw('SELECT * FROM user WHERE staffid = %s limit 1', [x])
     for user in content:
         sendemail(user)
-        
+
 # Lau Wan Jing: https://www.geeksforgeeks.org/setup-sending-email-in-django-project/
 def sendemail(user):
     subject = 'Welcome to E-Tutor!'
@@ -60,22 +57,7 @@ def insertrole(staffid):
     userrole= Userrole.objects.create(userid = User.objects.get(staffid = staffid), roleid = Role.objects.get(name = 'student'))
     userrole.save()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Functions below: LOGIN
 # Lau Wan Jing: https://itsourcecode.com/free-projects/python-projects/django-login-and-registration-with-source-code/
 # Lau Wan Jing: https://ordinarycoders.com/blog/article/django-user-register-login-logout
 # Lau Wan Jing: https://pythonprogramming.net/user-login-logout-django-tutorial/
@@ -105,6 +87,8 @@ def login_verify(request, user, y):
     if user.isactive == 1:
         if user.password == y:
             messages.success(request, f'Welcome, you are logged in as {user.staffid}.')
+            return redirect('/mainpage_user/')
+            #return redirect(request.GET.get('next','/'))
             #check_userrole(request, user)
         else:
             messages.error(request, 'Your password is incorrect. Please try again.')
@@ -121,13 +105,7 @@ def login_verify(request, user, y):
 
 
 
-
-
-
-
-
-
-
+# Functions below: FORGOT PASSWORD
 def forgotpassword(request):
     if request.method == 'POST':
         form = FormForgotPassword(request.POST)
