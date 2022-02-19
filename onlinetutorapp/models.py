@@ -195,7 +195,6 @@ class DjangoSession(models.Model):
 
 
 class Helpdesk(models.Model):
-    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     question = models.CharField(max_length=255)
     email = models.CharField(max_length=100)
 
@@ -352,7 +351,7 @@ class Todolist(models.Model):
 
 
 class User(models.Model):
-    staffid = models.CharField(max_length=50)
+    staffid = models.CharField(unique=True, max_length=50)
     name = models.CharField(max_length=50)
     email = models.CharField(max_length=100)
     # Lau Wan Jing: https://stackoverflow.com/questions/755857/default-value-for-field-in-django-model

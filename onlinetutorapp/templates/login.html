@@ -6,15 +6,10 @@
 
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         </head>
 
-        <div>
-            {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{message.tags}}">{{message}}</div>
-            {% endfor %}
-            {% endif %}
-        </div>
+        {% include 'messages.html' %}
 
         <body>
         <div>
@@ -65,8 +60,19 @@
                 {% csrf_token %}
 
                 <p class="p5">
-                    {{ form|crispy }}
+                    Lecturer/Student ID
                 </p>
+
+                <input type="text" name="staffid" value="" size="50"/>
+
+                <br>
+                <br>
+
+                <p class="p5">
+                    Password
+                </p>
+
+                <input type="password" name="password" value="" size="50"/>
 
                 <p>
                     <a href="/forgotpassword">Forgot your password?</a>.</p>

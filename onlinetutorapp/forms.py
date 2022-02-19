@@ -1,5 +1,5 @@
 from django import forms
-from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User
+from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Userrole
 from captcha.fields import CaptchaField
 
 #Lau Wan Jing: https://www.etutorialspoint.com/index.php/255-how-to-insert-data-in-mysql-database-from-an-html-form-using-django
@@ -23,22 +23,22 @@ class FormUserLogin(forms.ModelForm):
     class Meta:
         model= User
         fields= ["staffid", "password"]
-        # https://stackoverflow.com/questions/38724012/django-crispy-forms-set-label-text-for-multiple-fields
-        labels = {
-            'staffid': 'Lecturer/Student ID',
-            'password': 'Password',
-        }
         
 class FormForgotPassword(forms.ModelForm):
     class Meta:
         model= Helpdesk
         fields= ["email"]
 
+class FormMainPage(forms.ModelForm):
+    class Meta:
+        model= Homepage
+        fields= ["title"]
+        
 class FormHelpdesk(forms.ModelForm):
     class Meta:
         model= Helpdesk
-        fields= ["question"]
-        
+        fields= ["email", "question"]
+
 class FormTodolist(forms.ModelForm):
     class Meta:
         model= Todolist
