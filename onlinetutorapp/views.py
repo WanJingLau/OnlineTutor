@@ -1,22 +1,28 @@
-import random
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
-from onlinetutorapp.models import User
-from .forms import FormForgotPassword, FormHomePage, FormTodolist, FormUser,FormHomePage, FormUserLogin
+from onlinetutorapp.models import User, Userrole, Role
+from .forms import FormForgotPassword, FormHelpdesk, FormHomePage, FormMainPage, FormTodolist, FormUser,FormHomePage, FormUserLogin
 from django.contrib import messages
 
 # Create your views here.
 # request -> response
 # request handler / action
-# Lau Wan Jing: https://itsourcecode.com/free-projects/python-projects/django-login-and-registration-with-source-code/
-# Lau Wan Jing: https://ordinarycoders.com/blog/article/django-user-register-login-logout
+
 
 def mainpage(request):
     return render(request, "mainpage.html")
 
 def mainpage_admin(request):
     return render(request, "mainpage_admin.html")
+
+def mainpage_user(request):
+    return render(request, "mainpage_user.html")
+
+
+
+
+
 
 # Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha 
 # Lau Wan Jing: https://www.youtube.com/watch?v=mOS0L5Lb2u0&ab_channel=Desphixs --register function
@@ -28,6 +34,7 @@ def register(request):
             fullname = form.cleaned_data.get('name')
             staffid = form.cleaned_data.get('staffid')
             get_email_pass(staffid)
+            insertrole(staffid)
             messages.success(request, f'Hi {fullname}, your account was created successfully! Please check your email for your password.')
             return redirect('login')
     else:
@@ -40,7 +47,7 @@ def get_email_pass(staffid):
     for user in content:
         sendemail(user)
         
-# Lau Wan Jing:https://www.geeksforgeeks.org/setup-sending-email-in-django-project/
+# Lau Wan Jing: https://www.geeksforgeeks.org/setup-sending-email-in-django-project/
 def sendemail(user):
     subject = 'Welcome to E-Tutor!'
     message = f'Hi {user.staffid}, thank you for registering in E-Tutor web page. Your password is {user.password} and you can sign in into the account now.'
@@ -48,6 +55,30 @@ def sendemail(user):
     recipient_list = [user.email]
     send_mail( subject, message, email_from, recipient_list )
 
+# Lau Wan Jing: https://stackoverflow.com/questions/37839867/django-error-cannot-assign-must-be-an-instance
+def insertrole(staffid):
+    userrole= Userrole.objects.create(userid = User.objects.get(staffid = staffid), roleid = Role.objects.get(name = 'student'))
+    userrole.save()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Lau Wan Jing: https://itsourcecode.com/free-projects/python-projects/django-login-and-registration-with-source-code/
+# Lau Wan Jing: https://ordinarycoders.com/blog/article/django-user-register-login-logout
+# Lau Wan Jing: https://pythonprogramming.net/user-login-logout-django-tutorial/
 def login(request):
     if request.method == 'POST':
         form = FormUserLogin(request.POST)
@@ -69,20 +100,33 @@ def get_login(request, staffid, password):
     else:
         for user in content:
             login_verify(request, user, y)
-        
+
 def login_verify(request, user, y):
     if user.isactive == 1:
         if user.password == y:
-            messages.success(request, f'Welcome {user.staffid}, you are sign in successfully.')
-            #cannot work
-            redirect_to_mainpage(request)
+            messages.success(request, f'Welcome, you are logged in as {user.staffid}.')
+            #check_userrole(request, user)
         else:
             messages.error(request, 'Your password is incorrect. Please try again.')
     else:
         messages.error(request, 'Your account is inactive.')
-#cant work
-def redirect_to_mainpage(request):
-    return render(request, "mainpage.html")
+
+'''def check_userrole(request, user):
+    if user.staffid == 
+        return render(request, 'mainpage_user.html')'''
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def forgotpassword(request):
     if request.method == 'POST':
@@ -110,11 +154,23 @@ def send_email_forgot_password(user):
     recipient_list = [user.email]
     send_mail( subject, message, email_from, recipient_list )
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 def helpdesk(request):
     if request.method == 'POST':
-        form = FormUser(request.POST)
+        form = FormHelpdesk(request.POST)
+        email = request.POST.get('email')
         question = request.POST.get('question')
-        question.save()
+        helpdeskinfo = (email, question)
+        helpdeskinfo.save()
         return redirect('homepage.html')
     else:
         form = FormUser(None)

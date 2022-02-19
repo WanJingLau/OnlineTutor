@@ -8,13 +8,7 @@
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
         </head>
 
-        <div>
-            {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{message.tags}}">{{message}}</div>
-            {% endfor %}
-            {% endif %}
-        </div>
+        {% include 'messages.html' %}
 
         <body>
         <div>
