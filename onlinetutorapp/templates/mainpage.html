@@ -1,7 +1,9 @@
+<!-- <p> Lau Wan Jing: This is the page for visitors and users before login </p> -->
+
 <!DOCTYPE html>
     <html>
         {% block content %}
-        {% load static %} 
+        {% load static %}
 
         <head>
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/css/css_howto.asp --add external css </p> -->
@@ -31,39 +33,27 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button onclick="courselist()">Course List</button>
+                <button onclick="visitor()">Course List</button>
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button onclick="visitor()">Discussion Board</button>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button onclick="grades()">Grades</button>
+                <button onclick="visitor()">Grades</button>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button onclick="quizzes()">Quizzes</button>
+                <button onclick="visitor()">Quizzes</button>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button onclick="visitor()">To-Do List</button>
 
             </div>
 
             <script type = "text/javascript">
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
-                function discussionboard() {
-                    window.location = "http://127.0.0.1:8000/discussionboard";
-                }
-                function grades() {
-                    window.location = "http://127.0.0.1:8000/grades";
-                }
-                function quizzes() {
-                    window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
+                // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
+                function visitor() {
+                    alert("You may not access to this feature. Please sign in now.");
                 }
             </script>
 
@@ -129,8 +119,8 @@
 
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/howto_css_icon_bar.asp -- icon bar bottom right </p> -->
             <div class="icon-bar">
-                <a href="/"><i class="fa fa-fw fa-power-off"></i></a>
-                <a href="/settings"><i class="fa fa-fw fa-wrench"></i></a>
+                <a href="/"><i class="fa fa-fw fa-power-off" onclick="visitor()"></i></a>
+                <a href="/settings"><i class="fa fa-fw fa-wrench" onclick="visitor()"></i></a>
                 <a href="/helpdesk"><i class="fa fa-fw fa-question"></i></a> 
             </div>
 

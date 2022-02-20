@@ -5,10 +5,12 @@
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
 
         <body>
+            {% include 'messages.html' %}
         <div>
 
             <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
@@ -17,7 +19,7 @@
                 <p class="p1">E-Tutor</p>
                 <li><a href="/register">Register</a></li>
                 <li><a href="/login">Login</a></li>
-                <li><a href="/">Home Page</a></li>
+                <li><a href="/mainpage_user">Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->

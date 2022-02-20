@@ -145,7 +145,7 @@ STATICFILES_DIRS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'mainpage_user'
+LOGIN_REDIRECT_URL = 'onlinetutorapp:index'
 
 LOGIN_URL = 'login'
 

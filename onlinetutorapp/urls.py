@@ -11,5 +11,6 @@ urlpatterns = [
     path('settings', views.settings, name="settings"),
     path('todolist', views.todolist, name="todolist"),
     path('edithomepage', views.edithomepage, name="edithomepage"),
-    path('mainpage_user', views.mainpage_user, name="mainpage_user"),
+    #path('<int:user.id>/mainpage_user', views.mainpage_user, name="mainpage_user"),
+    path('<int:userid>/mainpage_user', views.showedithomepagebutton_mainpage_user, name="mainpage_user"),
 ]
