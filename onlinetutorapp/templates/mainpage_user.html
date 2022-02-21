@@ -19,8 +19,8 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
+                <li><a  onclick="visitor()">Register</a></li>
+                <li><a onclick="visitor()">Login</a></li>
                 <li><a>Home Page</a></li>
             </ul>
 
@@ -49,20 +49,9 @@
             </div>
 
             <script type = "text/javascript">
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
-                function discussionboard() {
-                    window.location = "http://127.0.0.1:8000/discussionboard";
-                }
-                function grades() {
-                    window.location = "http://127.0.0.1:8000/grades";
-                }
-                function quizzes() {
-                    window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
+                // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
+                function visitor() {
+                    alert("You have logged in into the account.");
                 }
             </script>
 
@@ -106,18 +95,18 @@
                     </div>
                 </div>
             </div>
-            
+
+            {% if roleid == 1 %}
+            <div>
+                <a href="/edithomepage"><i class="fa fa-edit" style="font-size:30px;float:right;color:black"></i></a> 
+            </div>
+            {% endif %}
+
             <p class="p2">
                 Please comply with the SOP when back to the campus.
                 <br>
                 Let's watch the video clips!
             </p>
-
-            {% if roleid == 1 in context %}
-            <div>
-                <a href="/edithomepage"><i class="fa fa-edit" style="font-size:30px;float:right;color:black"></i></a> 
-            </div>
-            {% endif %}
 
             <div class=container>
 

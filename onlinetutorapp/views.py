@@ -15,10 +15,9 @@ from django.contrib import messages
 def mainpage(request):
     return render(request, "mainpage.html")
 
-def mainpage_user(request): #why no id jorr????? u remove then how to pass in?!?!?!?!
+def mainpage_user(request):
     return render(request, "mainpage_user.html")
 
-# need to add if user go settings then pass userid to setting function
 def showedithomepagebutton_mainpage_user(request, userid):
     userrole = get_userrole(userid)
     context = {'roleid' : userrole.roleid_id}
@@ -29,8 +28,6 @@ def get_userrole(userid):
     content = Userrole.objects.raw('SELECT * FROM userrole WHERE userid = userid limit 1')
     for userrole in content:
         return userrole
-
-
 
 # Functions below: REGISTER
 # Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha 
