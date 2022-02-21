@@ -54,8 +54,6 @@ class FormTodolist(forms.ModelForm):
         model= Todolist
         fields= ["task","timeend","status","isactive"]
         
-# Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha
-
 class FormHomePage(forms.ModelForm):
     
     class Meta:

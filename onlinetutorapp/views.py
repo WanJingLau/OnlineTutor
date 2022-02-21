@@ -25,7 +25,7 @@ def get_userrole(userid):
     content = Userrole.objects.raw('SELECT * FROM userrole WHERE userid = userid limit 1')
     for userrole in content:
         return userrole
-    
+
 def gethomeinfo():
     info = Homepage.objects.get(id = 1)
     return info
@@ -34,18 +34,17 @@ def edithomepage(request):
     info = gethomeinfo()
     context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
     if request.method == 'POST':
-        form = FormHomePage(request.POST)
-        if request.POST.get('file1'):
-            if form.is_valid():
-                Homepage.objects.filter(id=userid).update(password=newpassword)
-                messages.success(request, "Home Page information updated successfully.")
-                return render(request, 'edithomepage.html', context)
-            else:
-                messages.error(request, "Your information is invalid.")
+        if (request.POST.get('newurl') != '') and (request.POST.get('file') == 'file1' or request.POST.get('file') == 'file2'):
+            if request.POST.get('file') == 'file1':
+                Homepage.objects.filter(id=1).update(file1 = request.POST.get('newurl'))
+            elif request.POST.get('file') == 'file2':
+                Homepage.objects.filter(id=1).update(file2 = request.POST.get('newurl'))
+            messages.success(request, "Home Page information updated successfully.")
+            info = gethomeinfo()
+            context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
+            return render(request, 'edithomepage.html', context)
         else:
-            
-    else:
-        form = FormHomePage(None)
+            messages.error(request, "Your information is invalid.")
     return render(request, 'edithomepage.html', context)
 
 # Functions below: REGISTER
