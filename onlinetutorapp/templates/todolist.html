@@ -17,9 +17,10 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/mainpage_user">Home Page</a></li>
+                <li><a href="/register" onclick="user()">Register</a></li>
+                <li><a href="/login" onclick="user()">Login</a></li>
+                <!-- <p> Lau Wan Jing: waiting for modifying, cant work now </p> -->
+                <li><a href="<int:userid>/mainpage_user">Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
@@ -42,7 +43,7 @@
                 <button onclick="quizzes()">Quizzes</button>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button>To-Do List</button>
 
             </div>
 
@@ -61,6 +62,9 @@
                 }
                 function todolist() {
                     window.location = "http://127.0.0.1:8000/todolist";
+                }
+                function user() {
+                    alert("You have logged in into the account.");
                 }
             </script>
 
@@ -85,7 +89,7 @@
             
             <br>
 
-            <form action="settings" method="post">
+            <form action="todolist" method="post">
                 <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
 
                 {% csrf_token %}

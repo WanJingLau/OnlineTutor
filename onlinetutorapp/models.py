@@ -5,8 +5,6 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-# Lau Wan Jing: https://docs.djangoproject.com/en/dev/howto/legacy-databases/ -- auto generated modelspy 
-
 import random
 from django.db import models
 
@@ -197,8 +195,8 @@ class DjangoSession(models.Model):
 
 
 class Helpdesk(models.Model):
-    question = models.CharField(unique=True, max_length=255)
-    email = models.CharField(max_length=100)
+    question = models.CharField(max_length=255)
+    email = models.CharField(unique=True, max_length=100)
 
     class Meta:
         managed = False
@@ -206,11 +204,9 @@ class Helpdesk(models.Model):
 
 
 class Homepage(models.Model):
-    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     title = models.CharField(max_length=255)
     file1 = models.TextField()
     file2 = models.TextField()
-    isactive = models.IntegerField()
 
     class Meta:
         managed = False
@@ -344,8 +340,8 @@ class Todolist(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     task = models.CharField(max_length=50)
     timeend = models.DateTimeField()
-    status = models.IntegerField(default=1)
-    isactive = models.IntegerField(blank=True, null=True, default=1)
+    status = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -363,7 +359,7 @@ class User(models.Model):
         passw = passw + random.choice(digits)
     x = passw
     password = models.CharField(max_length=100, default=x)
-    isactive = models.IntegerField(blank=True, null=True, default="1")
+    isactive = models.IntegerField(blank=True, null=True, default=1)
 
     class Meta:
         managed = False

@@ -60,4 +60,4 @@ class FormHomePage(forms.ModelForm):
     
     class Meta:
         model= Homepage
-        fields= ["title","file1","file2","isactive"]
+        fields= ["title","file1","file2"]

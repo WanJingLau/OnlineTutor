@@ -57,9 +57,7 @@
                     Title:
                 </p>
 
-                <input type="text" name="title" value="Please comply with the SOP when back to the campus.
-                Let's watch the video clips!" size="100"/>
-
+                <input type="text" id="title" name="title" value="{{currenttitle}}" size="100"/>
                 <br><br>
 
                 <p class="p5" style="display:inline-flex;">
@@ -69,8 +67,8 @@
                 <!-- <p> Lau Wan Jing: https://www.educba.com/combobox-in-html/ -- combo box</p> -->
                 <select class="combo">
                     <option value="Select">Select....</option>
-                    <option value="file1">File1</option>
-                    <option value="file2">File2</option>
+                    <option value="file1" name="file1">File1</option>
+                    <option value="file2" name="file2">File2</option>
                 </select>
             
                 <br>
@@ -80,7 +78,7 @@
                     Video URL:
                 </p>
 
-                <input type="text" name="email" value="https://www.youtube.com/watch?v=xVu_I6WCsto&ab_channel=JohnsHopkinsRheumatology" size="100" disabled/>
+                <input type="text" name="currenturl" value="{{fileurl}}" size="100" disabled/>
 
                 <br>
                 <br>
@@ -89,19 +87,15 @@
                     New URL:
                 </p>
                 
-                <input type="text" name="email" value="" size="100"/>
-
+                <input type="text" name="newurl" value="" size="100"/>
+                
+                <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                    <input type="submit" class="submit" value="Submit"></input>
+                </div>
             </form>
-
-
-
-            <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
-            <div class=buttoncontainer>
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                <a type="button" class="submit" value="submit" name="submitbutton">Submit</a> 
-            </div>
         </div>
         <body>
     <html>
-
 {% endblock %}
