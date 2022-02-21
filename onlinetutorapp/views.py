@@ -9,10 +9,14 @@ from django.contrib import messages
 # request handler / action
 
 def mainpage(request):
-    return render(request, "mainpage.html")
+    info = gethomeinfo()
+    context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
+    return render(request, "mainpage.html", context)
 
 def mainpage_user(request):
-    return render(request, "mainpage_user.html")
+    info = gethomeinfo()
+    context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
+    return render(request, "mainpage_user.html", context)
 
 def showedithomepagebutton_mainpage_user(request, userid):
     info = gethomeinfo()
