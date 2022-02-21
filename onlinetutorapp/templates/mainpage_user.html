@@ -19,8 +19,8 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a  onclick="visitor()">Register</a></li>
-                <li><a onclick="visitor()">Login</a></li>
+                <li><a onclick="user()">Register</a></li>
+                <li><a onclick="user()">Login</a></li>
                 <li><a>Home Page</a></li>
             </ul>
 
@@ -50,8 +50,31 @@
 
             <script type = "text/javascript">
                 // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
-                function visitor() {
+                function user() {
                     alert("You have logged in into the account.");
+                }
+                function logout() {
+                    window.location.href = "http://127.0.0.1:8000/"
+                    alert("You will be logged out once you click 'OK'.");
+                }
+                function courselist() {
+                    window.location.href = "http://127.0.0.1:8000/courselist"
+                }
+                function discussionboard() {
+                    window.location.href = "http://127.0.0.1:8000/discussionboard"
+                }
+                function grades() {
+                    window.location.href = "http://127.0.0.1:8000/grades"
+                }
+                function quizzes() {
+                    window.location.href = "http://127.0.0.1:8000/quizzes"
+                }
+                function todolist() {
+                    window.location.href = "http://127.0.0.1:8000/todolist"
+                }
+                function settings() {
+                    //userid pass failed
+                    window.location.href = "http://127.0.0.1:8000/int:userid/settings"
                 }
             </script>
 
@@ -96,6 +119,7 @@
                 </div>
             </div>
 
+            <!-- <p> Lau Wan Jing: https://stackoverflow.com/a/67553251 -- show edit button if user role is admin </p> -->
             {% if roleid == 1 %}
             <div>
                 <a href="/edithomepage"><i class="fa fa-edit" style="font-size:30px;float:right;color:black"></i></a> 
@@ -103,29 +127,27 @@
             {% endif %}
 
             <p class="p2">
-                Please comply with the SOP when back to the campus.
-                <br>
-                Let's watch the video clips!
+                {{currenttitle}}
             </p>
 
             <div class=container>
 
                 <!-- <p> Lau Wan Jing:https://www.section.io/engineering-education/embedding-a-video-into-a-webpage-using-html-and-css/ -- insert the youtube video </p> -->
 
-                <iframe width="300" height="200" src="https://www.youtube.com/embed/xVu_I6WCsto" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="300" height="200" src={{file1url}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
                 <!-- <p> Lau Wan Jing:https://blog.hubspot.com/website/html-space -- spaces between videos </p> -->
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                <iframe width="300" height="200" src="https://www.youtube.com/embed/FC4soCjxSOQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="300" height="200" src={{file2url}} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
             </div>
 
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/howto_css_icon_bar.asp -- icon bar bottom right </p> -->
             <div class="icon-bar">
-                <a href="/"><i class="fa fa-fw fa-power-off"></i></a>
-                <a href="/settings"><i class="fa fa-fw fa-wrench"></i></a>
-                <a href="/helpdesk"><i class="fa fa-fw fa-question"></i></a> 
+                <a onclick="logout()"><i class="fa fa-fw fa-power-off"></i></a>
+                <a onclick="settings()"><i class="fa fa-fw fa-wrench"></i></a>
+                <a href="/helpdesk"><i class="fa fa-fw fa-question"></i></a>
             </div>
 
         </div>

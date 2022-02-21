@@ -1,26 +1,27 @@
 from django.core.mail import send_mail
-from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.urls import reverse
-from onlinetutorapp.models import Helpdesk, User, Userrole, Role
-from .forms import FormForgotPassword, FormHelpdesk, FormHomePage, FormMainPage, FormTodolist, FormUser,FormHomePage, FormUserLogin
+from onlinetutorapp.models import Helpdesk, Homepage, User, Userrole, Role
+from .forms import FormForgotPassword, FormHelpdesk, FormHomePage, FormTodolist, FormUser,FormHomePage, FormUserLogin
 from django.contrib import messages
 
 # Create your views here.
 # request -> response
 # request handler / action
 
-
 def mainpage(request):
-    return render(request, "mainpage.html")
+    info = gethomeinfo()
+    context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
+    return render(request, "mainpage.html", context)
 
 def mainpage_user(request):
-    return render(request, "mainpage_user.html")
+    info = gethomeinfo()
+    context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
+    return render(request, "mainpage_user.html", context)
 
 def showedithomepagebutton_mainpage_user(request, userid):
+    info = gethomeinfo()
     userrole = get_userrole(userid)
-    context = {'roleid' : userrole.roleid_id}
+    context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2, 'roleid' : userrole.roleid_id}
     return render(request, 'mainpage_user.html', context)
 
 def get_userrole(userid):
@@ -28,6 +29,27 @@ def get_userrole(userid):
     content = Userrole.objects.raw('SELECT * FROM userrole WHERE userid = userid limit 1')
     for userrole in content:
         return userrole
+
+def gethomeinfo():
+    info = Homepage.objects.get(id = 1)
+    return info
+
+def edithomepage(request):
+    info = gethomeinfo()
+    context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
+    if request.method == 'POST':
+        if (request.POST.get('newurl') != '') and (request.POST.get('file') == 'file1' or request.POST.get('file') == 'file2'):
+            if request.POST.get('file') == 'file1':
+                Homepage.objects.filter(id=1).update(file1 = request.POST.get('newurl'))
+            elif request.POST.get('file') == 'file2':
+                Homepage.objects.filter(id=1).update(file2 = request.POST.get('newurl'))
+            messages.success(request, "Home Page information updated successfully.")
+            info = gethomeinfo()
+            context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
+            return render(request, 'edithomepage.html', context)
+        else:
+            messages.error(request, "Your information is invalid.")
+    return render(request, 'edithomepage.html', context)
 
 # Functions below: REGISTER
 # Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha 
@@ -72,10 +94,9 @@ def insertrole(staffid):
 # Lau Wan Jing: https://pythonprogramming.net/user-login-logout-django-tutorial/
 def login(request):
     if request.method == 'POST':
-        #form = FormUserLogin(request.POST)
-        #if form.is_valid():
-        staffid = request.POST.get('staffid') #form.cleaned_data.get('staffid')
-        password = request.POST.get('password') #form.cleaned_data.get('password')
+        staffid = request.POST.get('staffid')
+        password = request.POST.get('password') 
+        #django requires validation
         if ((staffid == None) or (password == None)):
             messages.error(request, 'Empty Staff ID/Password')
         else:
@@ -234,28 +255,3 @@ def deletetask(id):
     New = todolist.objects.get(id=id)
     New.delete()
     return redirect('/todolist')
-
-
-
-
-
-
-
-
-
-
-
-
-
-def edithomepage(request):
-    if request.method == 'POST':
-        form = FormHomePage(request.POST)
-        title = request.POST.get('title')
-        file1 = request.POST.get('file1')
-        file2 = request.POST('file2')
-        edit = title,file1,file2
-        edit.save()
-        return render(request,"edithomepage.html")
-    else:
-        form = FormHomePage(None)
-    return render(request, 'edithomepage.html', { 'form' : form })

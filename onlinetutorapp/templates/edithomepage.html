@@ -3,13 +3,7 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+        {% include 'messages.html' %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
         </head>
@@ -18,8 +12,9 @@
         <div>
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a>Register</a></li>
-                <li><a href="/login">Login</a></li>
+                <li><a onclick="user()">Register</a></li>
+                <li><a onclick="user()">Login</a></li>
+                <!-- <p> Lau Wan Jing: need to change to mainpage_user</p> -->
                 <li><a href="/">Home Page</a></li>
             </ul>
 
@@ -47,8 +42,18 @@
             </p>
 
             <br>
-
-            <form action="edithomepage" method="post">
+            <script>
+                function refresh(){
+                    var selected = document.getElementById("file").value;
+                    var current = document.getElementById("currenturl");
+                    if(selected == "file1"){
+                        current.value = "{{file1url}}";
+                    }else if(selected=="file2"){
+                        current.value = "{{file2url}}";
+                    }
+                }
+            </script>
+            <form action="edithomepage" method="post" onchange="refresh()">
                 <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
 
                 {% csrf_token %}
@@ -57,9 +62,7 @@
                     Title:
                 </p>
 
-                <input type="text" name="title" value="Please comply with the SOP when back to the campus.
-                Let's watch the video clips!" size="100"/>
-
+                <input type="text" id="title" name="title" value="{{currenttitle}}" size="100"/>
                 <br><br>
 
                 <p class="p5" style="display:inline-flex;">
@@ -67,10 +70,10 @@
                 </p>
 
                 <!-- <p> Lau Wan Jing: https://www.educba.com/combobox-in-html/ -- combo box</p> -->
-                <select class="combo">
-                    <option value="Select">Select....</option>
-                    <option value="file1">File1</option>
-                    <option value="file2">File2</option>
+                <select class="combo" name="file" id="file">
+                    <option value="Select" selected="selected" disabled>Select....</option>
+                    <option value="file1" name="file1">File1</option>
+                    <option value="file2" name="file2">File2</option>
                 </select>
             
                 <br>
@@ -80,7 +83,7 @@
                     Video URL:
                 </p>
 
-                <input type="text" name="email" value="https://www.youtube.com/watch?v=xVu_I6WCsto&ab_channel=JohnsHopkinsRheumatology" size="100" disabled/>
+                <input type="text" id="currenturl" name="currenturl" value="" size="100" disabled/>
 
                 <br>
                 <br>
@@ -89,19 +92,18 @@
                     New URL:
                 </p>
                 
-                <input type="text" name="email" value="" size="100"/>
+                <input type="text" name="newurl" value="" size="100"/>
 
+                <br>
+                <br>
+
+                <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                    <input type="submit" class="submit" value="Submit"></input>
+                </div>
             </form>
-
-
-
-            <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
-            <div class=buttoncontainer>
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                <a type="button" class="submit" value="submit" name="submitbutton">Submit</a> 
-            </div>
         </div>
         <body>
     <html>
-
 {% endblock %}
