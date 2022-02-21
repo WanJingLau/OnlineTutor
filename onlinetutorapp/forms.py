@@ -25,21 +25,31 @@ class FormUserLogin(forms.ModelForm):
         fields= ["staffid", "password"]
         
 class FormForgotPassword(forms.ModelForm):
+    
     class Meta:
         model= Helpdesk
         fields= ["email"]
+        
+class FormSettings(forms.ModelForm):
+    
+    class Meta:
+        model= User
+        fields= ["password"]
 
 class FormMainPage(forms.ModelForm):
+    
     class Meta:
         model= Homepage
         fields= ["title"]
         
 class FormHelpdesk(forms.ModelForm):
+    
     class Meta:
         model= Helpdesk
         fields= ["email", "question"]
 
 class FormTodolist(forms.ModelForm):
+    
     class Meta:
         model= Todolist
         fields= ["task","timeend","status","isactive"]
@@ -47,6 +57,7 @@ class FormTodolist(forms.ModelForm):
 # Lau Wan Jing: https://www.tutorialspoint.com/how-to-add-a-captcha-in-a-django-website -- captcha
 
 class FormHomePage(forms.ModelForm):
+    
     class Meta:
         model= Homepage
         fields= ["title","file1","file2","isactive"]

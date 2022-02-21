@@ -90,7 +90,7 @@
             <br>
             <br>
 
-            <form action="settings" method="post">
+            <form action="{% url 'settings' %}" method="post">
                 <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
 
                 {% csrf_token %}
@@ -123,7 +123,7 @@
                 <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
                 <div class=buttoncontainer>
                     <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                    <button type="submit" class="submit">Submit</a>
+                    <input type="submit" class="submit" value="Submit"></input>
                 </div>
 
             </form>

@@ -5,6 +5,8 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
+# Lau Wan Jing: https://docs.djangoproject.com/en/dev/howto/legacy-databases/ -- auto generated modelspy 
+
 import random
 from django.db import models
 
@@ -129,7 +131,7 @@ class Discussion(models.Model):
     coursetopicid = models.ForeignKey(Coursetopic, models.DO_NOTHING, db_column='coursetopicid')
     question = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
-    file1 = models.TextField()
+    file1 = models.TextField(blank=True, null=True)
     isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -141,7 +143,7 @@ class Discussioncomment(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     discussionid = models.ForeignKey(Discussion, models.DO_NOTHING, db_column='discussionid')
     comment = models.CharField(max_length=255)
-    file1 = models.TextField()
+    file1 = models.TextField(blank=True, null=True)
     isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -195,7 +197,7 @@ class DjangoSession(models.Model):
 
 
 class Helpdesk(models.Model):
-    question = models.CharField(max_length=255)
+    question = models.CharField(unique=True, max_length=255)
     email = models.CharField(max_length=100)
 
     class Meta:
@@ -342,8 +344,8 @@ class Todolist(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     task = models.CharField(max_length=50)
     timeend = models.DateTimeField()
-    status = models.IntegerField()
-    isactive = models.IntegerField(blank=True, null=True)
+    status = models.IntegerField(default=1)
+    isactive = models.IntegerField(blank=True, null=True, default=1)
 
     class Meta:
         managed = False
