@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-
+        {% block content %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -17,9 +17,8 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register" onclick="user()">Register</a></li>
-                <li><a href="/login" onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: waiting for modifying, cant work now </p> -->
+                <li><a onclick="user()">Register</a></li>
+                <li><a onclick="user()">Login</a></li>
                 <li><a href="<int:userid>/mainpage_user">Home Page</a></li>
             </ul>
 
@@ -38,7 +37,6 @@
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button onclick="grades()">Grades</button>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
                 <button onclick="quizzes()">Quizzes</button>
 
@@ -59,9 +57,6 @@
                 }
                 function quizzes() {
                     window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
                 }
                 function user() {
                     alert("You have logged in into the account.");
@@ -89,16 +84,27 @@
             
             <br>
 
+            <!-- <p> Lau Wan Jing: https://www.foowebs.com/p14-How-to-confirm-before-submitting-a-form-with-popup-box delete task </p> -->
+            <script LANGUAGE="JavaScript">
+                function confirmSubmit()
+                {
+                var agree=confirm("Are you sure you wish to delete this task?");
+                if (agree)
+                 return true ;
+                else
+                 return false ;
+                }
+            </script>
+
             <form action="todolist" method="post">
                 <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
-
                 {% csrf_token %}
 
                 <p class="p5" style="display:inline-flex;">
                     Add Task:
                 </p>
 
-                <input type="text" name="task" value="" size="50"/>
+                <input type="text" name="task" value="" size="100"/>
 
                 <br>
                 <br>
@@ -112,7 +118,7 @@
 
                 <br>
                 <br>
-
+                
                 <table id="tasktable">
                     <tr>
                       <th>Task</th>
@@ -121,25 +127,25 @@
                       <th>Delete</th>
                     </tr>
                     <tr>
-                      <td>Done assignment</td>
+                      <td> {{task}} </td>
                       <td>
-                        23/2/2022 11:59pm
+                        {{timeend}}
                         </td>
                       <td>
                         <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_checkbox </p> -->
                         <label class="containercheckbox">
-                            <input type="checkbox" checked="checked">
+                            {% if status == 1 %}<input type="checkbox" checked="checked" name="checkbox1">{% endif %}
+                            {% if status == 0 %}<input type="checkbox" name="checkbox2">{% endif %}
                             <span class="checkmark"></span>
                         </label>
                       </td>
-                      <td><button>Delete</button></td>
+                      <td><INPUT TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'></td>
                     </tr>
                   </table>
-            
-                <button type="submit" class="submit">Add</a>
 
+                  <input type="submit" class="submit" value="Add"></input>
             </form>
-
         </div>
         </body>
+        {% endblock content %}
     </html>

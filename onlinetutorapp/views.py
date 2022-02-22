@@ -1,6 +1,6 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
-from onlinetutorapp.models import Helpdesk, Homepage, User, Userrole, Role
+from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Userrole, Role
 from .forms import FormForgotPassword, FormHelpdesk, FormHomePage, FormTodolist, FormUser,FormHomePage, FormUserLogin
 from django.contrib import messages
 
@@ -8,6 +8,7 @@ from django.contrib import messages
 # request -> response
 # request handler / action
 
+#Functions below: HOME PAGE
 def mainpage(request):
     info = gethomeinfo()
     context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
@@ -21,7 +22,7 @@ def mainpage_user(request):
 def showedithomepagebutton_mainpage_user(request, userid):
     info = gethomeinfo()
     userrole = get_userrole(userid)
-    context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2, 'roleid' : userrole.roleid_id}
+    context = {'userid' : userid, 'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2, 'roleid' : userrole.roleid_id}
     return render(request, 'mainpage_user.html', context)
 
 def get_userrole(userid):
@@ -190,29 +191,32 @@ def send_email_helpdesk(user):
     send_mail(subject, message, email_from, ["lauwan08@gmail.com"])
 
 # functions below: SETTINGS
-# userid need to get from mainpage_user()
 def settings(request, userid):
+    context = {'userid' : userid}
     if request.method == 'POST':
-        # form = FormUser(request.POST)
+        #form = FormUser(request.POST)
         currentpassword = request.POST.get('oldpass')
         newpassword = request.POST.get('newpass')
         confirmnewpassword = request.POST.get('connewpass')
-        info = (currentpassword, newpassword, confirmnewpassword)
-        if info.is_valid():
+        if (request.POST.get('oldpass') != '') and (request.POST.get('newpass') == request.POST.get('connewpass')):
             correctpassword_or_not = password_verify(userid, currentpassword)
             if correctpassword_or_not == "yes":
                 if newpassword == confirmnewpassword:
                     #Lau Wan Jing: https://djangobook.com/django-tutorials/mastering-django-models/
                     User.objects.filter(id=userid).update(password=newpassword)
                     messages.success(request, 'Your password is changed successfully, please login with new password next time.')
+                    return render(request, 'settings.html')
                 else:
                     messages.error(request, 'Your new password and confirm new password are incorrect. Please try again.')
+                    return render(request, 'settings.html')
             else:
                 messages.error(request, 'Your password is incorrect. Please try again.')
+                return render(request, 'settings.html')
         else:
             messages.error(request, 'Your password is invalid. Please try again.')
+            return render(request, 'settings.html')
     else:
-        return render(request, 'settings.html')
+        return render(request, 'settings.html', context)
 
 def password_verify(userid, currentpassword):
     content = User.objects.raw('SELECT * FROM user WHERE id = %s limit 1', [userid])
@@ -222,36 +226,64 @@ def password_verify(userid, currentpassword):
         else:
             return str("no")
 
+def getinfotodolist(userid):
+    try:
+        info = Todolist.objects.get(userid = userid)
+        context = {'id' : info.id, 'userid' : info.userid, 'task' : info.task, 'timeend' : info.timeend, 'status' : info.status}
+        return context
+    except Todolist.DoesNotExist:
+        return None
+
+
+#add: reminder function
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-def todolist(request):
-    if request.method == 'POST':
-        form = FormTodolist(request.POST)
-        task = request.POST.get('task')
-        timeend = request.POST.get('timeend')
-        status = request.POST('status')
-        add = todolist(task=task,timeend=timeend,status=status)
-        add.save()
-        return render(request,"todolist.html",{'add':add})
+#status changes in checkbox
+def checkbox(context):
+    if context.info.status == 1:
+        Todolist.objects.filter(id=context.status).update(status = 0)
     else:
-        form = FormTodolist(None)
-    return render(request, 'todolist.html', { 'form' : form })
+        Todolist.objects.filter(id=context.status).update(status = 1)
 
-def deletetask(id):
-    New = todolist.objects.get(id=id)
-    New.delete()
-    return redirect('/todolist')
+def todolist(request, userid):
+    #get tasks
+    context = getinfotodolist(userid)
+    if context is not None:
+        #deletetask
+        if request.POST.get('delete'):
+            deletetask(request, context)
+        #edit task status
+        elif request.POST.get('checkbox'):
+            checkbox(context)
+        #add task
+        elif request.method == 'POST':
+            form = FormTodolist(request.POST)
+            #task = request.POST.get('task')
+            #timeend = request.POST.get('timeend')
+            if form.is_valid():
+                #add = todolist(task=task,timeend=timeend)
+                #ERROR
+                newtask = Todolist.objects.create(User.objects.get(id = userid), task = request.POST.get('task'), timeend = request.POST.get('timeend'))
+                newtask.save()
+                #get latest data
+                context = getinfotodolist(userid)
+                return render(request, "todolist.html", context)
+            else:
+                messages.error(request, 'Your information is invalid. Please try again.')
+        else:
+        #show tasks
+            form = FormTodolist(None)
+        return render(request, 'todolist.html', context)
+    else:
+        return render(request, 'todolist.html', context)
+
+def deletetask(request, context):
+    task = Todolist.objects.get(id=context.id)
+    task.delete()
+    userid = context.userid
+    context = getinfotodolist(userid)
+    return render(request, 'todolist.html', context)
