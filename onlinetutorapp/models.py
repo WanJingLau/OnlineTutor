@@ -340,8 +340,8 @@ class Todolist(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     task = models.CharField(max_length=50)
     timeend = models.DateTimeField()
-    status = models.IntegerField()
-    isactive = models.IntegerField(blank=True, null=True)
+    status = models.IntegerField(default=1)
+    isactive = models.IntegerField(blank=True, null=True, default=1)
 
     class Meta:
         managed = False

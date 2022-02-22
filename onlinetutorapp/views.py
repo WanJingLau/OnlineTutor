@@ -1,6 +1,6 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
-from onlinetutorapp.models import Helpdesk, Homepage, User, Userrole, Role
+from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Userrole, Role
 from .forms import FormForgotPassword, FormHelpdesk, FormHomePage, FormTodolist, FormUser,FormHomePage, FormUserLogin
 from django.contrib import messages
 
@@ -8,6 +8,7 @@ from django.contrib import messages
 # request -> response
 # request handler / action
 
+#Functions below: HOME PAGE
 def mainpage(request):
     info = gethomeinfo()
     context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2}
@@ -223,35 +224,55 @@ def password_verify(userid, currentpassword):
             return str("no")
 
 
+def getinfotodolist(userid):
+    info = Todolist.objects.get(userid = userid)
+    context = {'id' : info.id, 'userid' : info.userid, 'task' : info.task, 'timeend' : info.timeend, 'status' : info.status}
+    return context
+
+#add: reminder function
 
 
 
 
 
 
+#status changes in checkbox
+def checkbox(context):
+    if context.info.status == 1:
+        Todolist.objects.filter(id=context.status).update(status = 0)
+    else:
+        Todolist.objects.filter(id=context.status).update(status = 1)
 
-
-
-
-
-
-
-
-
-def todolist(request):
-    if request.method == 'POST':
+def todolist(request, userid):
+    #get tasks
+    context = getinfotodolist(userid)
+    #deletetask
+    if request.POST.get('delete'):
+        deletetask(request, context)
+    #edit task status
+    elif request.POST.get('checkbox'):
+        checkbox(context)
+    #add task
+    elif request.method == 'POST':
         form = FormTodolist(request.POST)
         task = request.POST.get('task')
         timeend = request.POST.get('timeend')
-        status = request.POST('status')
-        add = todolist(task=task,timeend=timeend,status=status)
-        add.save()
-        return render(request,"todolist.html",{'add':add})
+        if form.is_valid():
+            add = todolist(userid = userid, task=task,timeend=timeend)
+            add.save()
+            #get latest data
+            context = getinfotodolist(userid)
+            return render(request, "todolist.html", {'add' : add}, context)
+        else:
+            messages.error(request, 'Your information is invalid. Please try again.')
     else:
+    #show tasks
         form = FormTodolist(None)
-    return render(request, 'todolist.html', { 'form' : form })
+    return render(request, 'todolist.html', { 'form' : form }, context)
 
-def deletetask(id):
-    New = todolist.objects.get(id=id)
-    New.delete()
-    return redirect('/todolist')
+def deletetask(request, context):
+    task = todolist.objects.get(id=context.id)
+    task.delete()
+    userid = context.userid
+    context = getinfotodolist(userid)
+    return render(request, 'todolist.html', context)

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-
+        {% block content %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -89,16 +89,27 @@
             
             <br>
 
+            <!-- <p> Lau Wan Jing: https://www.foowebs.com/p14-How-to-confirm-before-submitting-a-form-with-popup-box delete task </p> -->
+            <script LANGUAGE="JavaScript">
+                function confirmSubmit()
+                {
+                var agree=confirm("Are you sure you wish to delete this task?");
+                if (agree)
+                 return true ;
+                else
+                 return false ;
+                }
+            </script>
+
             <form action="todolist" method="post">
                 <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
-
                 {% csrf_token %}
 
                 <p class="p5" style="display:inline-flex;">
                     Add Task:
                 </p>
 
-                <input type="text" name="task" value="" size="50"/>
+                <input type="text" name="task" value="" size="100"/>
 
                 <br>
                 <br>
@@ -121,25 +132,25 @@
                       <th>Delete</th>
                     </tr>
                     <tr>
-                      <td>Done assignment</td>
+                      <td>{{info.task}}</td>
                       <td>
-                        23/2/2022 11:59pm
+                        {{info.timeend}}
                         </td>
                       <td>
                         <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_checkbox </p> -->
                         <label class="containercheckbox">
-                            <input type="checkbox" checked="checked">
+                            {% if info.status == 1 %}<input type="checkbox" checked="checked" name="checkbox1">{% endif %}
+                            {% if info.status == 0 %}<input type="checkbox" name="checkbox2">{% endif %}
                             <span class="checkmark"></span>
                         </label>
                       </td>
-                      <td><button>Delete</button></td>
+                      <td><INPUT TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'></td>
                     </tr>
                   </table>
-            
-                <button type="submit" class="submit">Add</a>
 
+                  <input type="submit" class="submit" value="Add"></input>
             </form>
-
         </div>
         </body>
+        {% endblock content %}
     </html>
