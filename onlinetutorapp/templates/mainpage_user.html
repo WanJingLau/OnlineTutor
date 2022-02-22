@@ -72,10 +72,6 @@
                 function todolist() {
                     window.location.href = "http://127.0.0.1:8000/todolist"
                 }
-                function settings() {
-                    //userid pass failed
-                    window.location.href = "http://127.0.0.1:8000/int:userid/settings"
-                }
             </script>
 
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
@@ -146,7 +142,7 @@
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/howto_css_icon_bar.asp -- icon bar bottom right </p> -->
             <div class="icon-bar">
                 <a onclick="logout()"><i class="fa fa-fw fa-power-off"></i></a>
-                <a onclick="settings()"><i class="fa fa-fw fa-wrench"></i></a>
+                <a <a href="{% url 'settings' userid %}"@{{userid}}><i class="fa fa-fw fa-wrench"></i></a>
                 <a href="/helpdesk"><i class="fa fa-fw fa-question"></i></a>
             </div>
 

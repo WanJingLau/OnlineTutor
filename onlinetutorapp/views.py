@@ -22,7 +22,7 @@ def mainpage_user(request):
 def showedithomepagebutton_mainpage_user(request, userid):
     info = gethomeinfo()
     userrole = get_userrole(userid)
-    context = {'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2, 'roleid' : userrole.roleid_id}
+    context = {'userid' : userid, 'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2, 'roleid' : userrole.roleid_id}
     return render(request, 'mainpage_user.html', context)
 
 def get_userrole(userid):
@@ -191,27 +191,29 @@ def send_email_helpdesk(user):
     send_mail(subject, message, email_from, ["lauwan08@gmail.com"])
 
 # functions below: SETTINGS
-# userid need to get from mainpage_user()
 def settings(request, userid):
     if request.method == 'POST':
-        # form = FormUser(request.POST)
+        #form = FormUser(request.POST)
         currentpassword = request.POST.get('oldpass')
         newpassword = request.POST.get('newpass')
         confirmnewpassword = request.POST.get('connewpass')
-        info = (currentpassword, newpassword, confirmnewpassword)
-        if info.is_valid():
+        if (request.POST.get('oldpass') != '') and (request.POST.get('newpass') == request.POST.get('connewpass')):
             correctpassword_or_not = password_verify(userid, currentpassword)
             if correctpassword_or_not == "yes":
                 if newpassword == confirmnewpassword:
                     #Lau Wan Jing: https://djangobook.com/django-tutorials/mastering-django-models/
                     User.objects.filter(id=userid).update(password=newpassword)
                     messages.success(request, 'Your password is changed successfully, please login with new password next time.')
+                    return render(request, 'settings.html')
                 else:
                     messages.error(request, 'Your new password and confirm new password are incorrect. Please try again.')
+                    return render(request, 'settings.html')
             else:
                 messages.error(request, 'Your password is incorrect. Please try again.')
+                return render(request, 'settings.html')
         else:
             messages.error(request, 'Your password is invalid. Please try again.')
+            return render(request, 'settings.html')
     else:
         return render(request, 'settings.html')
 
@@ -222,7 +224,6 @@ def password_verify(userid, currentpassword):
             return str("yes")
         else:
             return str("no")
-
 
 def getinfotodolist(userid):
     info = Todolist.objects.get(userid = userid)
