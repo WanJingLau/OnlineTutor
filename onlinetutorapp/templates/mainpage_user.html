@@ -44,7 +44,7 @@
                 <button onclick="quizzes()">Quizzes</button>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
 
             </div>
 
@@ -54,9 +54,33 @@
                     alert("You have logged in into the account.");
                 }
                 function logout() {
-                    window.location.href = "http://127.0.0.1:8000/"
-                    alert("You will be logged out once you click 'OK'.");
+                confirm = confirmlogout()
+                    if (confirm == true) {
+                        window.location.href = "http://127.0.0.1:8000/";
+                    }
                 }
+                function confirmlogout()
+                {
+                var agree=confirm("Are you sure you wish to log out?");
+                if (agree)
+                 return true ;
+                else
+                 return false ;
+                }
+                function helpdesk() {
+                    confirm = confirmhelpdesk()
+                        if (confirm == true) {
+                            window.location.href = "http://127.0.0.1:8000/helpdesk";
+                        }
+                    }
+                    function confirmhelpdesk()
+                    {
+                    var agree=confirm("Are you sure you wish to log out and redirect to helpdesk?");
+                    if (agree)
+                     return true ;
+                    else
+                     return false ;
+                    }
                 function courselist() {
                     window.location.href = "http://127.0.0.1:8000/courselist"
                 }
@@ -142,8 +166,9 @@
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/howto_css_icon_bar.asp -- icon bar bottom right </p> -->
             <div class="icon-bar">
                 <a onclick="logout()"><i class="fa fa-fw fa-power-off"></i></a>
-                <a <a href="{% url 'settings' userid %}"@{{userid}}><i class="fa fa-fw fa-wrench"></i></a>
-                <a href="/helpdesk"><i class="fa fa-fw fa-question"></i></a>
+                <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/65744877/noreversematch-at-reverse-for-profile-with-arguments-not-found-1-pa </p> -->
+                <a href="{% url 'settings' userid %}"@{{userid}}><i class="fa fa-fw fa-wrench"></i></a>
+                <a onclick="helpdesk()"><i class="fa fa-fw fa-question"></i></a>
             </div>
 
         </div>

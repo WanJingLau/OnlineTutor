@@ -18,7 +18,7 @@
                 <li><a onclick="user()">Register</a></li>
                 <li><a onclick="user()">Login</a></li>
                 <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
-                <li><a href="/">Home Page</a></li>
+                <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
@@ -41,7 +41,7 @@
                 <button onclick="quizzes()">Quizzes</button>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
 
             </div>
 

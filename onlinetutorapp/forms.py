@@ -52,7 +52,7 @@ class FormTodolist(forms.ModelForm):
     
     class Meta:
         model= Todolist
-        fields= ["task","timeend","status","isactive"]
+        fields= ["task","timeend"]
         
 class FormHomePage(forms.ModelForm):
     

@@ -192,6 +192,7 @@ def send_email_helpdesk(user):
 
 # functions below: SETTINGS
 def settings(request, userid):
+    context = {'userid' : userid}
     if request.method == 'POST':
         #form = FormUser(request.POST)
         currentpassword = request.POST.get('oldpass')
@@ -215,7 +216,7 @@ def settings(request, userid):
             messages.error(request, 'Your password is invalid. Please try again.')
             return render(request, 'settings.html')
     else:
-        return render(request, 'settings.html')
+        return render(request, 'settings.html', context)
 
 def password_verify(userid, currentpassword):
     content = User.objects.raw('SELECT * FROM user WHERE id = %s limit 1', [userid])
@@ -226,9 +227,13 @@ def password_verify(userid, currentpassword):
             return str("no")
 
 def getinfotodolist(userid):
-    info = Todolist.objects.get(userid = userid)
-    context = {'id' : info.id, 'userid' : info.userid, 'task' : info.task, 'timeend' : info.timeend, 'status' : info.status}
-    return context
+    try:
+        info = Todolist.objects.get(userid = userid)
+        context = {'id' : info.id, 'userid' : info.userid, 'task' : info.task, 'timeend' : info.timeend, 'status' : info.status}
+        return context
+    except Todolist.DoesNotExist:
+        return None
+
 
 #add: reminder function
 
@@ -247,32 +252,37 @@ def checkbox(context):
 def todolist(request, userid):
     #get tasks
     context = getinfotodolist(userid)
-    #deletetask
-    if request.POST.get('delete'):
-        deletetask(request, context)
-    #edit task status
-    elif request.POST.get('checkbox'):
-        checkbox(context)
-    #add task
-    elif request.method == 'POST':
-        form = FormTodolist(request.POST)
-        task = request.POST.get('task')
-        timeend = request.POST.get('timeend')
-        if form.is_valid():
-            add = todolist(userid = userid, task=task,timeend=timeend)
-            add.save()
-            #get latest data
-            context = getinfotodolist(userid)
-            return render(request, "todolist.html", {'add' : add}, context)
+    if context is not None:
+        #deletetask
+        if request.POST.get('delete'):
+            deletetask(request, context)
+        #edit task status
+        elif request.POST.get('checkbox'):
+            checkbox(context)
+        #add task
+        elif request.method == 'POST':
+            form = FormTodolist(request.POST)
+            #task = request.POST.get('task')
+            #timeend = request.POST.get('timeend')
+            if form.is_valid():
+                #add = todolist(task=task,timeend=timeend)
+                #ERROR
+                newtask = Todolist.objects.create(User.objects.get(id = userid), task = request.POST.get('task'), timeend = request.POST.get('timeend'))
+                newtask.save()
+                #get latest data
+                context = getinfotodolist(userid)
+                return render(request, "todolist.html", context)
+            else:
+                messages.error(request, 'Your information is invalid. Please try again.')
         else:
-            messages.error(request, 'Your information is invalid. Please try again.')
+        #show tasks
+            form = FormTodolist(None)
+        return render(request, 'todolist.html', context)
     else:
-    #show tasks
-        form = FormTodolist(None)
-    return render(request, 'todolist.html', { 'form' : form }, context)
+        return render(request, 'todolist.html', context)
 
 def deletetask(request, context):
-    task = todolist.objects.get(id=context.id)
+    task = Todolist.objects.get(id=context.id)
     task.delete()
     userid = context.userid
     context = getinfotodolist(userid)

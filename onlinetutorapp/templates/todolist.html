@@ -17,9 +17,8 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register" onclick="user()">Register</a></li>
-                <li><a href="/login" onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: waiting for modifying, cant work now </p> -->
+                <li><a onclick="user()">Register</a></li>
+                <li><a onclick="user()">Login</a></li>
                 <li><a href="<int:userid>/mainpage_user">Home Page</a></li>
             </ul>
 
@@ -38,7 +37,6 @@
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button onclick="grades()">Grades</button>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
                 <button onclick="quizzes()">Quizzes</button>
 
@@ -59,9 +57,6 @@
                 }
                 function quizzes() {
                     window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
                 }
                 function user() {
                     alert("You have logged in into the account.");
@@ -123,7 +118,7 @@
 
                 <br>
                 <br>
-
+                
                 <table id="tasktable">
                     <tr>
                       <th>Task</th>
@@ -132,15 +127,15 @@
                       <th>Delete</th>
                     </tr>
                     <tr>
-                      <td>{{info.task}}</td>
+                      <td> {{task}} </td>
                       <td>
-                        {{info.timeend}}
+                        {{timeend}}
                         </td>
                       <td>
                         <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_custom_checkbox </p> -->
                         <label class="containercheckbox">
-                            {% if info.status == 1 %}<input type="checkbox" checked="checked" name="checkbox1">{% endif %}
-                            {% if info.status == 0 %}<input type="checkbox" name="checkbox2">{% endif %}
+                            {% if status == 1 %}<input type="checkbox" checked="checked" name="checkbox1">{% endif %}
+                            {% if status == 0 %}<input type="checkbox" name="checkbox2">{% endif %}
                             <span class="checkmark"></span>
                         </label>
                       </td>
