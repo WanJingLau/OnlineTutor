@@ -1,8 +1,10 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Userrole, Role
-from .forms import FormForgotPassword, FormHelpdesk, FormHomePage, FormTodolist, FormUser,FormHomePage, FormUserLogin
+from .forms import FormForgotPassword, FormHelpdesk, FormHomePage, FormTodolist, FormUser,FormHomePage, FormUserLogin, FormCoursesubject, FormCoursematerial, FormCoursetopic, FormDiscussion, FormDiscussioncomment, FormQuestionselection, FormQuiz, FormQuizquestion, FormUserquizselection, ChapterForm
 from django.contrib import messages
+from django.http import FileResponse
+import os
 
 # Create your views here.
 # request -> response
@@ -287,3 +289,327 @@ def deletetask(request, context):
     userid = context.userid
     context = getinfotodolist(userid)
     return render(request, 'todolist.html', context)
+
+def getcourselistinfo(userid):
+
+
+
+
+def courselist(request):
+
+        return render(request,"courselist.html",{'add':add})
+    else:
+        form = FormCoursesubject(None)
+    return render(request, 'courselist.html', { 'form' : form })
+
+def coursepage(request):
+    if request.method == 'POST':
+        form = FormCoursetopic(request.POST)
+        coursesubject = request.POST.get('coursesubject')
+        name = request.POST.get('name')
+        title = request.POST.get('title')
+        add = coursepage(coursesubject=coursesubject,name=name,title=title)
+        add.save()
+        return render(request,"coursepage.html",{'add':add})
+    else:
+        form = FormCoursetopic(None)
+    return render(request, 'coursepage.html', { 'form' : form })
+
+def admincoursepage(request):
+    if request.method == 'POST':
+        form = FormCoursetopic(request.POST)
+        coursesubject = request.POST.get('coursesubject')
+        name = request.POST.get('name')
+        title = request.POST.get('title')
+        #= Userrole.objects.create(userid = User.objects.get(staffid = staffid), roleid = Role.objects.get(name = 'student'))
+        add = admincoursepage(coursesubject=coursesubject,name=name,title=title)
+        add.save()
+        return render(request,"admincoursepage.html",{'add':add})
+    else:
+        form = FormCoursetopic(None)
+    return render(request, 'admincoursepage.html', { 'form' : form })
+
+def addmaterials(request):
+    if request.method == 'POST':
+        form = FormCoursematerial(request.POST)
+        if form.is_valid():
+            form.save()
+            title = request.POST.get('title')
+            chapter = request.POST.get('chapter')
+            description = request.POST.get('description')
+            file = request.POST.get('file')
+            add = addmaterials(title=title,chapter=chapter,description=description,file=file)
+            messages.success(request, 'Subject Materials Added successfully.')
+            add.save()
+        else:
+            messages.error(request, 'Failed Add. Please Add Materials again.')
+    else:
+        form = FormCoursematerial(None)
+    return render(request, 'addmaterials.html', { 'form' : form })
+
+def name_of_the_page(request):
+    form = ChapterForm(request.POST or None)
+    answer = ''
+    if form.is_valid():
+        answer = form.cleaned_data.get('chapter_by') 
+
+def book_verify(request):
+    if request.method == 'POST':
+        Combobox = request.POST['state_dropdown']
+        print('No Chapter is selected. Please select Chapter.')
+
+def textarea(request):
+    title = request.POST.get('title')
+    chapter = request.POST.get('chapter') # use the POST method to get the language value
+    text_area = request.POST.get('text_area') # use the POST method to get the text content
+    file = request.POST.get('file')
+    request.session['current_title'] = title
+    request.session['current_chapter'] = chapter # store the language value to session
+    request.session['current_text_area'] = text_area # store the content to session
+    request.session['current_file'] = file
+    print(request.POST.get)  # print the line to get the POST content.
+    print(request.POST.get('title'))
+    print(request.POST.get('chapter'))  # test if getting the language through POST method
+    print(request.POST.get('text_area'))  # test if getting the text_content through POST method, specifically
+    print(request.POST.get('file'))  
+    print("the content in session is: " + str(request.session.get('current_content')))  # test if get the content to the session, to test if the variable of the POST.get works well
+    if text_area:
+        print("it works.")  # simply a line to test if this "if" loop works well
+        print("the text content is " + text_area + ", and the chapter is " + chapter + ".") # testing if the session works well
+    return render(request, 'addmaterials.html')
+
+def editmaterials(request):
+    if request.method == 'POST':
+        form = FormCoursematerial(request.POST)
+        if form.is_valid():
+            form.save()
+            title = request.POST.get('title')
+            description = request.POST.get('description')
+            file = request.POST.get('file')
+            edit = editmaterials(title=title,description=description,file=file)
+            edit.save()
+            messages.success(request, 'Subject Materials Edited Successfully.')
+        else:
+            messages.error(request, 'Failed Edit. Please Edit Materials Again.')
+    else:
+        form = FormCoursematerial(None)
+    return render(request, 'editmaterials.html', { 'form' : form })
+
+def deletematerials(request):
+    if request.method == 'POST':
+        form = FormCoursematerial(request.POST)
+        if form.is_valid():
+            form.save()
+            title = request.POST.get('title')
+            description = request.POST.get('description')
+            file = request.POST.get('file')
+            add = deletematerials(title=title,description=description,file=file)
+            add.save()
+            messages.success(request, 'Subject Materials Deleted Successfully.')
+            return render(request,"deletematerials.html",{'add':add})
+        else:
+            messages.error(request, 'Failed Delete. Please Delete Materials Again.')
+    else:
+        form = FormCoursematerial(None)
+    return render(request, 'deletematerials.html', { 'form' : form })
+
+def discussionboard(request):
+    if request.method == 'POST':
+        form = FormDiscussion(request.POST)
+        question = request.POST.get('question')
+        description = request.POST.get('description')
+        file = request.POST.get('file')
+        add = discussionboard(question=question,description=description,file=file)
+        add.save()
+        return render(request,"discussionboard.html",{'add':add})
+    else:
+        form = FormDiscussion(None)
+    return render(request, 'discussionboard.html', { 'form' : form })
+
+def discussionquestion(request):
+    if request.method == 'POST':
+        form = FormDiscussion(request.POST)
+        question = request.POST.get('question')
+        description = request.POST.get('description')
+        file = request.POST.get('file')
+        add = discussionquestion(question=question,description=description,file=file)
+        add.save()
+        return render(request,"discussionquestion.html",{'add':add})
+    else:
+        form = FormDiscussion(None)
+    return render(request, 'discussionquestion.html', { 'form' : form })
+
+def addquestion(request):
+    if request.method == 'POST':
+        form = FormDiscussion(request.POST)
+        if form.is_valid():
+            form.save()
+            question = request.POST.get('question')
+            description = request.POST.get('description')
+            file = request.POST.get('file')
+            add = addquestion(question=question,description=description,file=file)
+            add.save()
+            messages.success(request, 'Question Added Successfully.')
+            return render(request,"addquestion.html",{'add':add})
+        else:
+            messages.error(request, 'Failed Add. Please Add Question Again.')
+    else:
+        form = FormDiscussion(None)
+    return render(request, 'addquestion.html', { 'form' : form })
+
+def editquestion(request):
+    if request.method == 'POST':
+        form = FormDiscussion(request.POST)
+        if form.is_valid():
+            form.save()
+            question = request.POST.get('question')
+            description = request.POST.get('description')
+            file = request.POST.get('file')
+            edit = editquestion(question=question,description=description,file=file)
+            edit.save()
+            messages.success(request, 'Question Edited Successfully.')
+            return render(request,"editquestion.html",{'edit':edit})
+        else:
+            messages.error(request, 'Failed Edit. Please Edit Question Again.')
+    else:
+        form = FormDiscussion(None)
+    return render(request, 'editquestion.html', { 'form' : form })
+
+def replyquestion(request):
+    if request.method == 'POST':
+        form = FormDiscussioncomment(request.POST)
+        if form.is_valid():
+            form.save()
+            comment = request.POST.get('comment')
+            file = request.POST.get('file')
+            add = replyquestion(comment=comment,file=file)
+            add.save()
+            messages.success(request, 'Question Replied Successfully.')
+            return render(request,"replyquestion.html",{'add':add})
+        else:
+            messages.error(request, 'Failed Reply. Please Reply Question Again.')
+    else:
+        form = FormDiscussioncomment(None)
+    return render(request, 'replyquestion.html', { 'form' : form })
+
+def editcomment(request):
+    if request.method == 'POST':
+        form = FormDiscussioncomment(request.POST)
+        if form.is_valid():
+            form.save()
+            comment = request.POST.get('comment')
+            file = request.POST.get('file')
+            edit = editcomment(comment=comment,file=file)
+            edit.save()
+            messages.success(request, 'Comment Edited Successfully.')
+            return render(request,"editcomment.html",{'edit':edit})
+        else:
+            messages.error(request, 'Failed Edit. Please Edit Comment Again.')
+    else:
+        form = FormDiscussioncomment(None)
+    return render(request, 'editcomment.html', { 'form' : form })
+
+def grades(request):
+    return render(request, "grades.html")
+
+def checkanswer(request):
+    if request.method == 'POST':
+        form = FormQuestionselection(request.POST)
+        selection = request.POST.get('selection')
+        answer = request.POST.get('answer')
+        add = checkanswer(selection=selection,answer=answer)
+        add.save()
+        return render(request,"checkanswer.html",{'add':add})
+    else:
+        form = FormQuestionselection(None)
+    return render(request, 'checkanswer.html', { 'form' : form })
+
+def admingrades(request):
+    return render(request, "admingrades.html")
+
+def quizzes(request):
+    return render(request, "quizzes.html")
+
+def attendquiz(request):
+    if request.method == 'POST':
+        form = FormQuizquestion(request.POST)
+        question = request.POST.get('question')
+        marks = request.POST.get('marks')
+        add = attendquiz(question=question,marks=marks)
+        add.save()
+        return render(request,"attendquiz.html",{'add':add})
+    else:
+        form = FormQuizquestion(None)
+    return render(request, 'attendquiz.html', { 'form' : form })
+
+def adminquizzes(request):
+    return render(request, "adminquizzes.html")
+
+def addquiz(request):
+    if request.method == 'POST':
+        form = FormQuiz(request.POST)
+        title = request.POST.get('title')
+        duration = request.POST.get('duration')
+        attempt = request.POST.get('attempt')
+        add = addquiz(title=title,duration=duration,attempt=attempt)
+        add.save()
+        return render(request,"addquiz.html",{'add':add})
+    else:
+        form = FormQuiz(None)
+    return render(request, 'addquiz.html', { 'form' : form })
+
+def addquizquestion(request):
+    if request.method == 'POST':
+        form = FormQuizquestion(request.POST)
+        if form.is_valid():
+            form.save()
+            question = request.POST.get('question')
+            marks = request.POST.get('marks')
+            add = addquizquestion(question=question,marks=marks)
+            add.save()
+            messages.success('Quiz Question added successfully!')
+            return render(request,"addquizquestion.html",{'add':add})
+    else:
+        form = FormQuizquestion(None)
+    return render(request, 'addquizquestion.html', { 'form' : form })
+
+def editquiz(request):
+    if request.method == 'POST':
+        form = FormQuiz(request.POST)
+        title = request.POST.get('title')
+        duration = request.POST.get('duration')
+        attempt = request.POST.get('attempt')
+        add = editquiz(title=title,duration=duration,attempt=attempt)
+        add.save()
+        return render(request,"editquiz.html",{'add':add})
+    else:
+        form = FormQuiz(None)
+    return render(request, 'editquiz.html', { 'form' : form })
+
+def editquizquestion(request):
+    if request.method == 'POST':
+        form = FormQuizquestion(request.POST)
+        question = request.POST.get('question')
+        marks = request.POST.get('marks')
+        add = editquizquestion(question=question,marks=marks)
+        add.save()
+        return render(request,"editquizquestion.html",{'add':add})
+    else:
+        form = FormQuizquestion(None)
+    return render(request, 'editquizquestion.html', { 'form' : form })
+
+def deletequiz(request):
+    if request.method == 'POST':
+        form = FormQuizquestion(request.POST)
+        question = request.POST.get('question')
+        marks = request.POST.get('marks')
+        add = deletequiz(question=question,marks=marks)
+        add.save()
+        return render(request,"deletequiz.html",{'add':add})
+    else:
+        form = FormQuizquestion(None)
+    return render(request, 'deletequiz.html', { 'form' : form })
+
+def show_pdf(request):
+    filepath = os.path.join('static', 'sample.pdf')
+    return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
