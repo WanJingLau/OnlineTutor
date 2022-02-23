@@ -13,4 +13,5 @@ urlpatterns = [
     path('edithomepage', views.edithomepage, name="edithomepage"),
     #mainpage_user path below
     path('<int:userid>/mainpage_user', views.showedithomepagebutton_mainpage_user, name="mainpage_user"),
+    #path(r'^user/(?P<userid>\w{0,50})/$', views.showedithomepagebutton_mainpage_user, name="mainpage_user"),
 ]
