@@ -317,7 +317,7 @@ ul {
   left: 0;
   height: 25px;
   width: 25px;
-  background-color: #eee;
+  background-color: rgb(228, 55, 55);
 }
 
 /* On mouse-over, add a grey background color */
@@ -326,7 +326,12 @@ ul {
 }
 
 /* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
+.container input[type=checkbox]:checked ~ .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
   background-color: #2196F3;
 }
 
@@ -348,7 +353,7 @@ ul {
   top: 5px;
   width: 5px;
   height: 10px;
-  border: solid white;
+  border: solid rgb(218, 112, 112);
   border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
