@@ -1,25 +1,24 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-
+        {% block content %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-
+        {% include 'messages.html' %}
         <body>
         <div>
 
-            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color 
-                https://www.w3schools.com/csS/tryit.asp?filename=trycss_navbar_horizontal_black_fixed -- fixed narvarbar
-            </p> -->
+            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/">Home Page</a></li>
+                <li><a onclick="user()">Register</a></li>
+                <li><a onclick="user()">Login</a></li>
+                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
+                <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
@@ -28,25 +27,28 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button onclick="courselist()">Course List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button><a onclick="discussionboard()">Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button onclick="grades()">Grades</button>
+                <button><a onclick="grades()">Grades</button></a>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button onclick="quizzes()">Quizzes</button>
+                <button><a onclick="quizzes()">Quizzes</button></a>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
 
             </div>
 
             <script type = "text/javascript">
+                // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
+                function user() {
+                    alert("You have logged in into the account.");
+                }
                 function courselist() {
                     window.location = "http://127.0.0.1:8000/courselist";
                 }
@@ -71,8 +73,6 @@
             >
             
             <br>
-            <br>
-            <br>
 
             <p>
                 <img src="{% static 'img/courselist.png' %}" alt="Course_icon"
@@ -85,95 +85,87 @@
 
             <p class="p4">The subject materials are in three formats: pptx,pdf and mp4 files.</p>
 
+            {% if roleid == 1 or 2 %}
+                <p align="right">
+                <input type="button" value="Delete Materials" href="{% url 'deletematerials' userid %}"@{{userid}}></button>
+                <input type="button" value="Add Materials" href="{% url 'addmaterials' userid %}"@{{userid}}></button>
+                </p>
+            {% endif %}
+
             <br>
             
-            <!-- Oh Wen Chi:https://stackoverflow.com/questions/15461811/html-canvas-with-scrollbar -->
-            <div style="max-height: 390px;max-width:1500px;overflow: scroll;">
+            {% for i in list %}
             <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
-            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 1 - Number System</p>
+
+            <style>
+                .buttons {
+                  width: 50px;
+                  margin: 0 auto;
+                }
+                
+                .action_btn {
+                  display: inline-block;
+                  width: calc(50% - 4px);
+                  margin: 0 auto;
+                }
+            </style>
+
+            {% if roleid == 1 or 2 %}
+            <div style="border: 1px solid black; background: lightgrey;">
+                <p align="right">
+                <input type="button" value="Edit" href="{% url 'editmaterials' userid %}"@{{userid}}></button>
+                </p>
+            {% endif %}
+               
+                <div style="background: lightgrey;display: inline;">
+                    <p class="p5">Chapter:</p>
+                    <p class="p4">{{i.5}}</p>
+                </div>
+
                 <p>
                     <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
+                    <p class="p5" style="display:inline-flex;">Title:</p>
+                    <p class="p4" style="display:inline-flex;">{{i.1}}</p><br>
+                    <br>
                     <p class="p5">Description:</p>
-                    <p class="p4">A number system is defined as a writing system for expressing numbers. It is a mathematical notation for representing a given set of numbers in a consistent manner with numbers or other symbols. It provides a unique representation of each number and represents the arithmetic and algebraic structure of numbers.</p><br>
+                    <p class="p4">{{i.2}}</p><br>
                     <p class="p5">Attached File:</p>
-                    <a href="Chapter 1 - Number Systems.pptx">Chapter 1 - Number System.pptx(1.29MB)</a></p>
+                    <p>{{i.3}}</p>
                 </p>
+        
+
+                <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
+                    <script type = "text/javascript" style="float:right">
+                        function editmaterials() {
+                            window.location = "http://127.0.0.1:8000/editmaterials";
+                        }
+                    </script>
             </div>
-
-            <br>
-
-            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 1 - Number System</p>
-                <p>
-                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
-                    <p class="p5">Description:</p>
-                    <p class="p4">The number system is simply a system to represent or express numbers. There are various types of number systems and the most commonly used ones are decimal number system, binary number system, octal number system, and hexadecimal number system.</p><br>
-                    <p class="p5">Attached File:</p>
-                    <a href="Chapter 2 - Digital Logic and Digital System.pdf">Chapter 1 - Number System.pdf(1.29MB)</a></p>
-                    {% if file.pdf %}
-                        <a href="{{ file.pdf.url }}" download class="btn btn-outline-success">
-                    Download PDF</a>
-                    {% else %}
-                    <span class="text-muted">No PDF</span>
-                    {% endif %}
-                </p>
-            </div>
-
-            <br>
-
-            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 1 - Number System</p>
-                <p>
-                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
-                    <p class="p5">Description:</p>
-                    <p class="p4">The video provides a basic introduction to number systems such as decimal, binary, octal, and hexadecimal numbers.</p><br>
-                    <p class="p5">Attached File:</p>
-                    <a href="Introduction to Number System.mp4">Introduction to Number System.mp4(5.8MB)</a></p>
-                </p>
-            </div>
-
-            <br>
-
-            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 2 - Digital Logic and Digital System</p>
-                <p>
-                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
-                    <p class="p5">Description:</p>
-                    <p class="p4">Digital logic is the underlying logic system that drives the design of electronic circuit boards. It is the manipulation of binary values through printed circuit board technology, which uses circuits and logic gates to build implementations of computer operations.</p><br>
-                    <p class="p5">Attached File:</p>
-                    <a href="Chapter 2 - Digital Logic and Digital System.pptx">Chapter 2 - Digital Logic and Digital System.pptx(1.80MB)</a></p>
-                </p>
-            </div>
-
-            <br>
-
-            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 2 - Digital Logic and Digital System</p>
-                <p>
-                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
-                    <p class="p5">Description:</p>
-                    <p class="p4">The underlying logic system that drives the design of electronic circuit boards is digital logic. It operates on binary values through printed circuit board technology, and it uses circuits and logic gates to create computer operations.</p><br>
-                    <p class="p5">Attached File:</p>
-                    <a href="Chapter 2 - Digital Logic and Digital System.pdf">Chapter 2 - Digital Logic and Digital System.pdf(1.80MB)</a></p>
-                </p>
-            </div>
-
-            <br>
-
-            <div style="border: 1px solid black; background: lightgrey;"><p class="p5">Title:</p><p class="p4">Chapter 2 - Digital Logic and Digital System</p>
-                <p>
-                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
-                    <p class="p5">Description:</p>
-                    <p class="p4">This electronics video provides a basic introduction to logic gates, truth tables, and simplifying boolean algebra expressions.  It discusses logic gates such as the AND, OR, NOT, NAND, and NOR Gates. This video is for an introduction to logic design. </p><br>
-                    <p class="p5">Attached File:</p>
-                    <a href="Introduction to Logic Gates.mp4">Introduction to Logic Gates.mp4(9.0MB)</a></p>
-                </p>
-            </div>
-
-            <canvas width="512px" height="512px"></canvas>
+            
+            {% endfor %}
 
             <br>
             
-            <div class=buttoncontainer>
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-            </div>
-        
+            <input type="button" value="Back" href="{{request.META.HTTP_REFERER|escape}}" style="display: flex;"></button>
+            
+            
+
+                <script type = "text/javascript">
+                    function deletematerials() {
+                        window.location = "http://127.0.0.1:8000/deletematerials";
+                    }
+                </script>
+
+                <script type = "text/javascript">
+                    function addmaterials() {
+                        window.location = "http://127.0.0.1:8000/addmaterials";
+                    }
+                </script>
+
+            <br>
+            <!--<a href="{{request.META.HTTP_REFERER|escape}}" class="button" style="display: block;">Back</a> -->
+            
         </div>
         </body>
+        {% endblock content %}
     </html>

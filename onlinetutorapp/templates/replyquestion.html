@@ -1,12 +1,17 @@
 <!DOCTYPE html>
     <html>
+        {% block content %}
         {% load static %}
+        {% load crispy_forms_tags %}
 
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
+
+        {% include 'messages.html' %}
 
         <body>
         <div>
@@ -101,13 +106,11 @@
              <head>
                 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
                 <script>tinymce.init({ selector:'textarea' });</script>
-              </head>
-              <body>
+            </head>
+            <body>
                 <p class="p5">Answer:</p>
                 <textarea></textarea>
-              </body>
-
-            <br>
+            </body>
 
             <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp -->
             <p>
@@ -117,12 +120,19 @@
             </p>
 
             <br>
+
+            <form action="replyquestion" method="post">
+                {% csrf_token %}
             
-            <div class=buttoncontainer>
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-                <button type="submit" class="submit">Submit</a>
-            </div>
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+                    <button type="submit" class="submit">Submit</a>
+                </div>
+            </form>
+
+            {% endblock %}
             
+        </div>          
         </body>
     </html>
 

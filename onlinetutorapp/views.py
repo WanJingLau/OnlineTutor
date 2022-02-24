@@ -1,7 +1,10 @@
+from distutils.log import info
+from pydoc_data import topics
 from django.core.mail import send_mail
+from django.db import connection
 from django.shortcuts import render, redirect
-from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Userrole, Role
-from .forms import FormForgotPassword, FormHelpdesk, FormHomePage, FormTodolist, FormUser,FormHomePage, FormUserLogin, FormCoursesubject, FormCoursematerial, FormCoursetopic, FormDiscussion, FormDiscussioncomment, FormQuestionselection, FormQuiz, FormQuizquestion, FormUserquizselection, ChapterForm
+from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Helpdesk, Homepage, Todolist, User, Userrole, Role
+from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormEditMaterial, FormDiscussion, FormDiscussioncomment, FormQuestionselection, FormQuiz, FormQuizquestion
 from django.contrib import messages
 from django.http import FileResponse
 import os
@@ -61,10 +64,10 @@ def register(request):
     if request.method == "POST":
         form = FormUser(request.POST)
         if form.is_valid():
-            form.save()
             fullname = form.cleaned_data.get('name')
             staffid = form.cleaned_data.get('staffid')
             get_email_pass(staffid)
+            form.save()
             insertrole(staffid)
             messages.success(request, f"Hi {fullname}, your account was created successfully! Please check your email for your password.")
             return redirect('login')
@@ -290,141 +293,114 @@ def deletetask(request, context):
     context = getinfotodolist(userid)
     return render(request, 'todolist.html', context)
 
+#Lau Wan Jing: get course subject from coursesubject table
 def getcourselistinfo(userid):
+    info = Coursesubject.objects.get(id=1)
+    context = {'name': info.name, 'userid' : userid}
+    return context
 
+def courselist(request, userid):
+    subject = getcourselistinfo(userid)
+    ##Lau Wan Jing: join userid and subject into the context and pass to html
+    subject['userid'] = userid
+    return render(request, "courselist.html", subject)
 
+def getcoursematerialinfo():
+    #Lau Wan Jing: https://stackoverflow.com/a/61908629 -- fetch all data from coursematerial table
+    cursor = connection.cursor()
+    query = "Select * from coursematerial WHERE isactive=1"
+    cursor.execute(query)
+    list = [list for list in cursor.fetchall()]
+    return list
 
+def getcoursepageinfo(request):
+    materialinfo = getcoursematerialinfo()
+    info = {'materialinfo' : materialinfo}
+    return (request, info)
 
-def courselist(request):
-
-        return render(request,"courselist.html",{'add':add})
-    else:
-        form = FormCoursesubject(None)
-    return render(request, 'courselist.html', { 'form' : form })
-
-def coursepage(request):
+def coursepage(request, userid):
+    userrole = get_userrole(userid)
+    list = getcoursematerialinfo()
+    context = {'userid' : userid, 'roleid' : userrole.roleid_id, 'list' : list}
     if request.method == 'POST':
-        form = FormCoursetopic(request.POST)
-        coursesubject = request.POST.get('coursesubject')
-        name = request.POST.get('name')
-        title = request.POST.get('title')
-        add = coursepage(coursesubject=coursesubject,name=name,title=title)
-        add.save()
-        return render(request,"coursepage.html",{'add':add})
+        if request.POST.get('Edit'):
+            return redirect(request, "editmaterials.html")
+        elif request.POST.get('Delete Materials'):
+            return redirect(request, "deletematerials.html")
+        elif request.POST.get('Add Materials'):
+            return redirect(request, "addmaterials.html")
     else:
-        form = FormCoursetopic(None)
-    return render(request, 'coursepage.html', { 'form' : form })
+        form = FormUser(None)
+    context['form'] = form
+    return render(request, 'coursepage.html', context)
 
-def admincoursepage(request):
+def addmaterials(request, coursesubjectid):
     if request.method == 'POST':
-        form = FormCoursetopic(request.POST)
-        coursesubject = request.POST.get('coursesubject')
-        name = request.POST.get('name')
-        title = request.POST.get('title')
-        #= Userrole.objects.create(userid = User.objects.get(staffid = staffid), roleid = Role.objects.get(name = 'student'))
-        add = admincoursepage(coursesubject=coursesubject,name=name,title=title)
-        add.save()
-        return render(request,"admincoursepage.html",{'add':add})
-    else:
-        form = FormCoursetopic(None)
-    return render(request, 'admincoursepage.html', { 'form' : form })
-
-def addmaterials(request):
-    if request.method == 'POST':
-        form = FormCoursematerial(request.POST)
+        form = FormAddMaterial(request.POST)
         if form.is_valid():
-            form.save()
-            title = request.POST.get('title')
-            chapter = request.POST.get('chapter')
-            description = request.POST.get('description')
-            file = request.POST.get('file')
-            add = addmaterials(title=title,chapter=chapter,description=description,file=file)
-            messages.success(request, 'Subject Materials Added successfully.')
-            add.save()
+            newmaterials = Coursematerial.objects.create(coursesubjectid = Coursesubject.objects.get(id=coursesubjectid), title = request.POST.get('title'), description = request.POST.get('description'), file = request.POST.get('file'))
+            newmaterials.save()
+            messages.success(request, 'Subject materials added successfully.')
+            return redirect(request, "addmaterials.html")
         else:
-            messages.error(request, 'Failed Add. Please Add Materials again.')
+            messages.error(request, 'Information invalid, please try again.')
     else:
-        form = FormCoursematerial(None)
-    return render(request, 'addmaterials.html', { 'form' : form })
+        form = FormAddMaterial(None)
+        return render(request, 'addmaterials.html')
 
-def name_of_the_page(request):
-    form = ChapterForm(request.POST or None)
-    answer = ''
-    if form.is_valid():
-        answer = form.cleaned_data.get('chapter_by') 
-
-def book_verify(request):
+def editmaterials(request, coursesubjectid):
     if request.method == 'POST':
-        Combobox = request.POST['state_dropdown']
-        print('No Chapter is selected. Please select Chapter.')
-
-def textarea(request):
-    title = request.POST.get('title')
-    chapter = request.POST.get('chapter') # use the POST method to get the language value
-    text_area = request.POST.get('text_area') # use the POST method to get the text content
-    file = request.POST.get('file')
-    request.session['current_title'] = title
-    request.session['current_chapter'] = chapter # store the language value to session
-    request.session['current_text_area'] = text_area # store the content to session
-    request.session['current_file'] = file
-    print(request.POST.get)  # print the line to get the POST content.
-    print(request.POST.get('title'))
-    print(request.POST.get('chapter'))  # test if getting the language through POST method
-    print(request.POST.get('text_area'))  # test if getting the text_content through POST method, specifically
-    print(request.POST.get('file'))  
-    print("the content in session is: " + str(request.session.get('current_content')))  # test if get the content to the session, to test if the variable of the POST.get works well
-    if text_area:
-        print("it works.")  # simply a line to test if this "if" loop works well
-        print("the text content is " + text_area + ", and the chapter is " + chapter + ".") # testing if the session works well
-    return render(request, 'addmaterials.html')
-
-def editmaterials(request):
-    if request.method == 'POST':
-        form = FormCoursematerial(request.POST)
+        form = FormEditMaterial(request.POST)
         if form.is_valid():
-            form.save()
-            title = request.POST.get('title')
-            description = request.POST.get('description')
-            file = request.POST.get('file')
-            edit = editmaterials(title=title,description=description,file=file)
-            edit.save()
-            messages.success(request, 'Subject Materials Edited Successfully.')
+            editmaterials = Coursematerial.objects.create(coursesubjectid = Coursesubject.objects.get(id=coursesubjectid), title = request.POST.get('title'), description = request.POST.get('description'), file = request.POST.get('file'))
+            editmaterials.save()
+            messages.success(request, 'Subject materials edited successfully.')
+            return redirect(request, "editmaterials.html")
         else:
-            messages.error(request, 'Failed Edit. Please Edit Materials Again.')
+            messages.error(request, 'Your information is invalid. Please try again.')
     else:
-        form = FormCoursematerial(None)
-    return render(request, 'editmaterials.html', { 'form' : form })
+        form = FormEditMaterial(None)
+        return render(request, 'editmaterials.html')
 
-def deletematerials(request):
+def getdeletematerialsinfo(userid):
+    try:
+        info = Coursematerial.objects.get(userid = userid)
+        context = {'id' : info.id, 'subject' : info.subject, 'title' : info.title}
+        return context
+    except Coursematerial.DoesNotExist:
+        return None
+
+def deletematerials(request, coursesubjectid):
     if request.method == 'POST':
-        form = FormCoursematerial(request.POST)
+        form = Coursematerial(request.POST)
         if form.is_valid():
-            form.save()
-            title = request.POST.get('title')
-            description = request.POST.get('description')
-            file = request.POST.get('file')
-            add = deletematerials(title=title,description=description,file=file)
-            add.save()
-            messages.success(request, 'Subject Materials Deleted Successfully.')
-            return render(request,"deletematerials.html",{'add':add})
+            delete = Coursematerial.objects.create(coursesubjectid = Coursesubject.objects.get(id=coursesubjectid), title = request.POST.get('title'))
+            delete.save()
+            messages.success(request, 'Subject materials deleted successfully.')
+            return redirect(request, "deletematerials.html")
         else:
-            messages.error(request, 'Failed Delete. Please Delete Materials Again.')
+            messages.error(request, 'Your information is invalid. Please try again.')
     else:
-        form = FormCoursematerial(None)
-    return render(request, 'deletematerials.html', { 'form' : form })
+        form = Coursematerial(None)
+        return render(request, 'deletematerials.html')
 
-def discussionboard(request):
-    if request.method == 'POST':
-        form = FormDiscussion(request.POST)
-        question = request.POST.get('question')
-        description = request.POST.get('description')
-        file = request.POST.get('file')
-        add = discussionboard(question=question,description=description,file=file)
-        add.save()
-        return render(request,"discussionboard.html",{'add':add})
-    else:
-        form = FormDiscussion(None)
-    return render(request, 'discussionboard.html', { 'form' : form })
+# delete materials the up one or this one
+def deletematerials(request, context):
+    materials = Coursematerial.objects.get(id=context.id)
+    materials.delete()
+    userid = context.userid
+    context = getdeletematerialsinfo(userid)
+    return render(request, 'deletematerials.html', context)
+
+def getdiscussionboardinfo():
+    info = Discussion.objects.get(id=1)
+    context = {'discussion': info.discussion}
+    return context
+
+def discussionboard(request, userid):
+    discuss = getdiscussionboardinfo(userid)
+    discuss['userid'] = userid
+    return render(request, "discussionboard.html", discuss)
 
 def discussionquestion(request):
     if request.method == 'POST':

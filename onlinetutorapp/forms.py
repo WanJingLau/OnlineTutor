@@ -1,5 +1,5 @@
 from django import forms
-from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Userrole, Coursematerial, Coursesubject, Coursetopic, Discussion, Discussioncomment, Questionselection, Quiz, Quizquestion, Userquizselection
+from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Coursematerial, Coursesubject, Discussion, Discussioncomment, Questionselection, Quiz, Quizquestion, Userquizselection
 from captcha.fields import CaptchaField
 
 #Lau Wan Jing: https://www.etutorialspoint.com/index.php/255-how-to-insert-data-in-mysql-database-from-an-html-form-using-django
@@ -60,15 +60,15 @@ class FormHomePage(forms.ModelForm):
         model= Homepage
         fields= ["title","file1","file2"]
 
-class FormCoursematerial(forms.ModelForm):
+class FormAddMaterial(forms.ModelForm):
+    class Meta:
+        model= Coursematerial
+        fields= ["title","description","file"]
+
+class FormEditMaterial(forms.ModelForm):
     class Meta:
         model= Coursematerial
         fields= ["title","chapter","description","file"]
-
-class FormCoursetopic(forms.ModelForm):
-    class Meta:
-        model= Coursetopic
-        fields= ["name","title"]
 
 class FormDiscussion(forms.ModelForm):
     class Meta:
@@ -94,10 +94,6 @@ class FormQuizquestion(forms.ModelForm):
     class Meta:
         model= Quizquestion
         fields= ["question","marks"]
-        labels = {
-            'Question': '',
-            'Answer choice': '',
-        }
 
 class FormUserquizselection(forms.ModelForm):
     class Meta:
