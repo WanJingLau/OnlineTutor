@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_static_jquery',
     'onlinetutorapp.apps.OnlinetutorappConfig',
     'crispy_forms',
     'debug_toolbar',

@@ -9,6 +9,7 @@ django-debug-toolbar = "*"
 mysqlclient = "*"
 django-simple-captcha = "*"
 django-post-office = "*"
+django-static-jquery = "*"
 
 [dev-packages]
 

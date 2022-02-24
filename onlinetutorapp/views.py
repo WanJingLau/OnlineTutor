@@ -22,7 +22,8 @@ def mainpage_user(request):
 def showedithomepagebutton_mainpage_user(request, userid):
     info = gethomeinfo()
     userrole = get_userrole(userid)
-    context = {'userid' : userid, 'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2, 'roleid' : userrole.roleid_id}
+    todolists = get_popup_todolist(userid)
+    context = {'userid' : userid, 'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2, 'roleid' : userrole.roleid_id, 'todolists': todolists}
     return render(request, 'mainpage_user.html', context)
 
 def get_userrole(userid):
@@ -234,17 +235,22 @@ def getinfotodolist(userid):
         return None
 
 
-#add: reminder function
-
-
-
-
+def get_popup_todolist(userid):
+    try:
+        todolist = Todolist.objects.all().filter(userid = userid, isactive = 1, status = 0).order_by('timeend')
+        if todolist: 
+            msg=""
+            for todo in todolist:
+                msg = msg+todo.task+"\n"
+            return {'todolists':msg}
+        return None
+    except Todolist.DoesNotExist:
+        return False
 
 
 #status changes in checkbox
 def checkbox(request, userid):
     id=request.POST.get('id')
-    
     if request.POST.get('checkbox') == '1':
         Todolist.objects.filter(id=id, userid = User.objects.get(id=userid)).update(status = 0)
     else:
@@ -259,7 +265,7 @@ def todolist(request, userid):
         #edit task status
         elif request.POST.get('checkbox'):
             checkbox(request, userid)
-            messages.success(request, "Task status updated.")            
+            messages.success(request, "Task status updated.")      
         #add task
         elif(request.POST.get('task') != '' and request.POST.get('timeend')!= ''):
             newtask = Todolist.objects.create(userid = User.objects.get(id = userid), task = request.POST.get('task'), timeend = request.POST.get('timeend'))
