@@ -102,37 +102,7 @@
                     </script> -->
                 </p>
 
-                <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-                <p>
-                <tr><th><p class="p5"><label for="id_subject_by">Select Subject:</label>&ensp;</th><td><select id="id_subject_by" name="subject_by" required>
-                    <option value="Computer Architecture and Network" selected="Computer Architecture and Network">Computer Architecture and Network</option>
-                    </select></td></tr>
-                </p>
-
-                <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-                <p>
-                <tr><th><p class="p5"><label for="id_topic_by">Select Topic:</label>&ensp;</th><td><select id="id_topic_by" name="topic_by" required>
-                    <option value="Chapter 1" selected="Chapter 1">Chapter 1</option>
-                    <option value="Chapter 2">Chapter 2</option>
-                    <option value="Chapter 3">Chapter 3</option>
-                    <option value="Chapter 4">Chapter 4</option>
-                    </select></td></tr>
-                </p>
-
                 {% for i in list %}
-
-                <style>
-                    .buttons {
-                      width: 50px;
-                      margin: 0 auto;
-                    }
-                    
-                    .action_btn {
-                      display: inline-block;
-                      width: calc(50% - 4px);
-                      margin: 0 auto;
-                    }
-                </style>
 
                     <br>
 
@@ -140,17 +110,18 @@
                     <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p4">How to convert binary numbers to decimal numbers?
                          Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp 
                         <button><a style="text-decoration: none; color:black; float: right" href="{% url 'discussionquestion' userid %}"@{{userid}}> View</button></a>
-                    </div> -->
+                    </div> 
 
                     <div style="border: 1px solid black; background: lightgrey;">
                         <p align="right">
                         <input type="button" value="View" href="{% url 'discussionquestion userid %}"@{{userid}}></button>
                         <input type="text" name="id" hidden value={{i.0}}>
                         </p>
-                    </div>
+                    </div> -->
 
-                    <div style="background: lightgrey;display: inline;">
-                        <p class="p4">{{i.3}}</p>
+                    <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{question}}
+                        <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
+                        <button><a style="text-decoration: none; color:black; float: right" href="{% url 'discussionquestion' userid %}"@{{userid}}> View</button></a>
                     </div>
 
                 {% endfor %}

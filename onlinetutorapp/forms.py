@@ -70,7 +70,6 @@ class FormEditMaterial(forms.ModelForm):
         model= Coursematerial
         fields= ["title","description","file","coursetopic"]
 
-
 class FormAddQuestion(forms.ModelForm):
     class Meta:
         model= Discussion
@@ -96,12 +95,22 @@ class FormQuestionselection(forms.ModelForm):
         model= Questionselection
         fields= ["selection","answer"]
 
-class FormQuiz(forms.ModelForm):
+class FormAddQuiz(forms.ModelForm):
+    class Meta:
+        model= Quiz
+        fields= ["title","duration","attempt"]
+
+class FormEditQuiz(forms.ModelForm):
     class Meta:
         model= Quiz
         fields= ["title","duration","attempt"]
 
 class FormQuizquestion(forms.ModelForm):
+    class Meta:
+        model= Quizquestion
+        fields= ["question","marks"]
+
+class FormDeleteQuiz(forms.ModelForm):
     class Meta:
         model= Quizquestion
         fields= ["question","marks"]

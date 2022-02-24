@@ -95,7 +95,7 @@
                     <button onclick="discussion()">Search</button>
                     <p align="right">
                         <input type="button" value="Add Question" href="{% url 'addquestion' userid %}"@{{userid}}></button>
-                        <input type="text" name="id" hidden value={{i.0}}>
+                        <input type="text" name="add" hidden value={{i.0}}>
                         </p>
                     <!--<script type = "text/javascript">
                         function addquestion() {
@@ -150,15 +150,15 @@
                     <!-- <button onclick="deletequestion()" style="float: right;">Delete</button>
                     <button onclick="editquestion()" style="float: right;">Edit</button> -->
                     <p align="right">
-                        <input type="button" value="Edit Question" href="{% url 'editquestion' userid %}"@{{userid}}></button>
-                        <input type="text" name="id" hidden value={{i.0}}> 
-                        <INPUT TYPE='submit' value='Delete Question' name='delete' onClick='return confirmSubmit()'>
+                        <input type="button" value="Edit" href="{% url 'editquestion' userid %}"@{{userid}}></button>
+                        <input type="text" name="editquestion" hidden value={{i.0}}> 
+                        <INPUT TYPE='submit' value='Delete' name='deletequestion' onClick='return confirmSubmit()'>
                     <p>Wen Chi: How to convert binary numbers to decimal numbers?</p>    
                     <img src="{% static 'img/questionbinary.jpg' %}" alt="questionbinary_icon" style="float:left;width:150px;height:90px;"><br><br><br></p>
                     <!--<button onclick="replyquestion()" style="float: right;">Reply</button>-->
                     <p align="right">
-                    <input type="button" value="Reply Question" href="{% url 'replyquestion' userid %}"@{{userid}}></button>
-                    <input type="text" name="id" hidden value={{i.0}}></p> 
+                    <input type="button" value="Reply" href="{% url 'replyquestion' userid %}"@{{userid}}></button>
+                    <input type="text" name="reply" hidden value={{i.0}}></p> 
                 </div>
 
                 <script LANGUAGE="JavaScript">
@@ -177,9 +177,9 @@
                     <!--<button onclick="deletecomment()" style="float: right;">Delete</button>
                     <button onclick="editcomment()" style="float: right;">Edit</button>-->
                     <p align="right">
-                        <input type="button" value="Edit Comment" href="{% url 'editcomment' userid %}"@{{userid}}></button>
-                        <input type="text" name="id" hidden value={{i.0}}> 
-                        <INPUT TYPE='submit' value='Delete Comment' name='delete' onClick='return confirmSubmit()'>
+                        <input type="button" value="Edit" href="{% url 'editcomment' userid %}"@{{userid}}></button>
+                        <input type="text" name="editcomment" hidden value={{i.0}}> 
+                        <INPUT TYPE='submit' value='Delete' name='deletecomment' onClick='return confirmSubmit()'>
                     <p class="p5">Reply:</p><p class="p4">Wanjing: Hi, here the table of converting binary numbers to decimal numbers.</p>
                     <img src="{% static 'img/answerbinary.jpg' %}" alt="answerbinary_icon" style="float:left;width:280px;height:130px;">
                 </div>

@@ -15,7 +15,7 @@ urlpatterns = [
     path('<int:userid>/mainpage_user', views.showedithomepagebutton_mainpage_user, name="mainpage_user"),
     #courselist
     path('<int:userid>/courselist', views.courselist, name="courselist"),
-    #addcoursepage
+    #coursepage
     path('<int:userid>/coursepage', views.coursepage, name="coursepage"),
     #addmaterials
     path('addmaterials', views.addmaterials, name="addmaterials"),
@@ -23,4 +23,16 @@ urlpatterns = [
     path('<int:coursematerialid>/editmaterials', views.editmaterials, name="editmaterials"),
     #deletematerials
     path('deletematerials', views.deletematerials, name="deletematerials"),
+    #discussionboard
+    path('discussionboard', views.discussionboard, name="discussionboard"),
+    #discussionquestion
+    path('discussionquestion', views.discussionquestion, name="discussionquestion"),
+    #addquestion
+    path('addquestion', views.addquestion, name="addquestion"),
+    #editquestion
+    path('editquestion', views.editquestion, name="editquestion"),
+    #replyquestion
+    path('replyquestion', views.replyquestion, name="replyquestion"),
+    #editcomment
+    path('editcomment', views.editcomment, name="editcomment"),
 ]
