@@ -1,5 +1,5 @@
 from django import forms
-from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Coursematerial, Coursesubject, Discussion, Discussioncomment, Questionselection, Quiz, Quizquestion, Userquizselection
+from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Coursematerial, Discussion, Discussioncomment, Questionselection, Quiz, Quizquestion, Userquizselection
 from captcha.fields import CaptchaField
 
 #Lau Wan Jing: https://www.etutorialspoint.com/index.php/255-how-to-insert-data-in-mysql-database-from-an-html-form-using-django
@@ -63,19 +63,30 @@ class FormHomePage(forms.ModelForm):
 class FormAddMaterial(forms.ModelForm):
     class Meta:
         model= Coursematerial
-        fields= ["title","description","file"]
+        fields= ["title","description","file","coursetopic"]
 
 class FormEditMaterial(forms.ModelForm):
     class Meta:
         model= Coursematerial
-        fields= ["title","chapter","description","file"]
+        fields= ["title","description","file","coursetopic"]
 
-class FormDiscussion(forms.ModelForm):
+
+class FormAddQuestion(forms.ModelForm):
     class Meta:
         model= Discussion
         fields= ["question","description","file1"]
 
-class FormDiscussioncomment(forms.ModelForm):
+class FormEditQuestion(forms.ModelForm):
+    class Meta:
+        model= Discussion
+        fields= ["question","description","file1"]
+
+class FormReplyQuestion(forms.ModelForm):
+    class Meta:
+        model= Discussioncomment
+        fields= ["comment","file1"]
+
+class FormEditcomment(forms.ModelForm):
     class Meta:
         model= Discussioncomment
         fields= ["comment","file1"]
@@ -100,13 +111,4 @@ class FormUserquizselection(forms.ModelForm):
         model= Userquizselection
         fields= ["answercorrect","attemptcount","score"]
 
-class ChapterForm(forms.Form):
-    CHAPTER_CHOICES = (
-        ('Chapter 1', 'Chapter 1'),
-        ('Chapter 2', 'Chapter 2'),
-        ('Chapter 3', 'Chapter 3'),
-        ('Chapter 4', 'Chapter 4'),
-    )
-
-    chapter_by = forms.ChoiceField(choices = CHAPTER_CHOICES)
 

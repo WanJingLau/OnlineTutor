@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+    <html>
+        {% load static %}
+
+        <head>
+            <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        </head>
+
+        <body>
+         {% include 'messages.html' %}
+
+        <div>
+            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
+        
+            <ul>
+                <p class="p1">E-Tutor</p>
+                <li><a href="/register">Register</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/">Home Page</a></li>
+            </ul>
+
+            <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
+            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
+            <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
+                style="float:right;width:160px;height:50px;"
+            >
+            
+            <br>
+            <br>
+            <br>
+
+            <p>
+                <img src="{% static 'img/helpdesk.jpg' %}" alt="help_icon"
+                style="float:left;width:40px;height:40px;">
+            </p>
+
+            <p class="p3">
+                Helpdesk
+            </p>
+
+            <br>
+
+            <p class="p4">
+                Do you need help?
+            </p>
+
+            <br>
+            <br>
+
+            <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
+
+            <form action="{% url 'helpdesk' %}" method="post">
+                {% csrf_token %}
+
+                <p class="p5">
+                    Email Address
+                </p>
+
+                <input type="text" id="email" name="email" value="" size="50"/>
+
+                <br>
+                <br>
+
+                <p class="p5">
+                    Content
+                </p>
+
+                
+
+                <!-- <p> Lau Wan Jing:https://www.w3schools.com/TAGS/tryit.asp?filename=tryhtml_textarea -- textarea </p> -->
+                <textarea type="text" id="question" name="question" rows="5" cols="80"></textarea>
+                <br>
+
+                <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                    <input type="submit" class="submit" value="Submit"></input>
+                </div>
+
+            </form>
+        </div>
+        <body>
+    <html>

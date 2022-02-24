@@ -89,23 +89,24 @@
 
             <br>
 
+            <script LANGUAGE="JavaScript">
+                function confirmSubmit()
+                {
+                var agree=confirm("Are you sure you wish to delete this material?");
+                if (agree)
+                 return true ;
+                else
+                 return false ;
+                }
+            </script>
+
             <form action="deletematerials" method="post">
                 {% csrf_token %}
 
-                <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-                <p>
-                <tr><th><p class="p5"><label for="id_subject_by">Subject:</label>&ensp;</th><td><select id="id_subject_by" name="subject_by" required>
-                    <option value="Computer Architecture and Network" selected="Computer Architecture and Network">Computer Architecture and Network</option>
-                    </select></td></tr>
-                </p>
-
-                <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-                <p>
-                <tr><th><p class="p5"><label for="id_subject_by">Title:</label>&ensp;</th><td><select id="id_title_by" name="title_by" required>
-                    <option value="Chapter 1 - Number System" selected="Chapter 1 - Number System">Chapter 1 - Number System</option>
-                    <option value="Chapter 2 - Digital Logic and Digital System">Chapter 2 - Digital Logic and Digital System</option>
-                    </select></td></tr>
-                </p>
+                <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
+                <p class="p5">Title:
+                    <input type="text" id="ID" name="title" size="80"/>
+                <br>
 
                 <br>
                 <br>
@@ -113,7 +114,8 @@
             
                 <div class=buttoncontainer>
                     <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-                    <button type="submit" class="submit">Delete</a>
+                    <INPUT TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'>
+                    <!-- <button type="submit" class="submit">Delete</a>-->
                 </div>
 
             </form>

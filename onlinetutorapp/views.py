@@ -3,8 +3,8 @@ from pydoc_data import topics
 from django.core.mail import send_mail
 from django.db import connection
 from django.shortcuts import render, redirect
-from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Helpdesk, Homepage, Todolist, User, Userrole, Role
-from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormEditMaterial, FormDiscussion, FormDiscussioncomment, FormQuestionselection, FormQuiz, FormQuizquestion
+from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Todolist, User, Userrole, Role
+from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormEditMaterial, FormAddQuestion, FormEditQuestion, FormReplyQuestion, FormEditcomment, FormQuestionselection, FormQuiz, FormQuizquestion
 from django.contrib import messages
 from django.http import FileResponse
 import os
@@ -323,10 +323,12 @@ def coursepage(request, userid):
     list = getcoursematerialinfo()
     context = {'userid' : userid, 'roleid' : userrole.roleid_id, 'list' : list}
     if request.method == 'POST':
-        if request.POST.get('Edit'):
-            return redirect(request, "editmaterials.html")
+        if request.POST.get('edit'):
+            #coursematerialid = request.POST.get('id')
+            return redirect(request, "editmaterials.html", coursematerialid)
         elif request.POST.get('Delete Materials'):
-            return redirect(request, "deletematerials.html")
+            coursematerialid = request.POST.get('id')
+            return redirect(request, "deletematerials.html", coursematerialid)
         elif request.POST.get('Add Materials'):
             return redirect(request, "addmaterials.html")
     else:
@@ -338,63 +340,39 @@ def addmaterials(request, coursesubjectid):
     if request.method == 'POST':
         form = FormAddMaterial(request.POST)
         if form.is_valid():
-            newmaterials = Coursematerial.objects.create(coursesubjectid = Coursesubject.objects.get(id=coursesubjectid), title = request.POST.get('title'), description = request.POST.get('description'), file = request.POST.get('file'))
+            newmaterials = Coursematerial.objects.create(coursesubjectid = Coursesubject.objects.get(id=coursesubjectid), title = request.POST.get('title'), coursetopic = request.POST.get('coursetopic'), description = request.POST.get('description'), file = request.POST.get('myfile'))
             newmaterials.save()
             messages.success(request, 'Subject materials added successfully.')
             return redirect(request, "addmaterials.html")
         else:
-            messages.error(request, 'Information invalid, please try again.')
+            messages.error(request, 'Your information is invalid. Please try again.')
+        return render(request, "addmaterials.html")
     else:
         form = FormAddMaterial(None)
         return render(request, 'addmaterials.html')
 
-def editmaterials(request, coursesubjectid):
+def editmaterials(request, coursematerialid):
+    context = Coursematerial.objects.get(id=coursematerialid)
     if request.method == 'POST':
         form = FormEditMaterial(request.POST)
         if form.is_valid():
-            editmaterials = Coursematerial.objects.create(coursesubjectid = Coursesubject.objects.get(id=coursesubjectid), title = request.POST.get('title'), description = request.POST.get('description'), file = request.POST.get('file'))
-            editmaterials.save()
+            Coursematerial.objects.filter(id = Coursematerial.objects.get(id = coursematerialid)).update(title = request.POST.get('title'), description = request.POST.get('description'), coursetopic = request.POST.get('coursetopic'), file = request.POST.get('myfile'))
             messages.success(request, 'Subject materials edited successfully.')
-            return redirect(request, "editmaterials.html")
         else:
             messages.error(request, 'Your information is invalid. Please try again.')
+        return render(request, "editmaterials.html")
     else:
         form = FormEditMaterial(None)
-        return render(request, 'editmaterials.html')
+        return render(request, 'editmaterials.html', context)
 
-def getdeletematerialsinfo(userid):
-    try:
-        info = Coursematerial.objects.get(userid = userid)
-        context = {'id' : info.id, 'subject' : info.subject, 'title' : info.title}
-        return context
-    except Coursematerial.DoesNotExist:
-        return None
+def deletematerials(request, userid):
+    id=request.POST.get('id')
+    Coursematerial.objects.filter(id=id, userid = User.objects.get(id=userid)).update(isactive = 0)
 
-def deletematerials(request, coursesubjectid):
-    if request.method == 'POST':
-        form = Coursematerial(request.POST)
-        if form.is_valid():
-            delete = Coursematerial.objects.create(coursesubjectid = Coursesubject.objects.get(id=coursesubjectid), title = request.POST.get('title'))
-            delete.save()
-            messages.success(request, 'Subject materials deleted successfully.')
-            return redirect(request, "deletematerials.html")
-        else:
-            messages.error(request, 'Your information is invalid. Please try again.')
-    else:
-        form = Coursematerial(None)
-        return render(request, 'deletematerials.html')
-
-# delete materials the up one or this one
-def deletematerials(request, context):
-    materials = Coursematerial.objects.get(id=context.id)
-    materials.delete()
-    userid = context.userid
-    context = getdeletematerialsinfo(userid)
-    return render(request, 'deletematerials.html', context)
-
-def getdiscussionboardinfo():
+#get question from discussion table
+def getdiscussionboardinfo(userid):
     info = Discussion.objects.get(id=1)
-    context = {'discussion': info.discussion}
+    context = {'question': info.question, 'userid': userid}
     return context
 
 def discussionboard(request, userid):
@@ -402,7 +380,32 @@ def discussionboard(request, userid):
     discuss['userid'] = userid
     return render(request, "discussionboard.html", discuss)
 
-def discussionquestion(request):
+def getdiscussionquestioninfo(request):
+    discussioninfo = getdiscussionquestioninfo()
+    info = {'discussioninfo' : discussioninfo}
+    return (request, info)
+
+def discussionquestion(request, userid):
+    userrole = get_userrole(userid)
+    list = getdiscussionboardinfo()
+    context = {'userid' : userid, 'roleid' : userrole.roleid_id, 'list' : list}
+    if request.method == 'POST':
+        if request.POST.get('Add Question'):
+            return redirect(request, "addquestion.html")
+        elif request.POST.get('Edit Question'):
+            discussionid = request.POST.get('id')
+            return redirect(request, "editquestion.html", discussionid)
+        elif request.POST.get('Reply Question'):
+            return redirect(request, "replyquestion.html")
+        elif request.POST.get('Edit Comment'):
+            discussionid = request.POST.get('id')
+            return redirect(request, "editcomment.html", discussionid)
+    else:
+        form = FormUser(None)
+    context['form'] = form
+    return render(request, 'discussionquestion.html', context)
+
+#def discussionquestion(request):
     if request.method == 'POST':
         form = FormDiscussion(request.POST)
         question = request.POST.get('question')
@@ -415,75 +418,73 @@ def discussionquestion(request):
         form = FormDiscussion(None)
     return render(request, 'discussionquestion.html', { 'form' : form })
 
-def addquestion(request):
+def addquestion(request, discussionid):
     if request.method == 'POST':
-        form = FormDiscussion(request.POST)
+        form = FormAddQuestion(request.POST)
         if form.is_valid():
-            form.save()
-            question = request.POST.get('question')
-            description = request.POST.get('description')
-            file = request.POST.get('file')
-            add = addquestion(question=question,description=description,file=file)
-            add.save()
-            messages.success(request, 'Question Added Successfully.')
-            return render(request,"addquestion.html",{'add':add})
+            addquestion = Discussion.objects.create(discussionid = Discussion.objects.get(id=discussionid), question = request.POST.get('question'), description = request.POST.get('description'), file1 = request.POST.get('myfile'))
+            addquestion.save()
+            messages.success(request, 'Question added successfully.')
+            return redirect(request, "addquestion.html")
         else:
-            messages.error(request, 'Failed Add. Please Add Question Again.')
+            messages.error(request, 'Your information is invalid. Please try again.')
+        return render(request, "addquestion.html")
     else:
-        form = FormDiscussion(None)
-    return render(request, 'addquestion.html', { 'form' : form })
+        form = FormAddQuestion(None)
+        return render(request, 'addquestion.html')
 
-def editquestion(request):
+def editquestion(request, discussionid):
+    context = Discussion.objects.get(id=discussionid)
     if request.method == 'POST':
-        form = FormDiscussion(request.POST)
+        form = FormEditQuestion(request.POST)
         if form.is_valid():
-            form.save()
-            question = request.POST.get('question')
-            description = request.POST.get('description')
-            file = request.POST.get('file')
-            edit = editquestion(question=question,description=description,file=file)
-            edit.save()
-            messages.success(request, 'Question Edited Successfully.')
-            return render(request,"editquestion.html",{'edit':edit})
+            editquestion = Discussion.objects.create(id = Discussion.objects.get(id = discussionid), question = request.POST.get('question'), description = request.POST.get('description'), file1 = request.POST.get('myfile'))
+            editquestion.save()
+            messages.success(request, 'Question edited successfully.')
         else:
-            messages.error(request, 'Failed Edit. Please Edit Question Again.')
+            messages.error(request, 'Your information is invalid. Please try again.')
+        return render(request, "editquestion.html")
     else:
-        form = FormDiscussion(None)
-    return render(request, 'editquestion.html', { 'form' : form })
+        form = FormEditQuestion(None)
+        return render(request, 'editquestion.html', context)
 
-def replyquestion(request):
-    if request.method == 'POST':
-        form = FormDiscussioncomment(request.POST)
-        if form.is_valid():
-            form.save()
-            comment = request.POST.get('comment')
-            file = request.POST.get('file')
-            add = replyquestion(comment=comment,file=file)
-            add.save()
-            messages.success(request, 'Question Replied Successfully.')
-            return render(request,"replyquestion.html",{'add':add})
-        else:
-            messages.error(request, 'Failed Reply. Please Reply Question Again.')
-    else:
-        form = FormDiscussioncomment(None)
-    return render(request, 'replyquestion.html', { 'form' : form })
+def deletequestion(request, userid):
+    id=request.POST.get('id')
+    Discussion.objects.filter(id=id, userid = User.objects.get(id=userid)).update(isactive = 0)
 
-def editcomment(request):
+def deletecomment(request, userid):
+    id=request.POST.get('id')
+    Discussioncomment.objects.filter(id=id, userid = User.objects.get(id=userid)).update(isactive = 0)
+
+def replyquestion(request, discussioncommentid):
     if request.method == 'POST':
-        form = FormDiscussioncomment(request.POST)
+        form = FormReplyQuestion(request.POST)
         if form.is_valid():
-            form.save()
-            comment = request.POST.get('comment')
-            file = request.POST.get('file')
-            edit = editcomment(comment=comment,file=file)
-            edit.save()
-            messages.success(request, 'Comment Edited Successfully.')
-            return render(request,"editcomment.html",{'edit':edit})
+            replyquestion = Discussioncomment.objects.create(discussionid = Discussioncomment.objects.get(id=discussioncommentid), comment = request.POST.get('comment'), file1 = request.POST.get('myfile'))
+            replyquestion.save()
+            messages.success(request, 'Question replied successfully.')
+            return redirect(request, "replyquestion.html")
         else:
-            messages.error(request, 'Failed Edit. Please Edit Comment Again.')
+            messages.error(request, 'Your information is invalid. Please try again.')
+        return render(request, "replyquestion.html")
     else:
-        form = FormDiscussioncomment(None)
-    return render(request, 'editcomment.html', { 'form' : form })
+        form = FormReplyQuestion(None)
+        return render(request, 'replyquestion.html')
+
+def editcomment(request, discussioncommentid):
+    if request.method == 'POST':
+        form = FormEditcomment(request.POST)
+        if form.is_valid():
+            editcomment = Discussioncomment.objects.create(discussionid = Discussioncomment.objects.get(id=discussioncommentid), comment = request.POST.get('comment'), file1 = request.POST.get('myfile'))
+            editcomment.save()
+            messages.success(request, 'Comment edited successfully.')
+            return redirect(request, "editcomment.html")
+        else:
+            messages.error(request, 'Your information is invalid. Please try again.')
+        return render(request, "editcomment.html")
+    else:
+        form = FormEditcomment(None)
+        return render(request, 'editcomment.html')
 
 def grades(request):
     return render(request, "grades.html")
