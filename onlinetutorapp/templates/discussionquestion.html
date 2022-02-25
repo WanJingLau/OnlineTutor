@@ -77,15 +77,6 @@
 
             <form action="discussionquestion" method="post">
                 {% csrf_token %}
-            
-                <p>
-                    <button><a style="text-decoration: none; color:black; float: right" href="{% url 'search' userid %}"@{{userid}}> Search</button></a>
-                    <button><a style="text-decoration: none; color:black; float: right" href="{% url 'addquestion' userid %}"@{{userid}}> Add Question</button></a>
-                    {% if roleid == 1 %}
-                    <button><a style="text-decoration: none; color:black" href="{% url 'deletequestion' userid %}"@{{userid}}>Delete Question</button></a>
-                    <button><a style="text-decoration: none; color:black" href="{% url 'deletematerials' userid %}"@{{userid}}>Delete Materials</button></a>
-                    {% endif %}
-                </p>
 
                 <style>                
                 .container3 {
@@ -119,15 +110,16 @@
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
                 <div class="container3">
-                    <p>Wen Chi: How to convert binary numbers to decimal numbers?</p>    
+                    
+                    <p>{{question}}</p>
                     <p align="right">
-                    <button><a style="text-decoration: none; color:black" href="{% url 'replyquestion' userid %}"@{{userid}}>Reply</button></a>
+                    <button><a style="text-decoration: none; color:black" href="{% url 'replyquestion' userid id%}"@{{userid}}{{id}}>Reply</button></a>
                 </div>
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
                 <div class="container4">
                     <p align="right">
-                    <p class="p5">Reply:</p><p class="p4">Wanjing: Hi, here the table of converting binary numbers to decimal numbers.</p>
+                    <p class="p5">Reply:</p><p class="p4">{{comment}}</p>
                 </div>
             
             </form>

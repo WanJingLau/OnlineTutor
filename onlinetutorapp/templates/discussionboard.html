@@ -87,7 +87,7 @@
                     <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{d.2}}
                         <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp 
                         need to modify into (d.0)-->
-                        <button><a style="text-decoration: none; color:black; float: right" href="{% url 'discussionquestion' userid %}"@{{userid}}> View</button></a>
+                        <button><a style="text-decoration: none; color:black; float: right" name="view" value="{{d.0}}"> View</button></a>
                     </div>
                 {% endfor %}
         

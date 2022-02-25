@@ -376,8 +376,9 @@ def discussionboard(request, userid):
         elif request.POST.get('deletecomment'):
             return redirect(request, "deletecomment.html", userid)
         elif request.POST.get('view'):
-            questionid = request.POST.get('id')
+            questionid = request.POST.get('value')
             context = {'userid' : userid, 'questionid' : questionid}
+            discussionquestion(request, context)
             return redirect(request, "discussionquestion.html", context)
     else:
         return render(request, "discussionboard.html", discuss)
@@ -409,34 +410,14 @@ def searchquestion(request, userid):
         messages.error(request, 'Result not found.')
         return render(request, "searchquestion.html", userid)
 
-def getdiscussionquestioninfo(request):
-    discussioninfo = getdiscussionquestioninfo()
-    info = {'discussioninfo' : discussioninfo}
-    return (request, info)
-
-def discussionquestion(request, userid):
-    userrole = get_userrole(userid)
-    list = getdiscussioninfo()
-    context = {'userid' : userid, 'roleid' : userrole.roleid_id, 'list' : list}
-    if request.method == 'POST':
-        #add question
-        if request.POST.get('add'):
-            return redirect(request, "addquestion.html")
-        #delete question
-        elif request.POST.get('deletequestion'):
-            deletequestion(request, userid)
-            return redirect(request, "deletequestion.html")
-        #reply question
-        elif request.POST.get('reply'):
-            return redirect(request, "replyquestion.html")
-        #delete comment
-        elif request.POST.get('deletecomment'):
-            deletecomment(request, userid)
-            return redirect(request, "deletecomment.html")
-    else:
-        form = FormUser(None)
-    context['form'] = form
-    return render(request, 'discussionquestion.html', context)
+def getdiscussionquestioninfo(context):
+    
+    try:
+        discussion = Discussion.objects.all().filter(isactive = 1)
+        context = {'userid' : userid, 'discussion' : discussion}
+        return context
+    except Discussion.DoesNotExist:
+        return None
 
 def deletequestion(request, userid):
     if request.method == 'POST':
@@ -459,8 +440,8 @@ def deletecomment(request, userid):
     context = {'comment' : comment, 'userid': userid}
     return render(request, 'deletematerials.html', context)
 
-def viewquestion(request, userid):
-    
+def discussionquestion(request, context):
+    info = getdiscussionquestioninfo(context)
 
 
 
