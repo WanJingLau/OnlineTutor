@@ -94,7 +94,7 @@ class Coursematerial(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
     file = models.TextField(blank=True, null=True)
-    isactive = models.IntegerField(default="1")
+    isactive = models.IntegerField(default=1)
     coursetopic = models.CharField(max_length=255)
 
     class Meta:
@@ -334,8 +334,8 @@ class Todolist(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     task = models.CharField(max_length=50)
     timeend = models.DateTimeField()
-    status = models.IntegerField()
-    isactive = models.IntegerField(blank=True, null=True)
+    status = models.IntegerField(default=0)
+    isactive = models.IntegerField(blank=True, null=True, default=1)
 
     class Meta:
         managed = False

@@ -315,58 +315,37 @@ def coursepage(request, userid):
     list = getcoursematerialinfo()
     context = {'userid' : userid, 'roleid' : userrole.roleid_id, 'list' : list}
     if request.method == 'POST':
-        if request.POST.get('edit'):
-            coursematerialid = request.POST.get('i.0')
-            return redirect(request, "editmaterials.html", coursematerialid)
-        elif request.POST.get('delete'):
-            #coursematerialid = request.POST.get('id')
-            deletematerials(request)
-            return HttpResponseRedirect(request, "deletematerials.html")
-        elif request.POST.get('Add Materials'):
-            return redirect(request, "addmaterials.html")
+        if request.POST.get('delete'):
+            return redirect(request, "deletematerials.html", userid)
+        elif request.POST.get('add'):
+            return redirect(request, "addmaterials.html", userid)
     else:
         return render(request, "coursepage.html", context)
 
-def addmaterials(request, coursesubjectid):
-    material = Coursematerial.objects.raw('SELECT * FROM coursematerial')    
-    context = {'material' : material}
+def addmaterials(request, userid):
+    context = {'userid':userid}
     if request.method == 'POST':
         form = FormAddMaterial(request.POST)
         if form.is_valid():
-            newmaterials = Coursematerial.objects.create(coursesubjectid = Coursesubject.objects.get(id=coursesubjectid), title = request.POST.get('title'), coursetopic = request.POST.get('coursetopic'), description = request.POST.get('description'), file = request.POST.get('myfile'))
+            newmaterials = Coursematerial.objects.create(title = request.POST.get('title'), description = request.POST.get('description'), file = request.POST.get('myfile'), coursetopic = request.POST.get('coursetopic'))
             newmaterials.save()
             messages.success(request, 'Subject materials added successfully.')
-            return redirect(request, "addmaterials.html")
         else:
             messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "addmaterials.html")
+        return render(request, "addmaterials.html", context)
     else:
         form = FormAddMaterial(None)
         return render(request, 'addmaterials.html', context)
 
-def editmaterials(request, coursematerialid):
-    material = Coursematerial.objects.raw('SELECT * FROM coursematerial')    
-    context = {'material' : material}
-    context = Coursematerial.objects.get(id=coursematerialid)
-    if request.method == 'POST':
-        form = FormEditMaterial(request.POST)
-        if form.is_valid():
-            Coursematerial.objects.filter(id = Coursematerial.objects.get(id = coursematerialid)).update(title = request.POST.get('title'), description = request.POST.get('description'), coursetopic = request.POST.get('coursetopic'), file = request.POST.get('myfile'))
-            messages.success(request, 'Subject materials edited successfully.')
-        else:
-            messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "editmaterials.html")
-    else:
-        form = FormEditMaterial(None)
-        return render(request, 'editmaterials.html', context)
-
 def deletematerials(request, userid):
-    material = Coursematerial.objects.raw('SELECT * FROM coursematerial')
-    context = {'material' : material, 'userid': userid}
     if request.method == 'POST':
-        Coursematerial.objects.filter(title=request.POST.get('title').update(isactive = 0))
-    else:
-        return render(request, 'deletematerials.html', context)
+        title = request.POST.get('title')
+        findid = Coursematerial.objects.get(title = title)
+        Coursematerial.objects.filter(id=findid.id).update(isactive = 0)
+        messages.success(request, "Material deleted.")
+    material = Coursematerial.objects.raw('SELECT * FROM coursematerial WHERE isactive=1')
+    context = {'material' : material, 'userid': userid}
+    return render(request, 'deletematerials.html', context)
 
 def getdiscussionboardinfo(userid):
     #Lau Wan Jing: https://stackoverflow.com/a/61908629 -- fetch all data from disucssion table
@@ -531,7 +510,7 @@ def attendquiz(request):
     return render(request, 'attendquiz.html', { 'form' : form })
 
 #def adminquizzes(request):
-    return render(request, "adminquizzes.html")
+    #return render(request, "adminquizzes.html")
 
 def addquiz(request, quizid):
     if request.method == 'POST':
