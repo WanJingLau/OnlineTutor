@@ -92,35 +92,46 @@
                 <p class="p5">Title:
                 <input type="text" id="title" name="title" size="80"/>
                 <br>
+                <br>
             
                 <p class="p5">Chapter:
                     <input type="text" id="coursetopic" name="coursetopic" size="80"/>
                 <br>
+                <br>
 
-                <!-- Oh Wen Chi:https://www.youtube.com/watch?v=A1xJngtmXPc -->
+                <!-- Oh Wen Chi:https://www.youtube.com/watch?v=A1xJngtmXPc 
                 <head>
                     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
                     <script>tinymce.init({ selector:'textarea' });</script>
-                </head>
+                </head>-->
                 <body>
-                    <p class="p5" id="description" name="description">Description:</p>
-                    <textarea></textarea>
+                    <p class="p5">Description:</p>
+                    <textarea id="description" name="description" rows="5" cols="80"></textarea>
                 </body>
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp -->
                 <p>
-                    <form action="/action_page.php">
-                    <input type="file" id="myfile" name="myfile"><br><br>
-                    </form>
+                    <input type="file" id="myfile" name="myfile">
                 </p>
 
                 <br>
                 <br>
             
                 <div class=buttoncontainer>
-                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-                    <button type="submit" class="submit" value="Add">Submit</a>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                    <INPUT class="submit" TYPE='submit' value='Submit' name='submit' onClick='return confirmSubmit()'>
                 </div>
+
+                <script LANGUAGE="JavaScript">
+                    function confirmSubmit()
+                    {
+                    var agree=confirm("Are you sure you wish to add this material?");
+                    if (agree)
+                     return true ;
+                    else
+                     return false ;
+                    }
+                </script>
 
             </form>
 

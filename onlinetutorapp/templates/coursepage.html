@@ -18,7 +18,6 @@
                 <p class="p1">E-Tutor</p>
                 <li><a onclick="user()">Register</a></li>
                 <li><a onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
                 <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
@@ -80,19 +79,14 @@
 
             <p class="p4">The subject materials are in three formats: pptx,pdf and mp4 files.</p>
 
-
-                {% if roleid == 1 or 2 %}
-                    <!--<p align="right">
-                    <input type="submit" value="Delete Materials"></input>
-                    <input type="text" name="id" hidden value={{i.0}}></input>
-                    <input type="submit" value="Add Materials"></input>
-                    <input type="text" name="id" hidden value={{i.0}}></input>
-                    </p> -->
+                {% if roleid == 2 %}
+                <button><a style="text-decoration: none; color:black" href="{% url 'addmaterials' userid %}"@{{userid}}>Add Materials</button></a>
                 {% endif %}
 
-                <br>
-                <br>
-                <br>
+                {% if roleid == 1 %}
+                <button><a style="text-decoration: none; color:black" href="{% url 'deletematerials' userid %}"@{{userid}}>Delete Materials</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'addmaterials' userid %}"@{{userid}}>Add Materials</button></a>
+                {% endif %}
 
                 <!-- Oh Wen Chi:https://stackoverflow.com/questions/15461811/html-canvas-with-scrollbar -->
                 <div style="max-height: 390px;max-width:1500px;overflow: scroll;">
@@ -104,42 +98,19 @@
                     width: 50px;
                     margin: 0 auto;
                     }
-                    
                     .action_btn {
                     display: inline-block;
                     width: calc(50% - 4px);
                     margin: 0 auto;
                     }
                 </style>
-                
-                <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
-                <script type = "text/javascript">
-                    function editmaterials() {
-                        let coursematerialid = encodeURI('i.0');
-                        let url = `http://127.0.0.1:8000/editmaterials/${coursematerialid}`;
-                        window.location(url); //Lau Wan Jing: https://javascript.info/urll
-                        //window.location = "http://127.0.0.1:8000/editmaterials";
-                    }
-                </script>
 
-                {% if roleid == 1 or 2 %}
-                <!--
-                <button type="submit" class="submit" value="edit" >Edit</button></a> 
-                <input type="text" name="id" hidden value={{i.0}}>-->
                 <div style="border: 1px solid black; background: lightgrey;">
-                <input type="submit" name="edit" value='Edit' onclick="this.form.submit()">
-                <input type="text" name="submit" hidden value="Edit">
-                <input type="text" name="id" hidden value={{i.0}}>
-                    <!-- <p align="right">
-                    <input type="button" value="Edit">
-                    </p> href="{% url 'editmaterials' i.0 %}"@{{ i.0 }}-->
-                {% endif %}
-
                         <div style="background: lightgrey;display: inline;">
                             <p class="p5" style="display:inline-flex;">Chapter:</p>
                             <p class="p4" style="display:inline-flex;">{{i.5}}</p>
-                        </div>
-                        <p>
+                            <br>
+                            <br>
                             <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
                             <p class="p5" style="display:inline-flex;">Title:</p>
                             <p class="p4" style="display:inline-flex;">{{i.1}}</p>
@@ -150,56 +121,17 @@
                             <br>
                             <p class="p5" style="display:inline-flex;">Attached File:</p>
                             <p style="display:inline-flex;">{{i.3}}</p>
-                        </p>
+                        </div>
                 </div>
+
                 {% endfor %}
 
-                <canvas width="512px" height="490px"></canvas>
-
-                <script LANGUAGE="JavaScript">
-                    function confirmAdd()
-                    {
-                    var agree=confirm("Are you sure you wish to redirect to add materials?");
-                    if (agree)
-                     return true ;
-                    else
-                     return false ;
-                    }
-                </script>
-
-                <script LANGUAGE="JavaScript">
-                    function confirmDelete()
-                    {
-                    var agree=confirm("Are you sure you wish to redirect to delete materials?");
-                    if (agree)
-                     return true ;
-                    else
-                     return false ;
-                    }
-                </script>
+                <canvas width="512px" height=auto></canvas>
 
                 <br>
-                <!-- <input type="button" value="Back" href="{{request.META.HTTP_REFERER|escape}}" style="display: flex;"> -->
-                <div class=buttoncontainer>
-                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-                    
-                    <INPUT TYPE='submit' value='Add Materials' name='Add Materials' onClick='return confirmAddMaterials()'>
-                    <!-- <button type="submit" class="submit" onclick="addmaterials()">Add Materials</button> -->                   
-                    <!-- <button name="delete" type="button" class="submit" value="delete">Delete Materials</button> -->
-                    <!-- <button onclick="location.href = '/deletematerials'">Delete Materials</button> -->
-                    <!-- <button type="submit" class="submit" a href="/deletematerials"></a> -->
-                    <!-- <button type="submit" class="submit" a href="deletematerials.html">Delete Materials</a></button>--> 
-                    <INPUT TYPE='submit' value='Delete Materials' name='delete' onClick='return confirmDelete()'>
-                </div>
+                
+                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
 
-                <script type = "text/javascript">
-                    function addmaterials() {
-                        window.location = "http://127.0.0.1:8000/addmaterials";
-                    }
-                </script>
-
-                <br>
-            
         </div>
         </body>
         {% endblock content %}
