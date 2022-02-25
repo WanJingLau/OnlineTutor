@@ -30,7 +30,7 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
+                <button><a>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button><a style="text-decoration: none; color:black" href="{% url 'grades' userid %}"@{{userid}}>Grades</button></a>
@@ -48,21 +48,6 @@
                 function user() {
                     alert("You have logged in into the account.");
                 }
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
-                function discussionboard() {
-                    window.location = "http://127.0.0.1:8000/discussionboard";
-                }
-                function grades() {
-                    window.location = "http://127.0.0.1:8000/grades";
-                }
-                function quizzes() {
-                    window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
-                }
             </script>
 
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
@@ -76,7 +61,7 @@
             <br>
 
             <p>
-                <img src="{% static 'img/discussion.png' %}" alt="Course_icon"
+                <img src="{% static 'img/discussion.png' %}" alt="Discussion_icon"
                 style="float:left;width:50px;height:50px;">
             </p>
             
@@ -88,17 +73,12 @@
                 {% csrf_token %}
             
                 <p>
-                    <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_searchbar.asp -->
-                    <input type="text" placeholder="Search..." size="80"/></a>
-
-                    <button onclick="discussion()">Search</button>
+                    <button><a style="text-decoration: none; color:black; float: right" href="{% url 'search' userid %}"@{{userid}}> Search</button></a>
                     <button><a style="text-decoration: none; color:black; float: right" href="{% url 'addquestion' userid %}"@{{userid}}> Add Question</button></a>
-                    <!--<button onclick="addquestion()">Add Question</button>
-                    <script type = "text/javascript">
-                        function addquestion() {
-                            window.location = "http://127.0.0.1:8000/addquestion";
-                        }
-                    </script> -->
+                    {% if roleid == 1 %}
+                    <button><a style="text-decoration: none; color:black" href="{% url 'deletequestion' userid %}"@{{userid}}>Delete Question</button></a>
+                    <button><a style="text-decoration: none; color:black" href="{% url 'deletematerials' userid %}"@{{userid}}>Delete Materials</button></a>
+                    {% endif %}
                 </p>
 
                 <br>

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Quiz, Todolist, User, Userrole, Role, Quizquestion
 from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormAddQuestion, FormReplyQuestion, FormQuestionselection, FormAddQuiz, FormQuizquestion
 from django.contrib import messages
+from django.contrib.postgres.search import *
 
 # Create your views here.
 # request -> response
@@ -345,21 +346,68 @@ def deletematerials(request, userid):
     context = {'material' : material, 'userid': userid}
     return render(request, 'deletematerials.html', context)
 
-def getdiscussionboardinfo(userid):
+'''def getdiscussionboardinfo(userid):
     #Lau Wan Jing: https://stackoverflow.com/a/61908629 -- fetch all data from disucssion table
     cursor = connection.cursor()
     query = "Select * from discussion WHERE isactive=1"
     cursor.execute(query)
     list = [list for list in cursor.fetchall()]
     list = [(list), userid]
-    return list
+    return list'''
 
-#add userid find user name function
+#Lau Wan Jing: get question data
+def getdiscussioninfo(userid):
+    try:
+        discussion = Discussion.objects.all().filter(isactive = 1)
+        context = {'userid' : userid, 'discussion' : discussion}
+        return context
+    except Discussion.DoesNotExist:
+        return None
 
 def discussionboard(request, userid):
-    discuss = getdiscussionboardinfo(userid)
-    discuss['userid'] = userid
-    return render(request, "discussionboard.html", discuss)
+    discuss = getdiscussioninfo(userid)
+    if request.method == 'POST':
+        if request.POST.get('search'):
+            return redirect(request, "searchquestion.html", userid)
+        elif request.POST.get('add'):
+            return redirect(request, "addquestion.html", userid)
+        elif request.POST.get('deletequestion'):
+            return redirect(request, "deletequestion.html", userid)
+        elif request.POST.get('deletecomment'):
+            return redirect(request, "deletecomment.html", userid)
+        elif request.POST.get('view'):
+            questionid = request.POST.get('id')
+            context = {'userid' : userid, 'questionid' : questionid}
+            return redirect(request, "discussionquestion.html", context)
+    else:
+        return render(request, "discussionboard.html", discuss)
+    
+def addquestion(request, userid):
+    context = {'userid':userid}
+    if request.method == 'POST':
+        form = FormAddQuestion(request.POST)
+        if form.is_valid():
+            addquestion = Discussion.objects.create(question = request.POST.get('question'), description = request.POST.get('description'))
+            addquestion.save()
+            messages.success(request, 'Question added successfully.')
+            return redirect(request, "addquestion.html")
+        else:
+            messages.error(request, 'Your information is invalid. Please try again.')
+        return render(request, "addquestion.html")
+    else:
+        form = FormAddQuestion(None)
+        return render(request, 'addquestion.html', context)
+
+#Lau Wan Jing: https://docs.djangoproject.com/en/4.0/ref/contrib/postgres/search/ -- search question
+def searchquestion(request, userid):
+    if request.method == 'POST':
+        word = request.POST.get('word')
+        result = Discussion.objects.filter(body_text__search=word)
+        context = {'userid' : userid, 'result' : result}
+        return render(request, "searchquestion.html", context)
+    else:
+        messages.error(request, 'Result not found.')
+        return render(request, "searchquestion.html", userid)
 
 def getdiscussionquestioninfo(request):
     discussioninfo = getdiscussionquestioninfo()
@@ -368,7 +416,7 @@ def getdiscussionquestioninfo(request):
 
 def discussionquestion(request, userid):
     userrole = get_userrole(userid)
-    list = getdiscussionboardinfo()
+    list = getdiscussioninfo()
     context = {'userid' : userid, 'roleid' : userrole.roleid_id, 'list' : list}
     if request.method == 'POST':
         #add question
@@ -391,37 +439,32 @@ def discussionquestion(request, userid):
     return render(request, 'discussionquestion.html', context)
 
 def deletequestion(request, userid):
-    discuss = Discussion.objects.raw('SELECT * FROM discussionquestion')
-    context = {'discuss' : discuss, 'userid': userid}
     if request.method == 'POST':
-        Discussion.objects.filter(title=request.POST.get('deletequestion').update(isactive = 0))
-    else:
-        return render(request, 'deletequestion.html', context)
+        question = request.POST.get('question')
+        findid = Discussion.objects.get(question = question)
+        Discussion.objects.filter(id=findid.id).update(isactive = 0)
+        messages.success(request, "Question deleted.")
+    question = Discussion.objects.raw('SELECT * FROM discussion WHERE isactive=1')
+    context = {'question' : question, 'userid': userid}
+    return render(request, 'deletematerials.html', context)
 
 def deletecomment(request, userid):
-    discuss = Discussion.objects.raw('SELECT * FROM discussionquestion')
-    context = {'discuss' : discuss, 'userid': userid}
     if request.method == 'POST':
+        comment = request.POST.get('comment')
+        findid = Discussioncomment.objects.get(comment = comment)
+        Discussioncomment.objects.filter(id=findid.id).update(isactive = 0)
+        messages.success(request, "Comment deleted.")
         Discussion.objects.filter(title=request.POST.get('deletecomment').update(isactive = 0))
-    else:
-        return render(request, 'deletecomment.html', context)
+    comment = Discussioncomment.objects.raw('SELECT * FROM discussioncomment WHERE isactive=1')
+    context = {'comment' : comment, 'userid': userid}
+    return render(request, 'deletematerials.html', context)
 
-def addquestion(request, discussionid):
-    discuss = Discussion.objects.raw('SELECT * FROM discussionquestion')    
-    context = {'discuss' : discuss}
-    if request.method == 'POST':
-        form = FormAddQuestion(request.POST)
-        if form.is_valid():
-            addquestion = Discussion.objects.create(discussionid = Discussion.objects.get(id=discussionid), question = request.POST.get('question'), description = request.POST.get('description'), file1 = request.POST.get('myfile'))
-            addquestion.save()
-            messages.success(request, 'Question added successfully.')
-            return redirect(request, "addquestion.html")
-        else:
-            messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "addquestion.html")
-    else:
-        form = FormAddQuestion(None)
-        return render(request, 'addquestion.html', context)
+def viewquestion(request, userid):
+    
+
+
+
+
 
 def replyquestion(request, discussioncommentid):
     discuss = Discussion.objects.raw('SELECT * FROM discussionquestion')    
@@ -469,7 +512,7 @@ def getquizzesinfo(userid):
 #add userid find user name function
 
 def quizzes(request, userid):
-    quiz = getdiscussionboardinfo(userid)
+    quiz = getquizzesinfo(userid)
     quiz['userid'] = userid
     return render(request, "quizzes.html", quiz)
 

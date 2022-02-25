@@ -31,7 +31,7 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a onclick="discussionboard()">Discussion Board</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button><a onclick="grades()">Grades</button></a>
@@ -49,20 +49,11 @@
                 function user() {
                     alert("You have logged in into the account.");
                 }
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
-                function discussionboard() {
-                    window.location = "http://127.0.0.1:8000/discussionboard";
-                }
                 function grades() {
                     window.location = "http://127.0.0.1:8000/grades";
                 }
                 function quizzes() {
                     window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
                 }
             </script>
 
@@ -75,58 +66,57 @@
             <br>
             <br>
             <br>
-            
+
             <p>
-                <img src="{% static 'img/courselist.png' %}" alt="Course_icon"
+                <img src="{% static 'img/delete.png' %}" alt="Delete_icon"
                 style="float:left;width:50px;height:50px;">
             </p>
             
-            <p class="p3">Computer Architecture and Network</p>
-            
+            <p class="p3">Delete Question</p>
+
             <br>
 
-            <form action="addmaterials" method="post">
+            <p class="p4">Choose the discussion question that you may delete.</p>
+
+            <br>
+
+            <script LANGUAGE="JavaScript">
+                function confirmSubmit()
+                {
+                var agree=confirm("Are you sure you wish to delete this question?");
+                if (agree)
+                 return true ;
+                else
+                 return false ;
+                }
+            </script>
+
+            <form action="deletequestion" method="post">
                 {% csrf_token %}
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
-                <p class="p5">Title:
-                <input type="text" id="title" name="title" size="80"/>
+                <p class="p5">Question:
+
+                <select name="question" id="question">
+                    {% for i in discuss %}
+                    <option>{{i.question}}</option>
+                    {% endfor %}
+                </select>
+
                 <br>
-                <br>
-            
-                <p class="p5">Chapter:
-                    <input type="text" id="coursetopic" name="coursetopic" size="80"/>
                 <br>
                 <br>
 
-                <body>
-                    <p class="p5">Description:</p>
-                    <textarea id="description" name="description" rows="5" cols="80"></textarea>
-                </body>
-
-                <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp -->
-                <p>
-                    <input type="file" id="myfile" name="myfile">
-                </p>
-
+                <br>
                 <br>
                 <br>
             
                 <div class=buttoncontainer>
-                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                    <INPUT class="submit" TYPE='submit' value='Submit' name='submit' onClick='return confirmSubmit()'>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+                    <INPUT TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'>
+                    <!-- <button type="submit" class="submit">Delete</a>-->
+                    <!--<input type="submit" class="submit" value="Delete"></input>-->
                 </div>
-
-                <script LANGUAGE="JavaScript">
-                    function confirmSubmit()
-                    {
-                    var agree=confirm("Are you sure you wish to add this material?");
-                    if (agree)
-                     return true ;
-                    else
-                     return false ;
-                    }
-                </script>
 
             </form>
 

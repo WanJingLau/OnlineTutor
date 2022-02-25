@@ -17,7 +17,6 @@
                 <p class="p1">E-Tutor</p>
                 <li><a onclick="user()">Register</a></li>
                 <li><a onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
                 <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
@@ -49,20 +48,11 @@
                 function user() {
                     alert("You have logged in into the account.");
                 }
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
-                function discussionboard() {
-                    window.location = "http://127.0.0.1:8000/discussionboard";
-                }
                 function grades() {
                     window.location = "http://127.0.0.1:8000/grades";
                 }
                 function quizzes() {
                     window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
                 }
             </script>
 
@@ -93,22 +83,10 @@
                 <input type="text" id="question" name="question" size="80"/>
                 <br>
 
-                <!-- Oh Wen Chi:https://www.youtube.com/watch?v=A1xJngtmXPc -->
-                <head>
-                    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-                    <script>tinymce.init({ selector:'textarea' });</script>
-                </head>
                 <body>
-                    <p class="p5" id="description" name="description">Description:</p>
-                    <textarea></textarea>
+                    <p class="p5">Description:</p>
+                    <textarea id="description" name="description" rows="5" cols="80"></textarea>
                 </body>
-
-                <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp -->
-                <p>
-                    <form action="/action_page.php">
-                    <input type="file" id="myfile" name="myfile"><br><br>
-                    </form>
-                </p>
 
                 <br>
                 <br>
