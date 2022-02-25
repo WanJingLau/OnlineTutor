@@ -2,10 +2,8 @@ from django.core.mail import send_mail
 from django.db import connection
 from django.shortcuts import render, redirect
 from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Quiz, Todolist, User, Userrole, Role, Quizquestion
-from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormEditMaterial, FormAddQuestion, FormEditQuestion, FormReplyQuestion, FormEditcomment, FormQuestionselection, FormAddQuiz, FormEditQuiz, FormQuizquestion
+from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormAddQuestion, FormReplyQuestion, FormQuestionselection, FormAddQuiz, FormQuizquestion
 from django.contrib import messages
-from django.http import FileResponse, HttpResponseRedirect
-import os
 
 # Create your views here.
 # request -> response
@@ -376,37 +374,41 @@ def discussionquestion(request, userid):
         #add question
         if request.POST.get('add'):
             return redirect(request, "addquestion.html")
-        #edit question
-        elif request.POST.get('editquestion'):
-            discussionid = request.POST.get('id')
-            return redirect(request, "editquestion.html", discussionid)
         #delete question
         elif request.POST.get('deletequestion'):
             deletequestion(request, userid)
+            return redirect(request, "deletequestion.html")
         #reply question
         elif request.POST.get('reply'):
             return redirect(request, "replyquestion.html")
-        #edit comment
-        elif request.POST.get('editcomment'):
-            discussionid = request.POST.get('id')
-            return redirect(request, "editcomment.html", discussionid)
         #delete comment
         elif request.POST.get('deletecomment'):
             deletecomment(request, userid)
+            return redirect(request, "deletecomment.html")
     else:
         form = FormUser(None)
     context['form'] = form
     return render(request, 'discussionquestion.html', context)
 
 def deletequestion(request, userid):
-    id=request.POST.get('id')
-    Discussion.objects.filter(id=id, userid = User.objects.get(id=userid)).update(isactive = 0)
+    discuss = Discussion.objects.raw('SELECT * FROM discussionquestion')
+    context = {'discuss' : discuss, 'userid': userid}
+    if request.method == 'POST':
+        Discussion.objects.filter(title=request.POST.get('deletequestion').update(isactive = 0))
+    else:
+        return render(request, 'deletequestion.html', context)
 
 def deletecomment(request, userid):
-    id=request.POST.get('id')
-    Discussioncomment.objects.filter(id=id, userid = User.objects.get(id=userid)).update(isactive = 0)
+    discuss = Discussion.objects.raw('SELECT * FROM discussionquestion')
+    context = {'discuss' : discuss, 'userid': userid}
+    if request.method == 'POST':
+        Discussion.objects.filter(title=request.POST.get('deletecomment').update(isactive = 0))
+    else:
+        return render(request, 'deletecomment.html', context)
 
 def addquestion(request, discussionid):
+    discuss = Discussion.objects.raw('SELECT * FROM discussionquestion')    
+    context = {'discuss' : discuss}
     if request.method == 'POST':
         form = FormAddQuestion(request.POST)
         if form.is_valid():
@@ -419,23 +421,11 @@ def addquestion(request, discussionid):
         return render(request, "addquestion.html")
     else:
         form = FormAddQuestion(None)
-        return render(request, 'addquestion.html')
-
-def editquestion(request, discussionid):
-    context = Discussion.objects.get(id=discussionid)
-    if request.method == 'POST':
-        form = FormEditQuestion(request.POST)
-        if form.is_valid():
-            Discussion.objects.filter(id = Discussion.objects.get(id = discussionid)).update(question = request.POST.get('question'), description = request.POST.get('description'), file1 = request.POST.get('myfile'))
-            messages.success(request, 'Question edited successfully.')
-        else:
-            messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "editquestion.html")
-    else:
-        form = FormEditQuestion(None)
-        return render(request, 'editquestion.html', context)
+        return render(request, 'addquestion.html', context)
 
 def replyquestion(request, discussioncommentid):
+    discuss = Discussion.objects.raw('SELECT * FROM discussionquestion')    
+    context = {'discuss' : discuss}
     if request.method == 'POST':
         form = FormReplyQuestion(request.POST)
         if form.is_valid():
@@ -448,21 +438,7 @@ def replyquestion(request, discussioncommentid):
         return render(request, "replyquestion.html")
     else:
         form = FormReplyQuestion(None)
-        return render(request, 'replyquestion.html')
-
-def editcomment(request, discussioncommentid):
-    if request.method == 'POST':
-        form = FormEditcomment(request.POST)
-        if form.is_valid():
-            Discussioncomment.objects.filter(id = Discussioncomment.objects.get(id=discussioncommentid)).update(comment = request.POST.get('comment'), file1 = request.POST.get('myfile'))
-            messages.success(request, 'Comment edited successfully.')
-            return redirect(request, "editcomment.html")
-        else:
-            messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "editcomment.html")
-    else:
-        form = FormEditcomment(None)
-        return render(request, 'editcomment.html')
+        return render(request, 'replyquestion.html', context)
 
 def grades(request):
     return render(request, "grades.html")
@@ -541,32 +517,6 @@ def addquizquestion(request):
     else:
         form = FormQuizquestion(None)
     return render(request, 'addquizquestion.html', { 'form' : form })
-
-def editquiz(request, quizid):
-    context = Quiz.objects.get(id=quizid)
-    if request.method == 'POST':
-        form = FormEditQuiz(request.POST)
-        if form.is_valid():
-            Quiz.objects.filter(id = Quiz.objects.get(id = quizid)).update(title = request.POST.get('title'), duration = request.POST.get('duration'), attempt = request.POST.get('attempt'))
-            messages.success(request, 'Quiz edited successfully.')
-        else:
-            messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "editquiz.html")
-    else:
-        form = FormEditQuiz(None)
-        return render(request, 'editquiz.html', context)
-
-def editquizquestion(request):
-    if request.method == 'POST':
-        form = FormQuizquestion(request.POST)
-        question = request.POST.get('question')
-        marks = request.POST.get('marks')
-        add = editquizquestion(question=question,marks=marks)
-        add.save()
-        return render(request,"editquizquestion.html",{'add':add})
-    else:
-        form = FormQuizquestion(None)
-    return render(request, 'editquizquestion.html', { 'form' : form })
 
 def deletequiz(request, userid):
     id=request.POST.get('id')
