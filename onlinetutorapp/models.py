@@ -91,11 +91,11 @@ class CaptchaCaptchastore(models.Model):
 
 
 class Coursematerial(models.Model):
-    coursetopicid = models.ForeignKey('Coursetopic', models.DO_NOTHING, db_column='coursetopicid')
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=255)
-    file = models.TextField()
-    isactive = models.IntegerField(blank=True, null=True)
+    file = models.TextField(blank=True, null=True)
+    isactive = models.IntegerField(default="1")
+    coursetopic = models.CharField(max_length=255)
 
     class Meta:
         managed = False
@@ -103,33 +103,19 @@ class Coursematerial(models.Model):
 
 
 class Coursesubject(models.Model):
-    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     name = models.CharField(max_length=255)
-    isactive = models.IntegerField(blank=True, null=True)
+    isactive = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'coursesubject'
 
 
-class Coursetopic(models.Model):
-    id = models.OneToOneField(Coursesubject, models.DO_NOTHING, db_column='id', primary_key=True)
-    coursesubject = models.IntegerField()
-    name = models.CharField(max_length=100)
-    title = models.CharField(max_length=100)
-    isactive = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'coursetopic'
-
-
 class Discussion(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
-    coursetopicid = models.ForeignKey(Coursetopic, models.DO_NOTHING, db_column='coursetopicid')
     question = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
-    file1 = models.TextField(blank=True, null=True)
+    file1 = models.TextField()
     isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -205,12 +191,21 @@ class Helpdesk(models.Model):
 
 class Homepage(models.Model):
     title = models.CharField(max_length=255)
-    file1 = models.TextField()
-    file2 = models.TextField()
+    file1 = models.CharField(max_length=255)
+    file2 = models.CharField(max_length=255)
 
     class Meta:
         managed = False
         db_table = 'homepage'
+
+
+class OnlinetutorappDjangomigrations(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    app = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'onlinetutorapp_djangomigrations'
 
 
 class PostOfficeAttachment(models.Model):
@@ -306,7 +301,6 @@ class Questionselection(models.Model):
 
 
 class Quiz(models.Model):
-    coursetopicid = models.ForeignKey(Coursetopic, models.DO_NOTHING, db_column='coursetopicid')
     title = models.CharField(max_length=100)
     duration = models.TimeField()
     attempt = models.IntegerField()
@@ -340,8 +334,8 @@ class Todolist(models.Model):
     userid = models.ForeignKey('User', models.DO_NOTHING, db_column='userid')
     task = models.CharField(max_length=50)
     timeend = models.DateTimeField()
-    status = models.IntegerField(default=0)
-    isactive = models.IntegerField(blank=True, null=True, default=1)
+    status = models.IntegerField()
+    isactive = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -359,7 +353,7 @@ class User(models.Model):
         passw = passw + random.choice(digits)
     x = passw
     password = models.CharField(max_length=100, default=x)
-    isactive = models.IntegerField(blank=True, null=True, default=1)
+    isactive = models.IntegerField(blank=True, null=True, default="1")
 
     class Meta:
         managed = False

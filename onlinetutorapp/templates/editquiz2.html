@@ -1,13 +1,13 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-        {% block content %}
+
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-        {% include 'messages.html' %}
+
         <body>
         <div>
 
@@ -15,10 +15,9 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a onclick="user()">Register</a></li>
-                <li><a onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
-                <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
+                <li><a href="/register">Register</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/">Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
@@ -27,28 +26,25 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
+                <button onclick="courselist()">Course List</button>
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a onclick="discussionboard()">Discussion Board</button></a>
+                <button onclick="discussionboard()">Discussion Board</button>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button><a onclick="grades()">Grades</button></a>
+                <button onclick="grades()">Grades</button>
 
+                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button><a onclick="quizzes()">Quizzes</button></a>
+                <button onclick="quizzes()">Quizzes</button>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
+                <button onclick="todolist()">To-Do List</button>
 
             </div>
 
             <script type = "text/javascript">
-                // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
-                function user() {
-                    alert("You have logged in into the account.");
-                }
                 function courselist() {
                     window.location = "http://127.0.0.1:8000/courselist";
                 }
@@ -75,30 +71,28 @@
             <br>
             <br>
             <br>
-
             <p>
-                <img src="{% static 'img/courselist.png' %}" alt="Course_icon"
-                style="float:left;width:50px;height:50px;">
+                <img src="{% static 'img/quiz.png' %}" alt="Quiz_icon"
+                style="float:left;width:40px;height:40px;">
             </p>
             
-            <p class="p3">Course List</p>
+            <p class="p3">Quizzes</p>
+            
+             <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
+             <br>
+             <p class="p4">Choose your question to edit or delete it.</p>
+             <br>
+             <br>
+            <!-- Oh Wen Chi:https://www.w3schools.com/html/html_iframe.asp -->
+             <p>
+                <iframe src="quizquestion.htm" height="300" width="700" title="Quiz Question"></iframe>
+             </p>
 
-            <br>
             <br>
             <br>
             
-            <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{name}}
-                    <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
-                    <button><a style="text-decoration: none; color:black; float: right" href="{% url 'coursepage' userid %}"@{{userid}}> View</button></a>
-            </div>
-
-            <script type = "text/javascript">
-                function coursepage() {
-                    window.location = "http://127.0.0.1:8000/coursepage";
-                }
-            </script>
-        
-        </div>
+            <button type="cancel" class="button">Cancel</a>
+            <button type="submit" class="submit">Submit</a>
+            
         </body>
-        {% endblock content %}
     </html>
