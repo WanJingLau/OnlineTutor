@@ -8,6 +8,7 @@
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             {% block javascript %}
+            <!-- Lau Wan Jing:https://stackoverflow.com/questions/6003884/how-do-i-check-for-null-values-in-javascript -->
             <script type="text/javascript">
                 window.addEventListener('load', function(){
                     ("{{todolists}}")!= "None" ?
@@ -21,7 +22,7 @@
         {% include 'messages.html' %}
         
         <div>
-            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
+            <!-- Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color -->
 
             <ul>
                 <p class="p1">E-Tutor</p>
