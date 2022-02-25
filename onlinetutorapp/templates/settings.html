@@ -7,8 +7,9 @@
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-        {% include 'messages.html' %}
+
         <body>
+            {% include 'messages.html' %}
         <div>
 
             <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
@@ -17,7 +18,6 @@
                 <p class="p1">E-Tutor</p>
                 <li><a onclick="user()">Register</a></li>
                 <li><a onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
                 <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
@@ -65,10 +65,6 @@
                 function quizzes() {
                     //Lau Wan Jing: need to redirect to quizzes user
                     window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    //Lau Wan Jing: need to redirect to todolist user
-                    window.location = "http://127.0.0.1:8000/todolist";
                 }
             </script>
 
