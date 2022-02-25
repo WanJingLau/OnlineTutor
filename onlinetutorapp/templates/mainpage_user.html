@@ -34,7 +34,7 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button onclick="grades()">Grades</button>

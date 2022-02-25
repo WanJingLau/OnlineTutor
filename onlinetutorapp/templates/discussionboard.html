@@ -102,28 +102,14 @@
                     </script> -->
                 </p>
 
-                {% for i in list %}
+                <br>
 
-                    <br>
-
-                    <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp 
-                    <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p4">How to convert binary numbers to decimal numbers?
-                         Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp 
-                        <button><a style="text-decoration: none; color:black; float: right" href="{% url 'discussionquestion' userid %}"@{{userid}}> View</button></a>
-                    </div> 
-
-                    <div style="border: 1px solid black; background: lightgrey;">
-                        <p align="right">
-                        <input type="button" value="View" href="{% url 'discussionquestion userid %}"@{{userid}}></button>
-                        <input type="text" name="id" hidden value={{i.0}}>
-                        </p>
-                    </div> -->
-
-                    <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{question}}
-                        <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
+                {% for d in discuss %}
+                    <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{d.2}}
+                        <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp 
+                        need to modify into (d.0)-->
                         <button><a style="text-decoration: none; color:black; float: right" href="{% url 'discussionquestion' userid %}"@{{userid}}> View</button></a>
                     </div>
-
                 {% endfor %}
         
             </form>

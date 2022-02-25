@@ -22,9 +22,9 @@ urlpatterns = [
     #editmaterials
     path('<int:coursematerialid>/editmaterials', views.editmaterials, name="editmaterials"),
     #deletematerials
-    path('deletematerials', views.deletematerials, name="deletematerials"),
+    path('<int:userid>/deletematerials', views.deletematerials, name="deletematerials"),
     #discussionboard
-    path('discussionboard', views.discussionboard, name="discussionboard"),
+    path('<int:userid>/discussionboard', views.discussionboard, name="discussionboard"),
     #discussionquestion
     path('discussionquestion', views.discussionquestion, name="discussionquestion"),
     #addquestion
@@ -35,4 +35,8 @@ urlpatterns = [
     path('replyquestion', views.replyquestion, name="replyquestion"),
     #editcomment
     path('editcomment', views.editcomment, name="editcomment"),
+    #addquiz
+    path('addquiz', views.addquiz, name="addquiz"),
+    #editquiz
+    path('editquiz', views.editquiz, name="editquiz"),
 ]

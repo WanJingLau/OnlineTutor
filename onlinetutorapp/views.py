@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Quiz, Todolist, User, Userrole, Role, Quizquestion
 from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormEditMaterial, FormAddQuestion, FormEditQuestion, FormReplyQuestion, FormEditcomment, FormQuestionselection, FormAddQuiz, FormEditQuiz, FormQuizquestion
 from django.contrib import messages
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponseRedirect
 import os
 
 # Create your views here.
@@ -324,17 +324,16 @@ def coursepage(request, userid):
     context = {'userid' : userid, 'roleid' : userrole.roleid_id, 'list' : list}
     if request.method == 'POST':
         if request.POST.get('edit'):
-            #coursematerialid = request.POST.get('id')
+            coursematerialid = request.POST.get('i.0')
             return redirect(request, "editmaterials.html", coursematerialid)
-        elif request.POST.get('Delete Materials'):
-            coursematerialid = request.POST.get('id')
-            return redirect(request, "deletematerials.html", coursematerialid)
+        elif request.POST.get('delete'):
+            #coursematerialid = request.POST.get('id')
+            deletematerials(request)
+            return HttpResponseRedirect(request, "deletematerials.html")
         elif request.POST.get('Add Materials'):
             return redirect(request, "addmaterials.html")
     else:
-        form = FormUser(None)
-    context['form'] = form
-    return render(request, 'coursepage.html', context)
+        return render(request, "coursepage.html", context)
 
 def addmaterials(request, coursesubjectid):
     if request.method == 'POST':
@@ -366,14 +365,23 @@ def editmaterials(request, coursematerialid):
         return render(request, 'editmaterials.html', context)
 
 def deletematerials(request, userid):
-    id=request.POST.get('id')
-    Coursematerial.objects.filter(id=id, userid = User.objects.get(id=userid)).update(isactive = 0)
+    material = Coursematerial.objects.raw('SELECT * FROM coursematerial')
+    context = {'material' : material, 'userid': userid}
+    if request.method == 'POST':
+        Coursematerial.objects.filter(title=request.POST.get('title').update(isactive = 0))
+    else:
+        return render(request, 'deletematerials.html', context)
 
-#get question from discussion table
 def getdiscussionboardinfo(userid):
-    info = Discussion.objects.get(id=1)
-    context = {'question': info.question, 'userid': userid}
-    return context
+    #Lau Wan Jing: https://stackoverflow.com/a/61908629 -- fetch all data from disucssion table
+    cursor = connection.cursor()
+    query = "Select * from discussion WHERE isactive=1"
+    cursor.execute(query)
+    list = [list for list in cursor.fetchall()]
+    list = [(list), userid]
+    return list
+
+#add userid find user name function
 
 def discussionboard(request, userid):
     discuss = getdiscussionboardinfo(userid)
@@ -499,8 +507,20 @@ def checkanswer(request):
 def admingrades(request):
     return render(request, "admingrades.html")
 
-def quizzes(request):
-    return render(request, "quizzes.html")
+def getquizzesinfo(userid):
+    cursor = connection.cursor()
+    query = "Select * from quiz WHERE isactive=1"
+    cursor.execute(query)
+    list = [list for list in cursor.fetchall()]
+    list = [(list), userid]
+    return list
+
+#add userid find user name function
+
+def quizzes(request, userid):
+    quiz = getdiscussionboardinfo(userid)
+    quiz['userid'] = userid
+    return render(request, "quizzes.html", quiz)
 
 def attendquiz(request):
     if request.method == 'POST':
@@ -514,7 +534,7 @@ def attendquiz(request):
         form = FormQuizquestion(None)
     return render(request, 'attendquiz.html', { 'form' : form })
 
-def adminquizzes(request):
+#def adminquizzes(request):
     return render(request, "adminquizzes.html")
 
 def addquiz(request, quizid):

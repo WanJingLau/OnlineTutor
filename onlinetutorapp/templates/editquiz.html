@@ -94,43 +94,44 @@
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
                 <p class="p5">Quiz Title:
-                <input type="text" id="title" name="title" size="80"/>
-                <br>
+                    <input type="text" id="title" name="title" size="80"/>
+                    <br>
     
-                <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-                <p>
-                    <tr><th><p class="p5"><label for="id_duration_by">Select Duration:</label>&ensp;</th><td><select id="id_duration_by" name="duration_by" required>
-                        <option value="15 minutes" selected="15 minutes">15 minutes</option>
-                        <option value="30 minutes">30 minutes</option>
-                        <option value="1 hour">1 hour</option>
-                        </select></td></tr>
-                </p>
-
-                <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-                <p>
-                    <tr><th><p class="p5"><label for="id_attempt_by">Select Attempt times:</label>&ensp;</th><td><select id="id_attempt_by" name="attempt_by" required>
-                        <option value="1 time" selected="1 time">1 time</option>
-                        <option value="2 times">2 times</option>
-                        <option value="3 times">3 times</option>
-                        </select></td></tr>
-                </p>
-            
-                <br>
-                <br>
-            
-                <div class=buttoncontainer>
-                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                    
-                    <button type="submit" class="submit" name="submit">Submit</a>
-                    <button type="submit" class="submit" button onclick="editquizquestion()">Edit Question</button></a>
-                    
-                    <script type = "text/javascript">
-                        function editquizquestion() {
-                            window.location = "http://127.0.0.1:8000/editquizquestion";
-                        }
-                    </script>
-                </div>
+                    <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
+                    <p class="p5">Duration:
+                        <select >
+                        <option selected="selected" disabled>Duration:</option>
+                        <option value="{{duration}}">{{duration}}</option>
+                        </select>
+                    </p>
+    
+                    <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
+                    <p class="p5">Attempt times:
+                        <select >
+                        <option selected="selected" disabled>Attempt times:</option>
+                        <option value="{{attempt}}">{{attempt}}</option>
+                        </select>
+                    </p>
+                
+                    <br>
+                    <br>
+                
+                    <div class=buttoncontainer>
+                        <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+    
+                        <button type="submit" class="btn btn-success">Submit</button></a>
+                        <button type="submit" class="submit" button onclick="addquizquestion()">Add Question</button></a>
+                        
+                        <script type = "text/javascript">
+                            function addquizquestion() {
+                                window.location = "http://127.0.0.1:8000/addquizquestion";
+                            }
+                        </script>
+                    </div>
+                
+                </form>
         
-        </div>
+        </div>    
         </body>
+        {% endblock content %}
     </html>

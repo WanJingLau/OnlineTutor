@@ -87,49 +87,51 @@
 
             <p class="p4"> Come to join quizzes!</p>
 
-                <br>
+            {% if roleid == 1 or 2 %}
+            <p class="p4"> Choose the quizzes to edit or delete.</p>
+            {% endif %}
 
-                <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-                <p>
-                    <tr><th><p class="p5"><label for="id_subject_by">Select Subject:</label>&ensp;</th><td><select id="id_subject_by" name="subject_by" required>
-                        <option value="Computer Architecture and Network" selected="Computer Architecture and Network">Computer Architecture and Network</option>
-                        </select></td></tr>
-                </p>
+            <p class="p4"> Computer Architecture and Network.</p>
 
-                <br>
+            <button onclick="addquiz()">Add Quiz</button>
 
-                <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
-                <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">Quiz Chapter 1
-                    <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
-					<button onclick="attendquiz()" style="float: right;">Attend</button>
-
-                    <script type = "text/javascript">
-                        function attendquiz() {
-                            window.location = "http://127.0.0.1:8000/attendquiz";
-                        }
-                    </script>
-                </div>
-
-                <br>
-                
-                <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">Quiz Chapter 2
-                    <button onclick="attendquiz()" style="float: right;">Attend</button>
-                </div>
-
-                <br>
-                
-                <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">Quiz Chapter 3
-					<button onclick="attendquiz()" style="float: right;">Attend</button>
-                </div>
-
-                <br>
-                
-                <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">Quiz Chapter 4
-					<button onclick="attendquiz()" style="float: right;">Attend</button>
-                </div>
+            <script type = "text/javascript">
+                function addquiz() {
+                    window.location = "http://127.0.0.1:8000/addquiz";
+                }
+            	</script>
             
-                <br>
-        
-        </div>
+            <br>
+
+            <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
+            <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{quiz title}}
+                <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
+				<button onclick="attendquiz()" style="float: right;">Attend</button> 
+
+                <script type = "text/javascript">
+                    function attendquiz() {
+                        window.location = "http://127.0.0.1:8000/attendquiz";
+                    }
+                </script>
+            </div>
+
+            {% for q in quiz %}
+            {% if roleid == 1 or 2 %}
+            <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{title}}
+                <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
+                <button onclick="editquiz()" style="float: right;">Edit</button>
+                <button onclick="deletequiz()" style="float: right;">Delete</button>
+
+                <script type = "text/javascript">
+                    function editquiz() {
+                        window.location = "http://127.0.0.1:8000/editquiz";
+                    }
+                </script>
+            </div>
+            {% endif %}
+            {% endfor %}
+                
+        </div>    
         </body>
+        {% endblock content %}
     </html>
