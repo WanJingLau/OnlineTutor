@@ -1,5 +1,5 @@
 from django import forms
-from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Userrole
+from onlinetutorapp.models import Helpdesk, Homepage, Todolist, User, Coursematerial, Discussion, Discussioncomment, Questionselection, Quiz, Quizquestion, Userquizselection
 from captcha.fields import CaptchaField
 
 #Lau Wan Jing: https://www.etutorialspoint.com/index.php/255-how-to-insert-data-in-mysql-database-from-an-html-form-using-django
@@ -59,3 +59,65 @@ class FormHomePage(forms.ModelForm):
     class Meta:
         model= Homepage
         fields= ["title","file1","file2"]
+
+class FormAddMaterial(forms.ModelForm):
+    class Meta:
+        model= Coursematerial
+        fields= ["title","description","file","coursetopic"]
+
+class FormEditMaterial(forms.ModelForm):
+    class Meta:
+        model= Coursematerial
+        fields= ["title","description","file","coursetopic"]
+
+class FormAddQuestion(forms.ModelForm):
+    class Meta:
+        model= Discussion
+        fields= ["question","description","file1"]
+
+class FormEditQuestion(forms.ModelForm):
+    class Meta:
+        model= Discussion
+        fields= ["question","description","file1"]
+
+class FormReplyQuestion(forms.ModelForm):
+    class Meta:
+        model= Discussioncomment
+        fields= ["comment","file1"]
+
+class FormEditcomment(forms.ModelForm):
+    class Meta:
+        model= Discussioncomment
+        fields= ["comment","file1"]
+
+class FormQuestionselection(forms.ModelForm):
+    class Meta:
+        model= Questionselection
+        fields= ["selection","answer"]
+
+class FormAddQuiz(forms.ModelForm):
+    class Meta:
+        model= Quiz
+        fields= ["title","duration","attempt"]
+
+class FormEditQuiz(forms.ModelForm):
+    class Meta:
+        model= Quiz
+        fields= ["title","duration","attempt"]
+
+class FormQuizquestion(forms.ModelForm):
+    class Meta:
+        model= Quizquestion
+        fields= ["question","marks"]
+
+class FormDeleteQuiz(forms.ModelForm):
+    class Meta:
+        model= Quizquestion
+        fields= ["question","marks"]
+
+class FormUserquizselection(forms.ModelForm):
+    class Meta:
+        model= Userquizselection
+        fields= ["answercorrect","attemptcount","score"]
+
+

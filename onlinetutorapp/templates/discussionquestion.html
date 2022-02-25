@@ -1,13 +1,13 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-
+        {% block content %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-
+        {% include 'messages.html' %}
         <body>
         <div>
 
@@ -15,9 +15,10 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/">Home Page</a></li>
+                <li><a onclick="user()">Register</a></li>
+                <li><a onclick="user()">Login</a></li>
+                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
+                <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
@@ -26,25 +27,28 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button onclick="courselist()">Course List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button onclick="grades()">Grades</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'grades' userid %}"@{{userid}}>Grades</button></a>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button onclick="quizzes()">Quizzes</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
 
             </div>
 
             <script type = "text/javascript">
+                // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
+                function user() {
+                    alert("You have logged in into the account.");
+                }
                 function courselist() {
                     window.location = "http://127.0.0.1:8000/courselist";
                 }
@@ -80,89 +84,109 @@
             <p class="p3">Discussion Board</p>
 
             <br>
+
+            <form action="discussionquestion" method="post">
+                {% csrf_token %}
             
-            <p>
-                <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_searchbar.asp -->
-                <input type="text" placeholder="Search..." size="80"/></a>
+                <p>
+                    <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_searchbar.asp -->
+                    <input type="text" placeholder="Search..." size="80"/></a>
 
-                <button onclick="discussion()">Search</button>
-                <button onclick="addquestion()">Add Question</button>
-                <script type = "text/javascript">
-                    function addquestion() {
-                        window.location = "http://127.0.0.1:8000/addquestion";
-                    }
-                </script>
-            </p>
+                    <button onclick="discussion()">Search</button>
+                    <p align="right">
+                        <input type="button" value="Add Question" href="{% url 'addquestion' userid %}"@{{userid}}></button>
+                        <input type="text" name="add" hidden value={{i.0}}>
+                        </p>
+                    <!--<script type = "text/javascript">
+                        function addquestion() {
+                            window.location = "http://127.0.0.1:8000/addquestion";
+                        }
+                    </script> -->
+                </p>
 
-            <style>                
-            .container3 {
-                border: 1px solid #000000;
-                background-color: #D3D3D3;
-                border-radius: 5px;
-                padding: 10px;
-                margin: 10px 0;
-            }
+                <style>                
+                .container3 {
+                    border: 1px solid #000000;
+                    background-color: #D3D3D3;
+                    border-radius: 5px;
+                    padding: 10px;
+                    margin: 10px 0;
+                }
     
-            .container3::after {
-                content: "";
-                clear: both;
-                display: table;
-            }
+                .container3::after {
+                    content: "";
+                    clear: both;
+                    display: table;
+                }
             
-            .container4 {
-                border: 1px solid #000000;
-                background-color: #ADD8E6;
-                border-radius: 5px;
-                padding: 10px;
-                margin: 10px 0;
-            }
+                .container4 {
+                    border: 1px solid #000000;
+                    background-color: #ADD8E6;
+                    border-radius: 5px;
+                    padding: 10px;
+                    margin: 10px 0;
+                }
     
-            .container4::after {
-                content: "";
-                clear: both;
-                display: table;
-            }  
-            </style>
+                .container4::after {
+                    content: "";
+                    clear: both;
+                    display: table;
+                }  
+                </style>
 
-            <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
-            <div class="container3">
-                <button onclick="deletequestion()" style="float: right;">Delete</button>
-                <button onclick="editquestion()" style="float: right;">Edit</button>    
-                <p>Wen Chi: How to convert binary numbers to decimal numbers?</p>    
-                <img src="{% static 'img/questionbinary.jpg' %}" alt="questionbinary_icon" style="float:left;width:150px;height:90px;"><br><br><br></p>
-                <p><button onclick="replyquestion()" style="float: right;">Reply</button></p> 
+                <script LANGUAGE="JavaScript">
+                    function confirmSubmit()
+                    {
+                    var agree=confirm("Are you sure you wish to delete this question?");
+                    if (agree)
+                    return true ;
+                    else
+                    return false ;
+                    }
+                </script>
+
+                <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
+                <div class="container3">
+                    <!-- <button onclick="deletequestion()" style="float: right;">Delete</button>
+                    <button onclick="editquestion()" style="float: right;">Edit</button> -->
+                    <p align="right">
+                        <input type="button" value="Edit" href="{% url 'editquestion' userid %}"@{{userid}}></button>
+                        <input type="text" name="editquestion" hidden value={{i.0}}> 
+                        <INPUT TYPE='submit' value='Delete' name='deletequestion' onClick='return confirmSubmit()'>
+                    <p>Wen Chi: How to convert binary numbers to decimal numbers?</p>    
+                    <img src="{% static 'img/questionbinary.jpg' %}" alt="questionbinary_icon" style="float:left;width:150px;height:90px;"><br><br><br></p>
+                    <!--<button onclick="replyquestion()" style="float: right;">Reply</button>-->
+                    <p align="right">
+                    <input type="button" value="Reply" href="{% url 'replyquestion' userid %}"@{{userid}}></button>
+                    <input type="text" name="reply" hidden value={{i.0}}></p> 
+                </div>
+
+                <script LANGUAGE="JavaScript">
+                    function confirmSubmit()
+                    {
+                    var agree=confirm("Are you sure you wish to delete this comment?");
+                    if (agree)
+                    return true ;
+                    else
+                    return false ;
+                    }
+                </script>
+
+                <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
+                <div class="container4">
+                    <!--<button onclick="deletecomment()" style="float: right;">Delete</button>
+                    <button onclick="editcomment()" style="float: right;">Edit</button>-->
+                    <p align="right">
+                        <input type="button" value="Edit" href="{% url 'editcomment' userid %}"@{{userid}}></button>
+                        <input type="text" name="editcomment" hidden value={{i.0}}> 
+                        <INPUT TYPE='submit' value='Delete' name='deletecomment' onClick='return confirmSubmit()'>
+                    <p class="p5">Reply:</p><p class="p4">Wanjing: Hi, here the table of converting binary numbers to decimal numbers.</p>
+                    <img src="{% static 'img/answerbinary.jpg' %}" alt="answerbinary_icon" style="float:left;width:280px;height:130px;">
+                </div>
+            
+            </form>
+                
             </div>
-
-            <p>
-                <script type = "text/javascript">
-                    function replyquestion() {
-                        window.location = "http://127.0.0.1:8000/replyquestion";
-                    }
-                </script>
-
-                <script type = "text/javascript">
-                    function editquestion() {
-                        window.location = "http://127.0.0.1:8000/editquestion";
-                    }
-                </script>
-            </p>
-
-            <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
-            <div class="container4">
-                <button onclick="deletecomment()" style="float: right;">Delete</button>
-                <button onclick="editcomment()" style="float: right;">Edit</button>
-                <p class="p5">Reply:</p><p class="p4">Wanjing: Hi, here the table of converting binary numbers to decimal numbers.</p>
-                <img src="{% static 'img/answerbinary.jpg' %}" alt="answerbinary_icon" style="float:left;width:280px;height:130px;">
-            </div>
-
-            <p>
-                <script type = "text/javascript">
-                    function editcomment() {
-                        window.location = "http://127.0.0.1:8000/editcomment";
-                    }
-                </script>
-            </p>
-        
-        </div>
         </body>
+        {% endblock content %}
     </html>

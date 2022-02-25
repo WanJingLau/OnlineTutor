@@ -27,7 +27,7 @@
                 <p class="p1">E-Tutor</p>
                 <li><a onclick="user()">Register</a></li>
                 <li><a onclick="user()">Login</a></li>
-                <li><a>Home Page</a></li>
+                <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
@@ -36,11 +36,11 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button onclick="courselist()">Course List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button onclick="grades()">Grades</button>

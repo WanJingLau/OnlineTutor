@@ -1,13 +1,13 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-
+        {% block content %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-
+        {% include 'messages.html' %}
         <body>
         <div>
 
@@ -15,9 +15,10 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/">Home Page</a></li>
+                <li><a onclick="user()">Register</a></li>
+                <li><a onclick="user()">Login</a></li>
+                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
+                <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
@@ -26,25 +27,28 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button onclick="courselist()">Course List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button onclick="grades()">Grades</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'grades' userid %}"@{{userid}}>Grades</button></a>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button onclick="quizzes()">Quizzes</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
 
             </div>
 
             <script type = "text/javascript">
+                // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
+                function user() {
+                    alert("You have logged in into the account.");
+                }
                 function courselist() {
                     window.location = "http://127.0.0.1:8000/courselist";
                 }
@@ -80,69 +84,37 @@
             <p class="p3">Discussion Board</p>
 
             <br>
+
+            <form action="discussionboard" method="post">
+                {% csrf_token %}
             
-            <p>
-                <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_searchbar.asp -->
-                <input type="text" placeholder="Search..." size="80"/></a>
+                <p>
+                    <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_searchbar.asp -->
+                    <input type="text" placeholder="Search..." size="80"/></a>
 
-                <button onclick="discussion()">Search</button>
-                <button onclick="addquestion()">Add Question</button>
-                <script type = "text/javascript">
-                    function addquestion() {
-                        window.location = "http://127.0.0.1:8000/addquestion";
-                    }
-                </script>
-            </p>
-
-            <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-            <p>
-                <tr><th><p class="p5"><label for="id_subject_by">Select Subject:</label>&ensp;</th><td><select id="id_subject_by" name="subject_by" required>
-                    <option value="Computer Architecture and Network" selected="Computer Architecture and Network">Computer Architecture and Network</option>
-                    </select></td></tr>
-            </p>
-
-            <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-            <p>
-                <tr><th><p class="p5"><label for="id_topic_by">Select Topic:</label>&ensp;</th><td><select id="id_topic_by" name="topic_by" required>
-                    <option value="Chapter 1" selected="Chapter 1">Chapter 1</option>
-                    <option value="Chapter 2">Chapter 2</option>
-                    <option value="Chapter 3">Chapter 3</option>
-                    <option value="Chapter 4">Chapter 4</option>
-                    </select></td></tr>
-            </p>
-
-            <br>
-
-                <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
-                <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p4">How to convert binary numbers to decimal numbers?
-                    <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
-                    <button onclick="discussionquestion()" style="float: right;">View</button>
-                </div>
-
-                <script type = "text/javascript">
-                    function discussionquestion() {
-                        window.location = "http://127.0.0.1:8000/discussionquestion";
-                    }
-                </script>
+                    <button onclick="discussion()">Search</button>
+                    <button><a style="text-decoration: none; color:black; float: right" href="{% url 'addquestion' userid %}"@{{userid}}> Add Question</button></a>
+                    <!--<button onclick="addquestion()">Add Question</button>
+                    <script type = "text/javascript">
+                        function addquestion() {
+                            window.location = "http://127.0.0.1:8000/addquestion";
+                        }
+                    </script> -->
+                </p>
 
                 <br>
-                
-                <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p4">What are the flags register?
-                    <button onclick="discussionquestion()" style="float: right;">View</button>
-                </div>
 
-                <br>
-                
-                <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p4">What are the 7 logic gates?
-                    <button onclick="discussionquestion()" style="float: right;">View</button>
-                </div>
-
-                <br>
-                
-                <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p4">How do we write a Boolean expression to simplify circuits?
-                    <button onclick="discussionquestion()" style="float: right;">View</button>
-                </div>
+                {% for d in discuss %}
+                    <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{d.2}}
+                        <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp 
+                        need to modify into (d.0)-->
+                        <button><a style="text-decoration: none; color:black; float: right" href="{% url 'discussionquestion' userid %}"@{{userid}}> View</button></a>
+                    </div>
+                {% endfor %}
         
-        </div>
+            </form>
+
+        </div>    
         </body>
+        {% endblock content %}
     </html>

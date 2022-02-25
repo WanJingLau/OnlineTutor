@@ -1,13 +1,13 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-
+        {% block content %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-
+        {% include 'messages.html' %}
         <body>
         <div>
 
@@ -15,9 +15,10 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/">Home Page</a></li>
+                <li><a onclick="user()">Register</a></li>
+                <li><a onclick="user()">Login</a></li>
+                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
+                <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
@@ -26,25 +27,28 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button onclick="courselist()">Course List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button onclick="grades()">Grades</button>
+                <button><a onclick="grades()">Grades</button></a>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button onclick="quizzes()">Quizzes</button>
+                <button><a onclick="quizzes()">Quizzes</button></a>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
 
             </div>
 
             <script type = "text/javascript">
+                // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
+                function user() {
+                    alert("You have logged in into the account.");
+                }
                 function courselist() {
                     window.location = "http://127.0.0.1:8000/courselist";
                 }
@@ -62,6 +66,7 @@
                 }
             </script>
 
+
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
             https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
             <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
@@ -71,56 +76,66 @@
             <br>
             <br>
             <br>
+
+            <form action="editcomment" method="post">
+                {% csrf_token %}
             
-            <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
-            <style>                
-            .container2 {
-                border: 1px solid #000000;
-                background-color: #ADD8E6;
-                border-radius: 5px;
-                padding: 10px;
-                margin: 10px 0;
-            }
+                <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
+                <style>                
+                .container2 {
+                    border: 1px solid #000000;
+                    background-color: #ADD8E6;
+                    border-radius: 5px;
+                    padding: 10px;
+                    margin: 10px 0;
+                }
     
-            .container2::after {
-                content: "";
-                clear: both;
-                display: table;
-            }               
-            </style>
+                .container2::after {
+                    content: "";
+                    clear: both;
+                    display: table;
+                }               
+                </style>
 
-            <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
-            <div class="container2">
-                <p class="p5">Reply:</p><p class="p4">Wanjing: Hi, here the table of converting binary numbers to decimal numbers.</p>
-                <img src="{% static 'img/answerbinary.jpg' %}" alt="answerbinary_icon" style="float:left;width:280px;height:130px;">
-            </div>
+                <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
+                <div class="container2">
+                    <p class="p5">Reply:</p><p class="p4">Wanjing: Hi, here the table of converting binary numbers to decimal numbers.</p>
+                    <img src="{% static 'img/answerbinary.jpg' %}" alt="answerbinary_icon" style="float:left;width:280px;height:130px;">
+                </div>
             
-            <br>
+                <br>
 
-             <!-- Oh Wen Chi:https://www.youtube.com/watch?v=A1xJngtmXPc -->
-             <head>
-                <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-                <script>tinymce.init({ selector:'textarea' });</script>
-              </head>
-              <body>
-                <p class="p5">Answer:</p>
-                <textarea></textarea>
-              </body>
+                <!-- Oh Wen Chi:https://www.youtube.com/watch?v=A1xJngtmXPc -->
+                <head>
+                    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+                    <script>tinymce.init({ selector:'textarea' });</script>
+                </head>
+                <body>
+                    <p class="p5" id="comment" name="comment">Answer:</p>
+                    <textarea></textarea>
+                </body>
 
 
-            <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp -->
-            <p>
-                <form action="/action_page.php">
-                  <input type="file" id="myfile" name="myfile"><br><br>
-                </form>
-            </p>
+                <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp -->
+                <p>
+                    <form action="/action_page.php">
+                    <input type="file" id="myfile" name="myfile"><br><br>
+                    </form>
+                </p>
 
-            
-            <div class=buttoncontainer>
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-                <button type="submit" class="submit">Submit</a>
-            </div>
-            
+                <br>
+
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+                    <button type="submit" class="submit">Submit</a>
+                </div>
+
+            </form>
+
+        </div>    
         </body>
+        {% endblock content %}
     </html>
 
+            
+            
