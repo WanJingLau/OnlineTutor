@@ -1,5 +1,3 @@
-from distutils.log import info
-from pydoc_data import topics
 from django.core.mail import send_mail
 from django.db import connection
 from django.shortcuts import render, redirect
@@ -27,7 +25,8 @@ def mainpage_user(request):
 def showedithomepagebutton_mainpage_user(request, userid):
     info = gethomeinfo()
     userrole = get_userrole(userid)
-    context = {'userid' : userid, 'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2, 'roleid' : userrole.roleid_id}
+    todolists = get_popup_todolist(userid)
+    context = {'userid' : userid, 'currenttitle' : info.title, 'file1url' : info.file1, 'file2url' : info.file2, 'roleid' : userrole.roleid_id, 'todolists': todolists}
     return render(request, 'mainpage_user.html', context)
 
 def get_userrole(userid):
@@ -64,10 +63,10 @@ def register(request):
     if request.method == "POST":
         form = FormUser(request.POST)
         if form.is_valid():
+            form.save()
             fullname = form.cleaned_data.get('name')
             staffid = form.cleaned_data.get('staffid')
             get_email_pass(staffid)
-            form.save()
             insertrole(staffid)
             messages.success(request, f"Hi {fullname}, your account was created successfully! Please check your email for your password.")
             return redirect('login')
@@ -112,7 +111,6 @@ def login(request):
             else:
                 if user.isactive == 1:
                     return redirect('mainpage_user', userid = user.id)
-                    #return HttpResponseRedirect(reverse('mainpage_user', args=(user.id,)))
     else:
         form = FormUserLogin(None)
     return render(request, 'login.html', { 'form' : form }) #but jump to here
@@ -233,66 +231,60 @@ def password_verify(userid, currentpassword):
 
 def getinfotodolist(userid):
     try:
-        info = Todolist.objects.get(userid = userid)
-        context = {'id' : info.id, 'userid' : info.userid, 'task' : info.task, 'timeend' : info.timeend, 'status' : info.status}
+        todolist = Todolist.objects.all().filter(userid = userid, isactive = 1)
+        context = {'userid' : userid, 'todolist' : todolist}
         return context
     except Todolist.DoesNotExist:
         return None
 
-
-#add: reminder function
-
-
-
-
-
+def get_popup_todolist(userid):
+    try:
+        todolist = Todolist.objects.all().filter(userid = userid, isactive = 1, status = 0).order_by('timeend')
+        if todolist: 
+            msg=""
+            for todo in todolist:
+                msg = msg+todo.task+"\n"
+            return {'todolists':msg}
+        return None
+    except Todolist.DoesNotExist:
+        return False
 
 #status changes in checkbox
-def checkbox(context):
-    if context.info.status == 1:
-        Todolist.objects.filter(id=context.status).update(status = 0)
+def checkbox(request, userid):
+    id=request.POST.get('id')
+    if request.POST.get('checkbox') == '1':
+        Todolist.objects.filter(id=id, userid = User.objects.get(id=userid)).update(status = 0)
     else:
-        Todolist.objects.filter(id=context.status).update(status = 1)
+        Todolist.objects.filter(id=id, userid = User.objects.get(id=userid)).update(status = 1)
 
 def todolist(request, userid):
-    #get tasks
-    context = getinfotodolist(userid)
-    if context is not None:
+    if request.method == 'POST':
         #deletetask
         if request.POST.get('delete'):
-            deletetask(request, context)
+            deletetask(request, userid)
+            messages.success(request, "Task deleted.")
         #edit task status
         elif request.POST.get('checkbox'):
-            checkbox(context)
+            checkbox(request, userid)
+            messages.success(request, "Task status updated.")      
         #add task
-        elif request.method == 'POST':
-            form = FormTodolist(request.POST)
-            #task = request.POST.get('task')
-            #timeend = request.POST.get('timeend')
-            if form.is_valid():
-                #add = todolist(task=task,timeend=timeend)
-                #ERROR
-                newtask = Todolist.objects.create(User.objects.get(id = userid), task = request.POST.get('task'), timeend = request.POST.get('timeend'))
-                newtask.save()
-                #get latest data
-                context = getinfotodolist(userid)
-                return render(request, "todolist.html", context)
-            else:
-                messages.error(request, 'Your information is invalid. Please try again.')
+        elif(request.POST.get('task') != '' and request.POST.get('timeend')!= ''):
+            newtask = Todolist.objects.create(userid = User.objects.get(id = userid), task = request.POST.get('task'), timeend = request.POST.get('timeend'))
+            newtask.save()
+            messages.success(request, "Task added.")
         else:
-        #show tasks
-            form = FormTodolist(None)
-        return render(request, 'todolist.html', context)
-    else:
-        return render(request, 'todolist.html', context)
-
-def deletetask(request, context):
-    task = Todolist.objects.get(id=context.id)
-    task.delete()
-    userid = context.userid
+            messages.error(request, 'Your information is invalid. Please try again.')
+    #get tasks
     context = getinfotodolist(userid)
+    #show tasks
+    form = FormTodolist(None)
+    context['form'] = form
     return render(request, 'todolist.html', context)
 
+def deletetask(request, userid):
+    id=request.POST.get('id')
+    Todolist.objects.filter(id=id, userid = User.objects.get(id=userid)).update(isactive = 0)
+    
 #Lau Wan Jing: get course subject from coursesubject table
 def getcourselistinfo(userid):
     info = Coursesubject.objects.get(id=1)
@@ -313,9 +305,9 @@ def getcoursematerialinfo():
     list = [list for list in cursor.fetchall()]
     return list
 
-def getcoursepageinfo(request):
+def getcoursepageinfo(request, userid):
     materialinfo = getcoursematerialinfo()
-    info = {'materialinfo' : materialinfo}
+    info = {'materialinfo' : materialinfo, 'userid' : userid}
     return (request, info)
 
 def coursepage(request, userid):
@@ -336,6 +328,8 @@ def coursepage(request, userid):
         return render(request, "coursepage.html", context)
 
 def addmaterials(request, coursesubjectid):
+    material = Coursematerial.objects.raw('SELECT * FROM coursematerial')    
+    context = {'material' : material}
     if request.method == 'POST':
         form = FormAddMaterial(request.POST)
         if form.is_valid():
@@ -348,9 +342,11 @@ def addmaterials(request, coursesubjectid):
         return render(request, "addmaterials.html")
     else:
         form = FormAddMaterial(None)
-        return render(request, 'addmaterials.html')
+        return render(request, 'addmaterials.html', context)
 
 def editmaterials(request, coursematerialid):
+    material = Coursematerial.objects.raw('SELECT * FROM coursematerial')    
+    context = {'material' : material}
     context = Coursematerial.objects.get(id=coursematerialid)
     if request.method == 'POST':
         form = FormEditMaterial(request.POST)
