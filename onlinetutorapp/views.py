@@ -531,7 +531,7 @@ def attendquiz(request):
     return render(request, 'attendquiz.html', { 'form' : form })
 
 #def adminquizzes(request):
-    return render(request, "adminquizzes.html")
+    #return render(request, "adminquizzes.html")
 
 def addquiz(request, quizid):
     if request.method == 'POST':
