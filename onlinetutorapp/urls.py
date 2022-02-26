@@ -1,6 +1,6 @@
 from django.urls import path
 from onlinetutorapp import views
-from onlinetutorapp.views import addmaterials, edithomepage
+
 #URLConfig
 urlpatterns = [
     path('login', views.login, name="login"),
@@ -17,8 +17,8 @@ urlpatterns = [
     path('<int:userid>/addmaterials', views.addmaterials, name="addmaterials"),
     path('<int:userid>/deletematerials', views.deletematerials, name="deletematerials"),
     path('<int:userid>/discussionboard', views.discussionboard, name="discussionboard"),
-    path('discussionquestion', views.discussionquestion, name="discussionquestion"),
-    path('addquestion', views.addquestion, name="addquestion"),
-    path('replyquestion', views.replyquestion, name="replyquestion"),
+    path('<int:questionid>/<int:userid>/discussionquestion', views.discussionquestion, name="discussionquestion"),
+    path('<int:userid>/addquestion', views.addquestion, name="addquestion"),
+    path('<int:userid>/replyquestion', views.replyquestion, name="replyquestion"),
     path('addquiz', views.addquiz, name="addquiz"),
 ]

@@ -85,7 +85,7 @@
             
             <br>
 
-            <form action="addmaterials" method="post">
+            <form action="addmaterials" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
@@ -99,11 +99,6 @@
                 <br>
                 <br>
 
-                <!-- Oh Wen Chi:https://www.youtube.com/watch?v=A1xJngtmXPc 
-                <head>
-                    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-                    <script>tinymce.init({ selector:'textarea' });</script>
-                </head>-->
                 <body>
                     <p class="p5">Description:</p>
                     <textarea id="description" name="description" rows="5" cols="80"></textarea>
@@ -111,7 +106,7 @@
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp -->
                 <p>
-                    <input type="file" id="myfile" name="myfile">
+                    <input type="file" id="myfile" name="myfile" enctype="multipart/form-data">
                 </p>
 
                 <br>

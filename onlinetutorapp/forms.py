@@ -65,30 +65,15 @@ class FormAddMaterial(forms.ModelForm):
         model= Coursematerial
         fields= ["title","description","file","coursetopic"]
 
-class FormEditMaterial(forms.ModelForm):
-    class Meta:
-        model= Coursematerial
-        fields= ["title","description","file","coursetopic"]
-
 class FormAddQuestion(forms.ModelForm):
     class Meta:
         model= Discussion
-        fields= ["question","description","file1"]
-
-class FormEditQuestion(forms.ModelForm):
-    class Meta:
-        model= Discussion
-        fields= ["question","description","file1"]
+        fields= ["question","description"]
 
 class FormReplyQuestion(forms.ModelForm):
     class Meta:
         model= Discussioncomment
-        fields= ["comment","file1"]
-
-class FormEditcomment(forms.ModelForm):
-    class Meta:
-        model= Discussioncomment
-        fields= ["comment","file1"]
+        fields= ["comment"]
 
 class FormQuestionselection(forms.ModelForm):
     class Meta:
