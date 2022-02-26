@@ -1,5 +1,6 @@
 from django.core.mail import send_mail
 from django.db import connection
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Questionselection, Quiz, Todolist, User, Userrole, Role, Quizquestion
 from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormAddQuestion, FormReplyQuestion, FormQuestionselection, FormAddQuiz, FormQuizquestion
@@ -101,18 +102,20 @@ def login(request):
         staffid = request.POST.get('staffid')
         password = request.POST.get('password') 
         #django requires validation
-        if ((staffid == None) or (password == None)):
+        if not ['staffid'] or ['password']:
             messages.error(request, 'Empty Staff ID/Password')
+            return render(request, 'login.html') 
         else:
             user = User.objects.get(staffid = staffid, password =password)
             if (not(user)):
                 messages.error(request, 'Incorrect ID/Password. Please try again')
+                return render(request, 'login.html') 
             else:
                 if user.isactive == 1:
                     return redirect('mainpage_user', userid = user.id)
     else:
-        form = FormUserLogin(None)
-    return render(request, 'login.html', { 'form' : form }) #but jump to here
+        messages.error(request, 'Fill in your ID and password to login into account.')
+        return render(request, 'login.html') 
 
 def get_login(request, staffid, password):
     x = staffid
