@@ -5,6 +5,7 @@
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
         {% include 'messages.html' %}
@@ -17,7 +18,6 @@
                 <p class="p1">E-Tutor</p>
                 <li><a onclick="user()">Register</a></li>
                 <li><a onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
                 <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
@@ -31,7 +31,7 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a onclick="discussionboard()">Discussion Board</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button><a onclick="grades()">Grades</button></a>
@@ -67,51 +67,56 @@
             >
             
             <br>
-            <br>
-            <br>
 
-            <p>
-                <img src="{% static 'img/quizzes.png' %}" alt="quizzes_icon"
-                style="float:left;width:50px;height:50px;">
-            </p>
+            <img src="{% static 'img/quizzes.png' %}" alt="quizzes_icon" style="float:left;width:50px;height:50px;">
 
             <p class="p3">Quizzes</p>
 
             <br>
 
-            <p class="p4"> Come to join quizzes!</p>
+            {% if roleid == 3 %}
+            <p class="p4">Come to join quizzes!</p>
+            {% endif %}
 
             {% if roleid == 2 %}
-            <p class="p4"> Choose to add quizzes.</p>
+            <p class="p4">Choose to add quizzes.</p>
             {% endif %}
-            {% if roleid == 1}
-            <p class="p4"> Choose to add or delete quizzes.</p>
-            {% endif %}
-
-            <p class="p4"> Computer Architecture and Network.</p>
 
             {% if roleid == 1 %}
-                <p align="right">
-                <button><a style="text-decoration: none; color:black" href="{% url 'deletequiz' userid %}"@{{userid}}>Delete Quiz</button></a>
-                {% if roleid == 2}
-                <button><a style="text-decoration: none; color:black" href="{% url 'addquiz' userid %}"@{{userid}}>Add Quiz</button></a>
-                {% endif %}
+            <p class="p4">Choose to add or delete quizzes.</p>
             {% endif %}
-            </p>
-            
-            <br>
 
-            {% for q in quiz %}
+            <p class="p4">Computer Architecture and Network.</p>
+
+            {% if roleid == 1 %}
+            <p align="right">
+                <button><a style="text-decoration: none; color:black" href="{% url 'addquiz' userid %}"@{{userid}}>Add Quiz</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'deletequiz' userid %}"@{{userid}}>Delete Quiz</button></a>
+            </p>
+            {% endif %}
+
+            {% if roleid == 2 %}
+            <p align="right">
+                <button><a style="text-decoration: none; color:black" href="{% url 'addquiz' userid %}"@{{userid}}>Add Quiz</button></a>
+            </p>
+            {% endif %}
+
+            <!-- Oh Wen Chi:https://stackoverflow.com/questions/15461811/html-canvas-with-scrollbar -->
+            <div style="max-height: 390px;max-width:1500px;overflow: scroll;">
+            
             <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
-            <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{title}}
-                <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
-                <button><a style="text-decoration: none; color:black; float: right" href="{% url 'attendquiz' userid %}"@{{userid}}> Attend</button></a>
+            {% for i in quiz %}
+            <div style="border: 1px solid black; background: lightgrey;">
+                
+                <div style="background: lightgrey;display: inline;"></div>
+                <p class="p5" style="display:inline-flex;">{{i.title}}</p>
+                </div>
+
             </div>
+            <br>
             {% endfor %}
 
-            
-                
-        </div>    
+        </div>
         </body>
         {% endblock content %}
     </html>

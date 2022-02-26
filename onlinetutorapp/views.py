@@ -1,7 +1,7 @@
 from django.core.mail import send_mail
 from django.db import connection
 from django.shortcuts import render, redirect
-from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Quiz, Todolist, User, Userrole, Role, Quizquestion
+from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Questionselection, Quiz, Todolist, User, Userrole, Role, Quizquestion
 from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormAddQuestion, FormReplyQuestion, FormQuestionselection, FormAddQuiz, FormQuizquestion
 from django.contrib import messages
 from django.contrib.postgres.search import *
@@ -381,7 +381,7 @@ def discussionquestion(request, context):
             return redirect(request, "replycomment.html", context)
     else:
         return render(request, "discussionquestion.html", context)
-    
+
 def addquestion(request, userid):
     context = { 'userid' : userid }
     if request.method == 'POST':
@@ -439,13 +439,7 @@ def deletecomment(request, userid):
     context = {'comment' : comment, 'userid': userid}
     return render(request, 'deletecomment.html', context)
 
-
-
-
-
-
-
-
+#notyet
 def replyquestion(request, context):
     context = {'context':context}
     if request.method == 'POST':
@@ -462,36 +456,23 @@ def replyquestion(request, context):
         form = FormReplyQuestion(None)
         return render(request, 'replyquestion.html', context)
 
-def grades(request):
-    return render(request, "grades.html")
-
-def checkanswer(request):
-    if request.method == 'POST':
-        form = FormQuestionselection(request.POST)
-        selection = request.POST.get('selection')
-        answer = request.POST.get('answer')
-        add = checkanswer(selection=selection,answer=answer)
-        add.save()
-        return render(request,"checkanswer.html",{'add':add})
-    else:
-        form = FormQuestionselection(None)
-    return render(request, 'checkanswer.html', { 'form' : form })
-
-def admingrades(request):
-    return render(request, "admingrades.html")
-
-def getquizzesinfo(userid):
-    cursor = connection.cursor()
-    query = "Select * from quiz WHERE isactive=1"
-    cursor.execute(query)
-    list = [list for list in cursor.fetchall()]
-    list = [(list), userid]
-    return list
+def getquizzesinfo():
+    quizlist = Quiz.objects.all().filter(isactive = 1)
+    return quizlist
 
 def quizzes(request, userid):
-    quiz = getquizzesinfo(userid)
-    quiz['userid'] = userid
-    return render(request, "quizzes.html", quiz)
+    userrole = get_userrole(userid)
+    quizlist = getquizzesinfo()
+    context = {'userid': userid, 'roleid' : userrole.roleid_id, 'quizlist': quizlist}
+    if request.method == 'POST':
+        if request.POST.get('attend'):
+            return redirect(request, "attendquiz.html", userid)
+        elif request.POST.get('addquiz'):
+            return redirect(request, "addquiz.html", userid)
+        elif request.POST.get('deletequiz'):
+            return redirect(request, "deletequiz.html", userid)
+    else:
+        return render(request, "quizzes.html", context)
 
 def attendquiz(request):
     if request.method == 'POST':
@@ -538,3 +519,23 @@ def addquizquestion(request):
 def deletequiz(request, userid):
     id=request.POST.get('id')
     Quizquestion.objects.filter(id=id, userid = User.objects.get(id=userid)).update(isactive = 0)
+    
+def grades(request, userid):
+    grades = getgradesinfo(userid)
+    grades['userid'] = userid
+    return render(request, "grades.html", grades)
+
+def checkanswer(request, questionselectionid):
+    checkanswer = Questionselection.objects.raw('SELECT * FROM questionselection')
+    context = {'checkanswer' : checkanswer}
+    context = Questionselection.objects.get(id=questionselectionid)
+    Questionselection.objects.filter(id = Questionselection.objects.get(id = questionselectionid)).update(selection = request.POST.get('selection'), answer = request.POST.get('answer'))
+    return render(request, 'checkanswer.html', context)
+
+def getgradesinfo(userid):
+    cursor = connection.cursor()
+    query = "Select * from userquizselection WHERE isactive=1"
+    cursor.execute(query)
+    list = [list for list in cursor.fetchall()]
+    list = [(list), userid]
+    return list
