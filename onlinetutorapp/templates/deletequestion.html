@@ -17,7 +17,6 @@
                 <p class="p1">E-Tutor</p>
                 <li><a onclick="user()">Register</a></li>
                 <li><a onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
                 <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
@@ -98,7 +97,7 @@
                 <p class="p5">Question:
 
                 <select name="question" id="question">
-                    {% for i in discuss %}
+                    {% for i in discussionlist %}
                     <option>{{i.question}}</option>
                     {% endfor %}
                 </select>
@@ -113,9 +112,7 @@
             
                 <div class=buttoncontainer>
                     <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-                    <INPUT TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'>
-                    <!-- <button type="submit" class="submit">Delete</a>-->
-                    <!--<input type="submit" class="submit" value="Delete"></input>-->
+                    <INPUT class="submit" TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'>
                 </div>
 
             </form>

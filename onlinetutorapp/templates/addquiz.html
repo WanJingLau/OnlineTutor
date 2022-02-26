@@ -49,9 +49,6 @@
                 function user() {
                     alert("You have logged in into the account.");
                 }
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
                 function discussionboard() {
                     window.location = "http://127.0.0.1:8000/discussionboard";
                 }
@@ -60,9 +57,6 @@
                 }
                 function quizzes() {
                     window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
                 }
             </script>
 
@@ -99,17 +93,19 @@
 
                 <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
                 <p class="p5">Duration:
-                    <select >
-                    <option selected="selected" disabled>Duration:</option>
-                    <option value="{{duration}}">{{duration}}</option>
+                    <select name="duration" id="duration">
+                        {% for i in quiz %}
+                        <option>{{i.duration}}</option>
+                        {% endfor %}
                     </select>
                 </p>
 
                 <!-- Oh Wen Chi:https://stackoverflow.com/questions/11586038/how-to-get-the-value-from-the-drop-down-box-django -->
-                <p class="p5">Attempt times:
-                    <select >
-                    <option selected="selected" disabled>Attempt times:</option>
-                    <option value="{{attempt}}">{{attempt}}</option>
+                <p class="p5">Attempt Time:
+                    <select name="attempt" id="attempt">
+                        {% for i in quiz %}
+                        <option>{{i.attempt}}</option>
+                        {% endfor %}
                     </select>
                 </p>
             
@@ -119,14 +115,9 @@
                 <div class=buttoncontainer>
                     <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
 
-                    <button type="submit" class="btn btn-success">Submit</button></a>
-                    <button type="submit" class="submit" button onclick="addquizquestion()">Add Question</button></a>
+                    <p align="right">
+                    <button><a style="text-decoration: none; color:black" href="{% url 'addquizquestion' userid %}"@{{userid}}>Add Question</button></a>
                     
-                    <script type = "text/javascript">
-                        function addquizquestion() {
-                            window.location = "http://127.0.0.1:8000/addquizquestion";
-                        }
-                    </script>
                 </div>
 
             </form>
