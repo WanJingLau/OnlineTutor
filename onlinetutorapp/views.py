@@ -347,15 +347,6 @@ def deletematerials(request, userid):
     context = {'material' : material, 'userid': userid}
     return render(request, 'deletematerials.html', context)
 
-'''def getdiscussionboardinfo(userid):
-    #Lau Wan Jing: https://stackoverflow.com/a/61908629 -- fetch all data from disucssion table
-    cursor = connection.cursor()
-    query = "Select * from discussion WHERE isactive=1"
-    cursor.execute(query)
-    list = [list for list in cursor.fetchall()]
-    list = [(list), userid]
-    return list'''
-
 #Lau Wan Jing: get question data
 def getdiscussioninfo(userid):
     try:
@@ -401,7 +392,7 @@ def addquestion(request, userid):
         return render(request, 'addquestion.html', context)
 
 #Lau Wan Jing: https://docs.djangoproject.com/en/4.0/ref/contrib/postgres/search/ -- search question
-def searchquestion(request, userid):
+def search(request, userid):
     if request.method == 'POST':
         word = request.POST.get('word')
         result = Discussion.objects.filter(body_text__search=word)
