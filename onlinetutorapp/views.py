@@ -297,12 +297,13 @@ def courselist(request, userid):
     return render(request, "courselist.html", subject)
 
 def getcoursematerialinfo():
-    #Lau Wan Jing: https://stackoverflow.com/a/61908629 -- fetch all data from coursematerial table
-    cursor = connection.cursor()
-    query = "Select * from coursematerial WHERE isactive=1"
-    cursor.execute(query)
-    list = [list for list in cursor.fetchall()]
-    return list
+    try:
+        coursemateriallist = Coursematerial.objects.all().filter(isactive = 1).order_by("coursetopic")
+        for coursematerial in coursemateriallist:
+            coursematerial.file_url = coursematerial.file.url.replace("onlinetutorapp/static/", "")
+        return coursemateriallist
+    except Coursematerial.DoesNotExist:
+        return None
 
 def getcoursepageinfo(request, userid):
     materialinfo = getcoursematerialinfo()
@@ -326,7 +327,7 @@ def addmaterials(request, userid):
     if request.method == 'POST':
         form = FormAddMaterial(request.POST)
         if form.is_valid():
-            newmaterials = Coursematerial.objects.create(title = request.POST.get('title'), description = request.POST.get('description'), file = request.POST.get('myfile'), coursetopic = request.POST.get('coursetopic'))
+            newmaterials = Coursematerial.objects.create(title = request.POST.get('title'), description = request.POST.get('description'), file = request.FILES.get('myfile'), coursetopic = request.POST.get('coursetopic'))
             newmaterials.save()
             messages.success(request, 'Subject materials added successfully.')
         else:
@@ -388,7 +389,7 @@ def addquestion(request, userid):
     if request.method == 'POST':
         form = FormAddQuestion(request.POST)
         if form.is_valid():
-            addquestion = Discussion.objects.create(question = request.POST.get('question'), description = request.POST.get('description'))
+            addquestion = Discussion.objects.create(userid = User.objects.get(id=userid), question = request.POST.get('question'), description = request.POST.get('description'))
             addquestion.save()
             messages.success(request, 'Question added successfully.')
             return redirect(request, "addquestion.html")
@@ -411,10 +412,9 @@ def searchquestion(request, userid):
         return render(request, "searchquestion.html", userid)
 
 def getdiscussionquestioninfo(context):
-    
     try:
-        discussion = Discussion.objects.all().filter(isactive = 1)
-        context = {'userid' : userid, 'discussion' : discussion}
+        question = Discussion.objects.all().filter(id=context.questionid)
+        context['question'] = question
         return context
     except Discussion.DoesNotExist:
         return None
@@ -441,25 +441,27 @@ def deletecomment(request, userid):
     return render(request, 'deletematerials.html', context)
 
 def discussionquestion(request, context):
-    info = getdiscussionquestioninfo(context)
+    question = getdiscussionquestioninfo(context)
+    context = {'question': question}
+    if request.method == 'POST':
+        if request.POST.get('reply'):
+            replyquestion(request, context)
+            return redirect(request, "replycomment.html", context)
+    else:
+        return render(request, "discussionquestion.html", context)
 
-
-
-
-
-def replyquestion(request, discussioncommentid):
-    discuss = Discussion.objects.raw('SELECT * FROM discussionquestion')    
-    context = {'discuss' : discuss}
+def replyquestion(request, context):
+    context = {'context':context}
     if request.method == 'POST':
         form = FormReplyQuestion(request.POST)
         if form.is_valid():
-            replyquestion = Discussioncomment.objects.create(discussionid = Discussioncomment.objects.get(id=discussioncommentid), comment = request.POST.get('comment'), file1 = request.POST.get('myfile'))
+            replyquestion = Discussioncomment.objects.create(discussionid = Discussion.objects.get(id=context.questionid), comment = request.POST.get('comment'))
             replyquestion.save()
             messages.success(request, 'Question replied successfully.')
-            return redirect(request, "replyquestion.html")
+            return render(request, "replyquestion.html", context)
         else:
             messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "replyquestion.html")
+        return render(request, "replyquestion.html", context)
     else:
         form = FormReplyQuestion(None)
         return render(request, 'replyquestion.html', context)

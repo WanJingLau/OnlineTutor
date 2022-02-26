@@ -92,7 +92,6 @@
                 <div style="max-height: 390px;max-width:1500px;overflow: scroll;">
                 {% for i in list %}
                 <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
-
                 <style>
                     .buttons {
                     width: 50px;
@@ -108,19 +107,31 @@
                 <div style="border: 1px solid black; background: lightgrey;">
                         <div style="background: lightgrey;display: inline;">
                             <p class="p5" style="display:inline-flex;">Chapter:</p>
-                            <p class="p4" style="display:inline-flex;">{{i.5}}</p>
+                            <p class="p4" style="display:inline-flex;">{{i.coursetopic}}</p>
                             <br>
                             <br>
                             <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
                             <p class="p5" style="display:inline-flex;">Title:</p>
-                            <p class="p4" style="display:inline-flex;">{{i.1}}</p>
+                            <p class="p4" style="display:inline-flex;">{{i.title}}</p>
                             <br>
                             <br>
                             <p class="p5" style="display:inline-flex;">Description:</p>
-                            <p class="p4" style="display:inline-flex;">{{i.2}}</p>
+                            <p class="p4" style="display:inline-flex;">{{i.description}}</p>
                             <br>
                             <p class="p5" style="display:inline-flex;">Attached File:</p>
-                            <p style="display:inline-flex;">{{i.3}}</p>
+                        
+                            {% if i.file %}
+                                <a href="{% static i.file_url %}" class="btn btn-outline-primary" target="_blank">View</a>
+                            {% else %}
+                                <span class="text-muted">No file</span>
+                            {% endif %}
+
+                            {% if i.file %}
+                                <a href="{% static i.file_url %}" download class="btn btn-outline-success">Download</a>
+                            {% else %}
+                                <span class="text-muted">No file</span>
+                            {% endif %}
+
                         </div>
                 </div>
 

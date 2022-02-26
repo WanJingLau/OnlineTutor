@@ -95,7 +95,7 @@ class CaptchaCaptchastore(models.Model):
 class Coursematerial(models.Model):
     title = models.CharField(unique=True, max_length=100)
     description = models.CharField(max_length=255)
-    file = models.TextField(blank=True, null=True)
+    file = models.FileField(upload_to='onlinetutorapp/static/course', blank=True, null=True)
     isactive = models.IntegerField(blank=True, null=True, default=1)
     coursetopic = models.CharField(max_length=255)
 

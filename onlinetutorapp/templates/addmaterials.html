@@ -85,7 +85,7 @@
             
             <br>
 
-            <form action="addmaterials" method="post">
+            <form action="addmaterials" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
@@ -106,7 +106,7 @@
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp -->
                 <p>
-                    <input type="file" id="myfile" name="myfile">
+                    <input type="file" id="myfile" name="myfile" enctype="multipart/form-data">
                 </p>
 
                 <br>
