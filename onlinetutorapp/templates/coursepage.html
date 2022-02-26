@@ -77,22 +77,23 @@
 
             <br>
 
-            <p class="p4">The subject materials are in three formats: pptx,pdf and mp4 files.</p>
+            <p class="p4" style="display: inline-flex;">The subject materials are in three formats: pptx,pdf and mp4 files.</p>
 
-                {% if roleid == 2 %}
-                <button><a style="text-decoration: none; color:black" href="{% url 'addmaterials' userid %}"@{{userid}}>Add Materials</button></a>
-                {% endif %}
+            {% if roleid == 2 %}
+            <button><a style="text-decoration: none; color:black" href="{% url 'addmaterials' userid %}"@{{userid}}>Add Materials</button></a>
+            {% endif %}
 
-                {% if roleid == 1 %}
-                <button><a style="text-decoration: none; color:black" href="{% url 'deletematerials' userid %}"@{{userid}}>Delete Materials</button></a>
-                <button><a style="text-decoration: none; color:black" href="{% url 'addmaterials' userid %}"@{{userid}}>Add Materials</button></a>
-                {% endif %}
+            {% if roleid == 1 %}
+            <button><a style="text-decoration: none; color:black" href="{% url 'deletematerials' userid %}"@{{userid}}>Delete Materials</button></a>
+            <button><a style="text-decoration: none; color:black" href="{% url 'addmaterials' userid %}"@{{userid}}>Add Materials</button></a>
+            {% endif %}
 
-                <!-- Oh Wen Chi:https://stackoverflow.com/questions/15461811/html-canvas-with-scrollbar -->
-                <div style="max-height: 390px;max-width:1500px;overflow: scroll;">
-                {% for i in list %}
-                <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
-                <style>
+            <br><br>
+            <!-- Oh Wen Chi:https://stackoverflow.com/questions/15461811/html-canvas-with-scrollbar -->
+            <div style="max-height: 390px;max-width:1500px;overflow: scroll;">
+            
+            <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
+            <style>
                     .buttons {
                     width: 50px;
                     margin: 0 auto;
@@ -102,47 +103,44 @@
                     width: calc(50% - 4px);
                     margin: 0 auto;
                     }
-                </style>
+            </style>
 
-                <div style="border: 1px solid black; background: lightgrey;">
-                        <div style="background: lightgrey;display: inline;">
-                            <p class="p5" style="display:inline-flex;">Chapter:</p>
-                            <p class="p4" style="display:inline-flex;">{{i.coursetopic}}</p>
-                            <br>
-                            <br>
-                            <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
-                            <p class="p5" style="display:inline-flex;">Title:</p>
-                            <p class="p4" style="display:inline-flex;">{{i.title}}</p>
-                            <br>
-                            <br>
-                            <p class="p5" style="display:inline-flex;">Description:</p>
-                            <p class="p4" style="display:inline-flex;">{{i.description}}</p>
-                            <br>
-                            <p class="p5" style="display:inline-flex;">Attached File:</p>
-                        
-                            {% if i.file %}
-                                <a href="{% static i.file_url %}" class="btn btn-outline-primary" target="_blank">View</a>
-                            {% else %}
-                                <span class="text-muted">No file</span>
-                            {% endif %}
-
-                            {% if i.file %}
-                                <a href="{% static i.file_url %}" download class="btn btn-outline-success">Download</a>
-                            {% else %}
-                                <span class="text-muted">No file</span>
-                            {% endif %}
-
-                        </div>
-                </div>
-
-                {% endfor %}
-
-                <canvas width="512px" height=auto></canvas>
-
-                <br>
+            {% for i in list %}
+            <div style="border: 1px solid black; background: lightgrey;">
                 
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+                <div style="background: lightgrey;display: inline;">
+                    <p class="p5" style="display:inline-flex;">Chapter:</p>
+                    <p class="p4" style="display:inline-flex;">{{i.coursetopic}}</p>
+                    <br>
+                    <br>
+                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=7c4cNgD5KNA -->
+                    <p class="p5" style="display:inline-flex;">Title:</p>
+                    <p class="p4" style="display:inline-flex;">{{i.title}}</p>
+                    <br>
+                    <br>
+                    <p class="p5" style="display:inline-flex;">Description:</p>
+                    <p class="p4" style="display:inline-flex;">{{i.description}}</p>
+                    <br>
+                    <br>
+                    <p class="p5" style="display:inline-flex;">Attached File:</p>
+                        
+                    {% if i.file %}
+                        <a href="{% static i.file_url %}" class="btn btn-outline-primary" target="_blank">View</a>
+                    {% else %}
+                        <span class="text-muted">No file</span>
+                    {% endif %}
 
+                    {% if i.file %}
+                        <a href="{% static i.file_url %}" download class="btn btn-outline-success">Download</a>
+                    {% else %}
+                        <span class="text-muted">No file</span>
+                    {% endif %}
+                </div>
+                <br>
+            </div>
+            <br>
+            {% endfor %}
+            <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
         </div>
         </body>
         {% endblock content %}

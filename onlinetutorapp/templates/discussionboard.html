@@ -57,8 +57,6 @@
             >
             
             <br>
-            <br>
-            <br>
 
             <p>
                 <img src="{% static 'img/discussion.png' %}" alt="Discussion_icon"
@@ -66,31 +64,40 @@
             </p>
             
             <p class="p3">Discussion Board</p>
-
-            <br>
-
+            
             <form action="discussionboard" method="post">
                 {% csrf_token %}
-            
+
                 <p>
-                    <button><a style="text-decoration: none; color:black; float: right" href="{% url 'search' userid %}"@{{userid}}> Search</button></a>
-                    <button><a style="text-decoration: none; color:black; float: right" href="{% url 'addquestion' userid %}"@{{userid}}> Add Question</button></a>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'search' userid %}"@{{userid}}>Search</button></a>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'addquestion' userid %}"@{{userid}}>Add Question</button></a>
                     {% if roleid == 1 %}
-                    <button><a style="text-decoration: none; color:black" href="{% url 'deletequestion' userid %}"@{{userid}}>Delete Question</button></a>
-                    <button><a style="text-decoration: none; color:black" href="{% url 'deletematerials' userid %}"@{{userid}}>Delete Materials</button></a>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'deletequestion' userid %}"@{{userid}}>Delete Question</button></a>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'deletecomment' userid %}"@{{userid}}>Delete Comment</button></a>
                     {% endif %}
                 </p>
 
-                <br>
-
-                {% for d in discuss %}
-                    <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{d.2}}
-                        <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp 
-                        need to modify into (d.0)-->
-                        <button><a style="text-decoration: none; color:black; float: right" name="view" value="{{d.0}}"> View</button></a>
+                <div style="max-height: 390px;max-width:1500px;overflow: scroll;">
+                {% for d in discussion %}
+                    <div style="border: 1px solid black; background: lightgrey; height: auto;">
+                        <br>
+                        <p class="p4" style="display: inline-flex;">User ID:</p>
+                        <p class="p4" style="display: inline-flex;">{{d.userid}}</p>
+                        <br>
+                        <p class="p5" style="display: inline-flex;">{{d.question}}</p>
+                        <button style="float: right;"><a style="text-decoration: none; color:black; float: right;" name="view">View</button></a>
+                        <input type="text" name="id" hidden value={{d.id}}>
+                        <br><br>
                     </div>
+                    <br>
                 {% endfor %}
-        
+                <canvas width="512px" height=auto></canvas>
+
+                <br>
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+                </div>
+
             </form>
 
         </div>    

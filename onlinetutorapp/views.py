@@ -348,19 +348,17 @@ def deletematerials(request, userid):
     return render(request, 'deletematerials.html', context)
 
 #Lau Wan Jing: get question data
-def getdiscussioninfo(userid):
-    try:
-        discussion = Discussion.objects.all().filter(isactive = 1)
-        context = {'userid' : userid, 'discussion' : discussion}
-        return context
-    except Discussion.DoesNotExist:
-        return None
+def getdiscussioninfo():
+    discussionlist = Discussion.objects.all().filter(isactive = 1)
+    return discussionlist
 
 def discussionboard(request, userid):
-    discuss = getdiscussioninfo(userid)
+    userrole = get_userrole(userid)
+    discussionlist = getdiscussioninfo()
+    context = {'userid': userid, 'roleid' : userrole.roleid_id, 'discussion': discussionlist}
     if request.method == 'POST':
         if request.POST.get('search'):
-            return redirect(request, "searchquestion.html", userid)
+            return redirect(request, "search.html", userid)
         elif request.POST.get('add'):
             return redirect(request, "addquestion.html", userid)
         elif request.POST.get('deletequestion'):
@@ -368,39 +366,49 @@ def discussionboard(request, userid):
         elif request.POST.get('deletecomment'):
             return redirect(request, "deletecomment.html", userid)
         elif request.POST.get('view'):
-            questionid = request.POST.get('value')
+            questionid = request.POST.get('id')
             context = {'userid' : userid, 'questionid' : questionid}
-            discussionquestion(request, context)
             return redirect(request, "discussionquestion.html", context)
     else:
-        return render(request, "discussionboard.html", discuss)
+        return render(request, "discussionboard.html", context)
+    
+def discussionquestion(request, context):
+    question = getdiscussionquestioninfo(context)
+    context = {'question': question}
+    if request.method == 'POST':
+        if request.POST.get('reply'):
+    
+            return redirect(request, "replycomment.html", context)
+    else:
+        return render(request, "discussionquestion.html", context)
     
 def addquestion(request, userid):
-    context = {'userid':userid}
+    context = { 'userid' : userid }
     if request.method == 'POST':
         form = FormAddQuestion(request.POST)
         if form.is_valid():
             addquestion = Discussion.objects.create(userid = User.objects.get(id=userid), question = request.POST.get('question'), description = request.POST.get('description'))
             addquestion.save()
             messages.success(request, 'Question added successfully.')
-            return redirect(request, "addquestion.html")
+            return render(request, "addquestion.html", context)
         else:
-            messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "addquestion.html")
+            messages.error(request, 'Your information is invalid or the question has exist. Please try again.')
+        return render(request, "addquestion.html", context)
     else:
         form = FormAddQuestion(None)
         return render(request, 'addquestion.html', context)
 
-#Lau Wan Jing: https://docs.djangoproject.com/en/4.0/ref/contrib/postgres/search/ -- search question
 def search(request, userid):
     if request.method == 'POST':
-        word = request.POST.get('word')
-        result = Discussion.objects.filter(body_text__search=word)
-        context = {'userid' : userid, 'result' : result}
-        return render(request, "searchquestion.html", context)
-    else:
-        messages.error(request, 'Result not found.')
-        return render(request, "searchquestion.html", userid)
+        if request.POST.get('word'):
+            resultlist = Discussion.objects.filter(question__icontains=request.POST.get('word'))
+            if resultlist is not None:
+                context = {'userid' : userid, 'resultlist' : resultlist}
+                return render(request, "search.html", context)
+            else:
+                messages.error(request, 'Result not found.')
+    context = {'userid':userid}
+    return render(request, "search.html", context)
 
 def getdiscussionquestioninfo(context):
     try:
@@ -416,9 +424,9 @@ def deletequestion(request, userid):
         findid = Discussion.objects.get(question = question)
         Discussion.objects.filter(id=findid.id).update(isactive = 0)
         messages.success(request, "Question deleted.")
-    question = Discussion.objects.raw('SELECT * FROM discussion WHERE isactive=1')
-    context = {'question' : question, 'userid': userid}
-    return render(request, 'deletematerials.html', context)
+    discussionlist = getdiscussioninfo()
+    context = {'discussionlist' : discussionlist, 'userid': userid}
+    return render(request, 'deletequestion.html', context)
 
 def deletecomment(request, userid):
     if request.method == 'POST':
@@ -429,17 +437,14 @@ def deletecomment(request, userid):
         Discussion.objects.filter(title=request.POST.get('deletecomment').update(isactive = 0))
     comment = Discussioncomment.objects.raw('SELECT * FROM discussioncomment WHERE isactive=1')
     context = {'comment' : comment, 'userid': userid}
-    return render(request, 'deletematerials.html', context)
+    return render(request, 'deletecomment.html', context)
 
-def discussionquestion(request, context):
-    question = getdiscussionquestioninfo(context)
-    context = {'question': question}
-    if request.method == 'POST':
-        if request.POST.get('reply'):
-            replyquestion(request, context)
-            return redirect(request, "replycomment.html", context)
-    else:
-        return render(request, "discussionquestion.html", context)
+
+
+
+
+
+
 
 def replyquestion(request, context):
     context = {'context':context}
@@ -483,8 +488,6 @@ def getquizzesinfo(userid):
     list = [(list), userid]
     return list
 
-#add userid find user name function
-
 def quizzes(request, userid):
     quiz = getquizzesinfo(userid)
     quiz['userid'] = userid
@@ -501,9 +504,6 @@ def attendquiz(request):
     else:
         form = FormQuizquestion(None)
     return render(request, 'attendquiz.html', { 'form' : form })
-
-#def adminquizzes(request):
-    #return render(request, "adminquizzes.html")
 
 def addquiz(request, quizid):
     if request.method == 'POST':

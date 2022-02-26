@@ -49,9 +49,6 @@
                 function user() {
                     alert("You have logged in into the account.");
                 }
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
                 function discussionboard() {
                     window.location = "http://127.0.0.1:8000/discussionboard";
                 }
@@ -60,9 +57,6 @@
                 }
                 function quizzes() {
                     window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
                 }
             </script>
 
@@ -87,49 +81,35 @@
 
             <p class="p4"> Come to join quizzes!</p>
 
-            {% if roleid == 1 or 2 %}
-            <p class="p4"> Choose the quizzes to edit or delete.</p>
+            {% if roleid == 2 %}
+            <p class="p4"> Choose to add quizzes.</p>
+            {% endif %}
+            {% if roleid == 1}
+            <p class="p4"> Choose to add or delete quizzes.</p>
             {% endif %}
 
             <p class="p4"> Computer Architecture and Network.</p>
 
-            <button onclick="addquiz()">Add Quiz</button>
-
-            <script type = "text/javascript">
-                function addquiz() {
-                    window.location = "http://127.0.0.1:8000/addquiz";
-                }
-            	</script>
+            {% if roleid == 1 %}
+                <p align="right">
+                <button><a style="text-decoration: none; color:black" href="{% url 'deletequiz' userid %}"@{{userid}}>Delete Quiz</button></a>
+                {% if roleid == 2}
+                <button><a style="text-decoration: none; color:black" href="{% url 'addquiz' userid %}"@{{userid}}>Add Quiz</button></a>
+                {% endif %}
+            {% endif %}
+            </p>
             
             <br>
 
-            <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
-            <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{quiz title}}
-                <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
-				<button onclick="attendquiz()" style="float: right;">Attend</button> 
-
-                <script type = "text/javascript">
-                    function attendquiz() {
-                        window.location = "http://127.0.0.1:8000/attendquiz";
-                    }
-                </script>
-            </div>
-
             {% for q in quiz %}
-            {% if roleid == 1 or 2 %}
+            <!-- Oh Wen Chi:https://www.w3schools.com/html/html_blocks.asp -->
             <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{title}}
                 <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
-                <button onclick="editquiz()" style="float: right;">Edit</button>
-                <button onclick="deletequiz()" style="float: right;">Delete</button>
-
-                <script type = "text/javascript">
-                    function editquiz() {
-                        window.location = "http://127.0.0.1:8000/editquiz";
-                    }
-                </script>
+                <button><a style="text-decoration: none; color:black; float: right" href="{% url 'attendquiz' userid %}"@{{userid}}> Attend</button></a>
             </div>
-            {% endif %}
             {% endfor %}
+
+            
                 
         </div>    
         </body>

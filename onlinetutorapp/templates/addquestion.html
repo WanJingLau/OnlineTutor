@@ -30,7 +30,7 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'discussion' userid %}"@{{userid}}>Discussion Board</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button><a onclick="grades()">Grades</button></a>
@@ -79,12 +79,13 @@
                 {% csrf_token %}
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
-                <p class="p5">Question:
+                <p class="p5" style="display: inline-flex;">Question:</p>
                 <input type="text" id="question" name="question" size="80"/>
+                <br>
                 <br>
 
                 <body>
-                    <p class="p5">Description:</p>
+                    <p class="p5" style="display: inline-flex;">Description:</p>
                     <textarea id="description" name="description" rows="5" cols="80"></textarea>
                 </body>
 
