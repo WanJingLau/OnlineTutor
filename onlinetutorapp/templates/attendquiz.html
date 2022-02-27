@@ -17,7 +17,6 @@
                 <p class="p1">E-Tutor</p>
                 <li><a onclick="user()">Register</a></li>
                 <li><a onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
                 <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
@@ -31,7 +30,7 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a onclick="discussionboard()">Discussion Board</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button><a onclick="grades()">Grades</button></a>
