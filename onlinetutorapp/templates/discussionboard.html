@@ -17,7 +17,6 @@
                 <p class="p1">E-Tutor</p>
                 <li><a onclick="user()">Register</a></li>
                 <li><a onclick="user()">Login</a></li>
-                <!-- <p> Lau Wan Jing: need to redirect to mainpage user </p> -->
                 <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
@@ -31,13 +30,13 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
+                <button><a>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'grades' userid %}"@{{userid}}>Grades</button></a>
+                <button><a>Grades</button></a>
 
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
+                <button><a>Quizzes</button></a>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
                 <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
@@ -49,21 +48,6 @@
                 function user() {
                     alert("You have logged in into the account.");
                 }
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
-                function discussionboard() {
-                    window.location = "http://127.0.0.1:8000/discussionboard";
-                }
-                function grades() {
-                    window.location = "http://127.0.0.1:8000/grades";
-                }
-                function quizzes() {
-                    window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
-                }
             </script>
 
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
@@ -73,45 +57,47 @@
             >
             
             <br>
-            <br>
-            <br>
 
             <p>
-                <img src="{% static 'img/discussion.png' %}" alt="Course_icon"
+                <img src="{% static 'img/discussion.png' %}" alt="Discussion_icon"
                 style="float:left;width:50px;height:50px;">
             </p>
             
             <p class="p3">Discussion Board</p>
-
-            <br>
-
+            
             <form action="discussionboard" method="post">
                 {% csrf_token %}
-            
-                <p>
-                    <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_searchbar.asp -->
-                    <input type="text" placeholder="Search..." size="80"/></a>
 
-                    <button onclick="discussion()">Search</button>
-                    <button><a style="text-decoration: none; color:black; float: right" href="{% url 'addquestion' userid %}"@{{userid}}> Add Question</button></a>
-                    <!--<button onclick="addquestion()">Add Question</button>
-                    <script type = "text/javascript">
-                        function addquestion() {
-                            window.location = "http://127.0.0.1:8000/addquestion";
-                        }
-                    </script> -->
+                <p>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'search' userid %}"@{{userid}}>Search</button></a>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'addquestion' userid %}"@{{userid}}>Add Question</button></a>
+                    {% if roleid == 1 %}
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'deletequestion' userid %}"@{{userid}}>Delete Question</button></a>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'deletecomment' userid %}"@{{userid}}>Delete Comment</button></a>
+                    {% endif %}
                 </p>
 
-                <br>
-
-                {% for d in discuss %}
-                    <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5">{{d.2}}
-                        <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp 
-                        need to modify into (d.0)-->
-                        <button><a style="text-decoration: none; color:black; float: right" href="{% url 'discussionquestion' userid %}"@{{userid}}> View</button></a>
+                <div style="max-height: 390px;max-width:1500px;overflow: scroll;">
+                {% for d in discussion %}
+                    <div style="border: 1px solid black; background: lightgrey; height: auto;">
+                        <br>
+                        <p class="p4" style="display: inline-flex;">User ID:</p>
+                        <p class="p4" style="display: inline-flex;">{{d.userid}}</p>
+                        <br>
+                        <p class="p5" style="display: inline-flex;">{{d.question}}</p>
+                        <button style="float: right;"><a style="text-decoration: none; color:black; float: right;" name="view">View</button></a>
+                        <input type="text" name="id" hidden value={{d.id}}>
+                        <br><br>
                     </div>
+                    <br>
                 {% endfor %}
-        
+                <canvas width="512px" height=auto></canvas>
+
+                <br>
+                <div class=buttoncontainer>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+                </div>
+
             </form>
 
         </div>    

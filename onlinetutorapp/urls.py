@@ -11,32 +11,22 @@ urlpatterns = [
     path('<int:userid>/settings', views.settings, name="settings"),
     path('<int:userid>/todolist', views.todolist, name="todolist"),
     path('edithomepage', views.edithomepage, name="edithomepage"),
-    #mainpage_user path below
     path('<int:userid>/mainpage_user', views.showedithomepagebutton_mainpage_user, name="mainpage_user"),
-    #courselist
+    #courselist url
     path('<int:userid>/courselist', views.courselist, name="courselist"),
-    #coursepage
     path('<int:userid>/coursepage', views.coursepage, name="coursepage"),
-    #addmaterials
-    path('addmaterials', views.addmaterials, name="addmaterials"),
-    #editmaterials
-    path('<int:coursematerialid>/editmaterials', views.editmaterials, name="editmaterials"),
-    #deletematerials
+    path('<int:userid>/addmaterials', views.addmaterials, name="addmaterials"),
     path('<int:userid>/deletematerials', views.deletematerials, name="deletematerials"),
-    #discussionboard
+    #discussionboard url
+    path('<int:userid>/deletequestion', views.deletequestion, name="deletequestion"),
+    path('<int:userid>/deletecomment', views.deletecomment, name="deletecomment"),
     path('<int:userid>/discussionboard', views.discussionboard, name="discussionboard"),
-    #discussionquestion
-    path('discussionquestion', views.discussionquestion, name="discussionquestion"),
-    #addquestion
-    path('addquestion', views.addquestion, name="addquestion"),
-    #editquestion
-    path('editquestion', views.editquestion, name="editquestion"),
-    #replyquestion
-    path('replyquestion', views.replyquestion, name="replyquestion"),
-    #editcomment
-    path('editcomment', views.editcomment, name="editcomment"),
-    #addquiz
-    path('addquiz', views.addquiz, name="addquiz"),
-    #editquiz
-    path('editquiz', views.editquiz, name="editquiz"),
+    path('<int:userid>/search', views.search, name="search"),
+    path('<int:userid>/addquestion', views.addquestion, name="addquestion"),
+    path('<int:userid>/replyquestion', views.replyquestion, name="replyquestion"),
+    path('<int:userid>/discussionquestion', views.discussionquestion, name="discussionquestion"),
+    
+    path('<int:userid>/quizzes', views.quizzes, name="quizzes"),
+    path('<int:userid>/addquiz', views.addquiz, name="addquiz"),
+    path('<int:userid>/deletequiz', views.deletequiz, name="deletequiz"),
 ]

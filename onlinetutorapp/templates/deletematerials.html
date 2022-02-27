@@ -100,23 +100,16 @@
                 <p class="p5">Title:
 
                 <select name="title" id="title">
-                    {% for title in materialtitle %}
-                    <option value={{title}}>{{title}}</option>
+                    {% for i in material %}
+                    <option>{{i.title}}</option>
                     {% endfor %}
                 </select>
-                <br>
-                <br>
+                
                 <br>
 
-                <br>
-                <br>
-                <br>
-            
                 <div class=buttoncontainer>
                     <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-                    <INPUT TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'>
-                    <!-- <button type="submit" class="submit">Delete</a>-->
-                    <!--<input type="submit" class="submit" value="Delete"></input>-->
+                    <INPUT class="submit" TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'>
                 </div>
 
             </form>

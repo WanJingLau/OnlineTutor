@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'captcha',
     'post_office',
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [

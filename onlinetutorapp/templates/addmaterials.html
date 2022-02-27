@@ -31,7 +31,7 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a onclick="discussionboard()">Discussion Board</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button><a onclick="grades()">Grades</button></a>
@@ -49,9 +49,14 @@
                 function user() {
                     alert("You have logged in into the account.");
                 }
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
+                //Lau Wan Jing: https://stackoverflow.com/questions/5697605/limit-the-size-of-a-file-upload-html-input-element
+                function checkFileSize() {
+                    var file = document.getElementById("myfile");
+                    if(file.files[0].size > (100*1024*1024)){
+                    alert("File is too big!");
+                    file.value = "";
+                    };
+                };
                 function discussionboard() {
                     window.location = "http://127.0.0.1:8000/discussionboard";
                 }
@@ -60,9 +65,6 @@
                 }
                 function quizzes() {
                     window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
                 }
             </script>
 
@@ -85,42 +87,47 @@
             
             <br>
 
-            <form action="addmaterials" method="post">
+            <form action="addmaterials" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
-                <p class="p5">Title:
+                <p class="p5">Title:</p>
                 <input type="text" id="title" name="title" size="80"/>
                 <br>
+                <br>
             
-                <p class="p5">Chapter:
+                <p class="p5">Chapter:</p>
                     <input type="text" id="coursetopic" name="coursetopic" size="80"/>
                 <br>
+                <br>
 
-                <!-- Oh Wen Chi:https://www.youtube.com/watch?v=A1xJngtmXPc -->
-                <head>
-                    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-                    <script>tinymce.init({ selector:'textarea' });</script>
-                </head>
-                <body>
-                    <p class="p5" id="description" name="description">Description:</p>
-                    <textarea></textarea>
-                </body>
+                <p class="p5">Description:</p>
+                <textarea id="description" name="description" rows="5" cols="80"></textarea>
+                
 
-                <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp -->
-                <p>
-                    <form action="/action_page.php">
-                    <input type="file" id="myfile" name="myfile"><br><br>
-                    </form>
-                </p>
+                <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp 
+                Lau Wan Jing file less than 100MB https://stackoverflow.com/questions/5697605/limit-the-size-of-a-file-upload-html-input-element-->
+                <p class="p5">Upload File(less than 100MB):</p>
+                <input type="file" id="myfile" name="myfile" onchange="checkFileSize()" enctype="multipart/form-data">
 
                 <br>
                 <br>
             
                 <div class=buttoncontainer>
-                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-                    <button type="submit" class="submit" value="Add">Submit</a>
+                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
+                    <INPUT class="submit" TYPE='submit' value='Submit' name='submit' onClick='return confirmSubmit()'>
                 </div>
+
+                <script LANGUAGE="JavaScript">
+                    function confirmSubmit()
+                    {
+                    var agree=confirm("Are you sure you wish to add this material?");
+                    if (agree)
+                     return true ;
+                    else
+                     return false ;
+                    }
+                </script>
 
             </form>
 

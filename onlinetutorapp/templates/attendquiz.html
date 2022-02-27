@@ -1,13 +1,13 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-
+        {% block content %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-
+        {% include 'messages.html' %}
         <body>
         <div>
 
@@ -15,9 +15,9 @@
 
             <ul>
                 <p class="p1">E-Tutor</p>
-                <li><a href="/register">Register</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/">Home Page</a></li>
+                <li><a onclick="user()">Register</a></li>
+                <li><a onclick="user()">Login</a></li>
+                <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
             <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
@@ -26,27 +26,27 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button onclick="courselist()">Course List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button onclick="grades()">Grades</button>
+                <button><a onclick="grades()">Grades</button></a>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button onclick="quizzes()">Quizzes</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
 
             </div>
 
             <script type = "text/javascript">
-                function courselist() {
-                    window.location = "http://127.0.0.1:8000/courselist";
+                // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
+                function user() {
+                    alert("You have logged in into the account.");
                 }
                 function discussionboard() {
                     window.location = "http://127.0.0.1:8000/discussionboard";
@@ -56,9 +56,6 @@
                 }
                 function quizzes() {
                     window.location = "http://127.0.0.1:8000/quizzes";
-                }
-                function todolist() {
-                    window.location = "http://127.0.0.1:8000/todolist";
                 }
             </script>
 
@@ -81,35 +78,44 @@
 
             <br>
 
-                <p class="p4">Welcome to Quiz Chapter 1.</p>
-                <p style="text-align:right;"><b>TIME LEFT:30 SECONDS</b></p>  
+            <p class="p4">Welcome to Quiz.</p>
+            <p style="text-align:right;"><b>TIME LEFT:30 SECONDS</b></p>  
 
-                <br>
+            <br>
 
-                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=H1DUszPZakQ -->
-                    <form name="quiz" id="quiz">
-                        <div>
-                            <p>The decimal value of the hexadecimal number 777 is</p>
-                            <p><input type="radio" name="question1" value="">19</p>
-                            <p><input type="radio" name="question2" value="">1911</p>
-                            <p><input type="radio" name="question3" value="">191</p>
-                            <p><input type="radio" name="question4" value="">19111</p>
-                         </div>
-                    <form>
+            <form action="attendquiz" method="post">
+                {% csrf_token %}
+    
+                <!-- Oh Wen Chi:https://stackoverflow.com/questions/15461811/html-canvas-with-scrollbar -->
+                <div style="max-height: 350px;max-width:1500px;overflow: scroll;">
+    
+                        <br>
 
-                <!-- Oh Wen Chi:https://www.w3schools.com/tags/tag_center.asp -->
-                <p style="text-align:right;">Marks:
-                    <input type="marks" name="marks" value="" placeholder="&nbsp&nbsp%" size="5"/ text-align: right>
-                </p>
-
-                <br>
-                <br>
-
-                <div class=buttoncontainer>
-                    <button type="submit" class="submit">Submit</a>
-                </div>
+                        <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
+                        <p class="p5">Question:</p>
+                        <p class="p4">{{i.2}}</p>
+                        </p>
         
-        </div>
-        </body>
-    </html>
+                        <br>
+            
+                        <p class="p5">Answer Choice:
+                        <p class="p4">{{i.2}}</p>
+                        </p>
+        
+                        <br>
+            
+                        <!-- Oh Wen Chi:https://www.w3schools.com/tags/tag_center.asp -->
+                        <p style="text-align:right;"><b>Marks:</b>
+                            <p value={{marks}}>{{marks}}
+                        </p>
 
+                    <div class=buttoncontainer>
+                        <button type="submit" class="submit">Submit</a>
+                    </div>
+
+                </form>
+        
+        </div>    
+        </body>
+        {% endblock content %}
+    </html>

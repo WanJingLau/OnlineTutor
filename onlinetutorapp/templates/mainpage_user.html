@@ -46,9 +46,8 @@
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button onclick="grades()">Grades</button>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button onclick="quizzes()">Quizzes</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
                 <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
