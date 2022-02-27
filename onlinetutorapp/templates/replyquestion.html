@@ -67,9 +67,8 @@
             <br>
             <br>
 
-            <form action="replyquestion" method="post">
+            <form action="{% url 'replyquestion' userid discussionid %}" method="post">
                 {% csrf_token %}
-
                 <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
                 <style>                
                 .container1 {
@@ -86,30 +85,21 @@
                     display: table;
                 }               
                 </style>
-
                 <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
                 <div class="container1">
-                    <p>Wen Chi: How to convert binary numbers to decimal numbers?</p>
+                    <p class="p5">{{discussionQuestion.question}}</p>
+                    <p>{{discussionQuestion.description}}</p>
                 </div>
-
                 <br>
-
-                <body>
-                    <p class="p5">Comment:</p>
-                    <textarea id="comment" name="comment" rows="5" cols="80"></textarea>
-                </body>
-
+                <p class="p5">Comment:</p>
+                <textarea id="comment" name="comment" rows="5" cols="80"></textarea>
                 <br>
-            
                 <div class=buttoncontainer>
-                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+                    <a href="{% url 'discussionquestion' userid discussionid %}" class="button">Back</a>
                     <button type="submit" class="submit">Submit</a>
                 </div>
-
             </form>
-
         </div>    
         </body>
         {% endblock content %}
     </html>
-

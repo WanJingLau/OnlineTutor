@@ -358,10 +358,7 @@ def getdiscussioninfo():
     return discussionlist
 
 def discussionboard(request, userid):
-    userrole = get_userrole(userid)
-    discussionlist = getdiscussioninfo()
-    context = {'userid': userid, 'roleid' : userrole.roleid_id, 'discussion': discussionlist}
-    if request.method == 'POST':
+    '''if request.method == 'POST':
         if request.POST.get('search'):
             return redirect(request, "search.html", userid)
         elif request.POST.get('add'):
@@ -374,8 +371,11 @@ def discussionboard(request, userid):
             questionid = request.POST.get('id')
             context = {'userid' : userid, 'questionid' : questionid}
             return redirect(request, "discussionquestion.html", context)
-    else:
-        return render(request, "discussionboard.html", context)
+    else:'''
+    userrole = get_userrole(userid)
+    discussionlist = getdiscussioninfo()
+    context = {'userid': userid, 'roleid' : userrole.roleid_id, 'discussion': discussionlist}
+    return render(request, "discussionboard.html", context)
 
 def addquestion(request, userid):
     context = { 'userid' : userid }
@@ -429,39 +429,31 @@ def deletecomment(request, userid):
 #LauWanJing part end
 #OhWenChi part start
 
-def discussionquestion(request, context):
-    question = getdiscussionquestioninfo(context)
-    context = {'question': question}
-    if request.method == 'POST':
-        if request.POST.get('reply'):
-    
-            return redirect(request, "replycomment.html", context)
-    else:
-        return render(request, "discussionquestion.html", context)
+def discussionquestion(request, userid, id):
+    questionComment = getdiscussionquestioninfo(id)
+    context = {'questionComment': questionComment, 'userid': userid, 'discussionid': id}
+    return render(request, "discussionquestion.html", context)
 
-def getdiscussionquestioninfo(context):
+def getdiscussionquestioninfo(id):
     try:
-        question = Discussion.objects.all().filter(id=context.questionid)
-        context['question'] = question
-        return context
+        questionComment = Discussioncomment.objects.all().filter(discussionid=id, isactive =1)
+        questionComment.discussion = Discussion.objects.all().filter(id=id).first()
+        return questionComment
     except Discussion.DoesNotExist:
         return None
 
-def replyquestion(request, context):
-    context = {'context':context}
+def replyquestion(request, userid, discussionid):
     if request.method == 'POST':
         form = FormReplyQuestion(request.POST)
         if form.is_valid():
-            replyquestion = Discussioncomment.objects.create(discussionid = Discussion.objects.get(id=context.questionid), comment = request.POST.get('comment'))
+            replyquestion = Discussioncomment.objects.create(userid= User.objects.get(id = userid), discussionid = Discussion.objects.get(id = discussionid), comment = request.POST.get('comment'))
             replyquestion.save()
             messages.success(request, 'Question replied successfully.')
-            return render(request, "replyquestion.html", context)
         else:
-            messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "replyquestion.html", context)
-    else:
-        form = FormReplyQuestion(None)
-        return render(request, 'replyquestion.html', context)
+            messages.error(request, 'Your information is invalid. Please try again.')      
+    discussionQuestion = Discussion.objects.all().filter(id=discussionid).first()
+    context = {'userid': userid, 'discussionQuestion': discussionQuestion, 'discussionid': discussionid}
+    return render(request, 'replyquestion.html', context)
 
 def getquizzesinfo():
     quizlist = Quiz.objects.all().filter(isactive = 1)

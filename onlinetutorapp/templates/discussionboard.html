@@ -69,11 +69,11 @@
                 {% csrf_token %}
 
                 <p>
-                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'search' userid %}"@{{userid}}>Search</button></a>
-                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'addquestion' userid %}"@{{userid}}>Add Question</button></a>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'search' userid %}"@{{userid}}>Search</a></button>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'addquestion' userid %}"@{{userid}}>Add Question</a></button>
                     {% if roleid == 1 %}
-                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'deletequestion' userid %}"@{{userid}}>Delete Question</button></a>
-                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'deletecomment' userid %}"@{{userid}}>Delete Comment</button></a>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'deletequestion' userid %}"@{{userid}}>Delete Question</a></button>
+                    <button><a style="text-decoration: none; color:black; display:inline-flex" href="{% url 'deletecomment' userid %}"@{{userid}}>Delete Comment</a></button>
                     {% endif %}
                 </p>
 
@@ -81,12 +81,11 @@
                 {% for d in discussion %}
                     <div style="border: 1px solid black; background: lightgrey; height: auto;">
                         <br>
-                        <p class="p4" style="display: inline-flex;">User ID:</p>
-                        <p class="p4" style="display: inline-flex;">{{d.userid}}</p>
+                        <p class="p4" style="display: inline-flex;">Posted by:</p>
+                        <p class="p4" style="display: inline-flex;">{{d.userid.name}}</p>
                         <br>
                         <p class="p5" style="display: inline-flex;">{{d.question}}</p>
-                        <button style="float: right;"><a style="text-decoration: none; color:black; float: right;" name="view">View</button></a>
-                        <input type="text" name="id" hidden value={{d.id}}>
+                        <button style="float: right;"><a style="text-decoration: none; color:black;" href="{% url 'discussionquestion' userid d.id %}"@{{userid}} @{{d.id}}>View</a></button>
                         <br><br>
                     </div>
                     <br>
