@@ -1,9 +1,8 @@
 from django.core.mail import send_mail
 from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Questionselection, Quiz, Todolist, User, Userrole, Role, Quizquestion
-from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormAddQuestion, FormReplyQuestion, FormQuestionselection, FormAddQuiz, FormQuizquestion
+from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormAddQuestion, FormReplyQuestion, FormAddQuiz, FormQuizquestion
 from django.contrib import messages
 from django.contrib.postgres.search import *
 
@@ -362,20 +361,6 @@ def getdiscussioninfo():
     return discussionlist
 
 def discussionboard(request, userid):
-    '''if request.method == 'POST':
-        if request.POST.get('search'):
-            return redirect(request, "search.html", userid)
-        elif request.POST.get('add'):
-            return redirect(request, "addquestion.html", userid)
-        elif request.POST.get('deletequestion'):
-            return redirect(request, "deletequestion.html", userid)
-        elif request.POST.get('deletecomment'):
-            return redirect(request, "deletecomment.html", userid)
-        elif request.POST.get('view'):
-            questionid = request.POST.get('id')
-            context = {'userid' : userid, 'questionid' : questionid}
-            return redirect(request, "discussionquestion.html", context)
-    else:'''
     userrole = get_userrole(userid)
     discussionlist = getdiscussioninfo()
     context = {'userid': userid, 'roleid' : userrole.roleid_id, 'discussion': discussionlist}
@@ -425,7 +410,6 @@ def deletecomment(request, userid):
         findid = Discussioncomment.objects.get(comment = comment)
         Discussioncomment.objects.filter(id=findid.id).update(isactive = 0)
         messages.success(request, "Comment deleted.")
-        Discussion.objects.filter(title=request.POST.get('deletecomment').update(isactive = 0))
     comment = Discussioncomment.objects.raw('SELECT * FROM discussioncomment WHERE isactive=1')
     context = {'comment' : comment, 'userid': userid}
     return render(request, 'deletecomment.html', context)
