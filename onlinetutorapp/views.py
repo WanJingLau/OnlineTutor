@@ -106,7 +106,7 @@ def login(request):
             return render(request, 'login.html') 
         else:
             try:
-                user = User.objects.filter(staffid = staffid, password =password)
+                user = User.objects.all().filter(staffid = staffid, password =password).first()
                 if (not(user)):
                     messages.error(request, 'Your ID is not found.')
                     return render(request, 'login.html')
