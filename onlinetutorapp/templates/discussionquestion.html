@@ -108,19 +108,18 @@
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
                 <div class="container3">
-                    
-                    <p>{{question}}</p>
-                    <p align="right">
-                    <button><a style="text-decoration: none; color:black" href="{% url 'replyquestion' userid%}"@{{userid}}>Reply</button></a>
+                    <p class="p5">{{questionComment.discussion.question}}</p>
+                    <p>{{questionComment.discussion.description}}</p>
+                    <button style="float: right;"><a style="text-decoration: none; color:black" href="{% url 'replyquestion' userid discussionid %}"@{{userid}} @{{discussionid}}>Reply</button></a>
                 </div>
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
+                {% for comment in questionComment %}
                 <div class="container4">
-                    <p align="right">
-                    
-                    <p class="p5">Reply:</p><p class="p4">{{comment}}</p>
+                    <p class="p5">Reply from {{comment.userid.name}}:</p>
+                    <p class="p4">{{comment.comment}}</p>
                 </div>
-            
+                {% endfor %}
             </form>
                 
             </div>
