@@ -101,21 +101,26 @@ def login(request):
     if request.method == 'POST':
         staffid = request.POST.get('staffid')
         password = request.POST.get('password') 
-        #django requires validation
-        if not ['staffid'] or ['password']:
+        if not (staffid or password):
             messages.error(request, 'Empty Staff ID/Password')
             return render(request, 'login.html') 
         else:
-            user = User.objects.get(staffid = staffid, password =password)
-            if (not(user)):
-                messages.error(request, 'Incorrect ID/Password. Please try again')
-                return render(request, 'login.html') 
-            else:
-                if user.isactive == 1:
+            try:
+                user = User.objects.filter(staffid = staffid, password =password)
+                if (not(user)):
+                    messages.error(request, 'Your ID is not found.')
+                    return render(request, 'login.html')
+                elif user.isactive == 1:
                     return redirect('mainpage_user', userid = user.id)
+                else:
+                    messages.error(request, 'Your ID is inactive.')
+                    return render(request, 'login.html')
+            except User.DoesNotExist:
+                messages.error(request, 'Incorrect ID/Password. Please try again')
+                return render(request, 'login.html')
     else:
         messages.error(request, 'Fill in your ID and password to login into account.')
-        return render(request, 'login.html') 
+        return render(request, 'login.html')
 
 def get_login(request, staffid, password):
     x = staffid
@@ -375,6 +380,16 @@ def discussionboard(request, userid):
     else:
         return render(request, "discussionboard.html", context)
     
+def discussionquestion(request, context):
+    question = getdiscussionquestioninfo(context)
+    context = {'question': question}
+    if request.method == 'POST':
+        if request.POST.get('reply'):
+    
+            return redirect(request, "replycomment.html", context)
+    else:
+        return render(request, "discussionquestion.html", context)
+
 def addquestion(request, userid):
     context = { 'userid' : userid }
     if request.method == 'POST':
@@ -403,6 +418,14 @@ def search(request, userid):
     context = {'userid':userid}
     return render(request, "search.html", context)
 
+def getdiscussionquestioninfo(context):
+    try:
+        question = Discussion.objects.all().filter(id=context.questionid)
+        context['question'] = question
+        return context
+    except Discussion.DoesNotExist:
+        return None
+
 def deletequestion(request, userid):
     if request.method == 'POST':
         question = request.POST.get('question')
@@ -424,27 +447,7 @@ def deletecomment(request, userid):
     context = {'comment' : comment, 'userid': userid}
     return render(request, 'deletecomment.html', context)
 
-#Lau Wan Jing part end
-#Oh Wen Chi part start
-
-def discussionquestion(request, context):
-    question = getdiscussionquestioninfo(context)
-    context = {'question': question}
-    if request.method == 'POST':
-        if request.POST.get('reply'):
-    
-            return redirect(request, "replycomment.html", context)
-    else:
-        return render(request, "discussionquestion.html", context)
-
-def getdiscussionquestioninfo(context):
-    try:
-        question = Discussion.objects.all().filter(id=context.questionid)
-        context['question'] = question
-        return context
-    except Discussion.DoesNotExist:
-        return None
-
+#notyet
 def replyquestion(request, context):
     context = {'context':context}
     if request.method == 'POST':
