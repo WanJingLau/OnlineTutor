@@ -1,9 +1,8 @@
 from django.core.mail import send_mail
 from django.db import connection
-from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Questionselection, Quiz, Todolist, User, Userrole, Role, Quizquestion
-from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormUserLogin, FormAddQuestion, FormReplyQuestion, FormQuestionselection, FormAddQuiz, FormQuizquestion
+from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormAddQuestion, FormReplyQuestion, FormAddQuiz, FormQuizquestion
 from django.contrib import messages
 from django.contrib.postgres.search import *
 
@@ -108,7 +107,7 @@ def login(request):
             try:
                 user = User.objects.all().filter(staffid = staffid, password =password).first()
                 if (not(user)):
-                    messages.error(request, 'Your ID is not found.')
+                    messages.error(request, 'Your information is incorrect.')
                     return render(request, 'login.html')
                 elif user.isactive == 1:
                     return redirect('mainpage_user', userid = user.id)
@@ -148,9 +147,13 @@ def forgotpassword(request):
     if request.method == 'POST':
         form = FormForgotPassword(request.POST)
         email = request.POST.get('email')
-        get_forgotpassword(request, email)
-        messages.success(request, 'Please check your email for your password.')
-        return redirect('login')
+        if not email:
+            messages.error(request, 'Empty email address, please try again.')
+            return render(request, 'forgotpassword.html')
+        else:
+            get_forgotpassword(request, email)
+            messages.success(request, 'Please check your email for your password.')
+            return redirect('login')
     else:
         form = FormUser(None)
     return render(request, 'forgotpassword.html', { 'form' : form })
@@ -212,16 +215,16 @@ def settings(request, userid):
                     #Lau Wan Jing: https://djangobook.com/django-tutorials/mastering-django-models/
                     User.objects.filter(id=userid).update(password=newpassword)
                     messages.success(request, 'Your password is changed successfully, please login with new password next time.')
-                    return render(request, 'settings.html')
+                    return render(request, 'settings.html', context)
                 else:
                     messages.error(request, 'Your new password and confirm new password are incorrect. Please try again.')
-                    return render(request, 'settings.html')
+                    return render(request, 'settings.html', context)
             else:
                 messages.error(request, 'Your password is incorrect. Please try again.')
-                return render(request, 'settings.html')
+                return render(request, 'settings.html', context)
         else:
             messages.error(request, 'Your password is invalid. Please try again.')
-            return render(request, 'settings.html')
+            return render(request, 'settings.html', context)
     else:
         return render(request, 'settings.html', context)
 
@@ -358,20 +361,6 @@ def getdiscussioninfo():
     return discussionlist
 
 def discussionboard(request, userid):
-    '''if request.method == 'POST':
-        if request.POST.get('search'):
-            return redirect(request, "search.html", userid)
-        elif request.POST.get('add'):
-            return redirect(request, "addquestion.html", userid)
-        elif request.POST.get('deletequestion'):
-            return redirect(request, "deletequestion.html", userid)
-        elif request.POST.get('deletecomment'):
-            return redirect(request, "deletecomment.html", userid)
-        elif request.POST.get('view'):
-            questionid = request.POST.get('id')
-            context = {'userid' : userid, 'questionid' : questionid}
-            return redirect(request, "discussionquestion.html", context)
-    else:'''
     userrole = get_userrole(userid)
     discussionlist = getdiscussioninfo()
     context = {'userid': userid, 'roleid' : userrole.roleid_id, 'discussion': discussionlist}
@@ -421,13 +410,9 @@ def deletecomment(request, userid):
         findid = Discussioncomment.objects.get(comment = comment)
         Discussioncomment.objects.filter(id=findid.id).update(isactive = 0)
         messages.success(request, "Comment deleted.")
-        Discussion.objects.filter(title=request.POST.get('deletecomment').update(isactive = 0))
     comment = Discussioncomment.objects.raw('SELECT * FROM discussioncomment WHERE isactive=1')
     context = {'comment' : comment, 'userid': userid}
     return render(request, 'deletecomment.html', context)
-
-#LauWanJing part end
-#OhWenChi part start
 
 def discussionquestion(request, userid, id):
     questionComment = getdiscussionquestioninfo(id)
@@ -454,6 +439,9 @@ def replyquestion(request, userid, discussionid):
     discussionQuestion = Discussion.objects.all().filter(id=discussionid).first()
     context = {'userid': userid, 'discussionQuestion': discussionQuestion, 'discussionid': discussionid}
     return render(request, 'replyquestion.html', context)
+
+#LauWanJing part end
+#OhWenChi part start
 
 def getquizzesinfo():
     quizlist = Quiz.objects.all().filter(isactive = 1)
