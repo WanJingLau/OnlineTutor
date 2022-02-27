@@ -106,7 +106,7 @@ def login(request):
             return render(request, 'login.html') 
         else:
             try:
-                user = User.objects.filter(staffid = staffid, password =password)
+                user = User.objects.all().filter(staffid = staffid, password =password).first()
                 if (not(user)):
                     messages.error(request, 'Your ID is not found.')
                     return render(request, 'login.html')
@@ -137,10 +137,7 @@ def login_verify(request, user, y):
     if user.isactive == 1:
         if user.password == y:
             messages.success(request, f'Welcome, you are logged in as {user.staffid}.')
-            #userid = user.id
-            #mainpage_user(request, userid)this?
             return redirect('mainpage_user')
-            #return redirect(request.GET.get('next','/'))
         else:
             messages.error(request, 'Your password is incorrect. Please try again.')
     else:
@@ -379,16 +376,6 @@ def discussionboard(request, userid):
             return redirect(request, "discussionquestion.html", context)
     else:
         return render(request, "discussionboard.html", context)
-    
-def discussionquestion(request, context):
-    question = getdiscussionquestioninfo(context)
-    context = {'question': question}
-    if request.method == 'POST':
-        if request.POST.get('reply'):
-    
-            return redirect(request, "replycomment.html", context)
-    else:
-        return render(request, "discussionquestion.html", context)
 
 def addquestion(request, userid):
     context = { 'userid' : userid }
@@ -418,14 +405,6 @@ def search(request, userid):
     context = {'userid':userid}
     return render(request, "search.html", context)
 
-def getdiscussionquestioninfo(context):
-    try:
-        question = Discussion.objects.all().filter(id=context.questionid)
-        context['question'] = question
-        return context
-    except Discussion.DoesNotExist:
-        return None
-
 def deletequestion(request, userid):
     if request.method == 'POST':
         question = request.POST.get('question')
@@ -447,7 +426,27 @@ def deletecomment(request, userid):
     context = {'comment' : comment, 'userid': userid}
     return render(request, 'deletecomment.html', context)
 
-#notyet
+#LauWanJing part end
+#OhWenChi part start
+
+def discussionquestion(request, context):
+    question = getdiscussionquestioninfo(context)
+    context = {'question': question}
+    if request.method == 'POST':
+        if request.POST.get('reply'):
+    
+            return redirect(request, "replycomment.html", context)
+    else:
+        return render(request, "discussionquestion.html", context)
+
+def getdiscussionquestioninfo(context):
+    try:
+        question = Discussion.objects.all().filter(id=context.questionid)
+        context['question'] = question
+        return context
+    except Discussion.DoesNotExist:
+        return None
+
 def replyquestion(request, context):
     context = {'context':context}
     if request.method == 'POST':
