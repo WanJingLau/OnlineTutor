@@ -375,16 +375,6 @@ def discussionboard(request, userid):
     else:
         return render(request, "discussionboard.html", context)
     
-def discussionquestion(request, context):
-    question = getdiscussionquestioninfo(context)
-    context = {'question': question}
-    if request.method == 'POST':
-        if request.POST.get('reply'):
-    
-            return redirect(request, "replycomment.html", context)
-    else:
-        return render(request, "discussionquestion.html", context)
-
 def addquestion(request, userid):
     context = { 'userid' : userid }
     if request.method == 'POST':
@@ -413,14 +403,6 @@ def search(request, userid):
     context = {'userid':userid}
     return render(request, "search.html", context)
 
-def getdiscussionquestioninfo(context):
-    try:
-        question = Discussion.objects.all().filter(id=context.questionid)
-        context['question'] = question
-        return context
-    except Discussion.DoesNotExist:
-        return None
-
 def deletequestion(request, userid):
     if request.method == 'POST':
         question = request.POST.get('question')
@@ -442,7 +424,27 @@ def deletecomment(request, userid):
     context = {'comment' : comment, 'userid': userid}
     return render(request, 'deletecomment.html', context)
 
-#notyet
+#Lau Wan Jing part end
+#Oh Wen Chi part start
+
+def discussionquestion(request, context):
+    question = getdiscussionquestioninfo(context)
+    context = {'question': question}
+    if request.method == 'POST':
+        if request.POST.get('reply'):
+    
+            return redirect(request, "replycomment.html", context)
+    else:
+        return render(request, "discussionquestion.html", context)
+
+def getdiscussionquestioninfo(context):
+    try:
+        question = Discussion.objects.all().filter(id=context.questionid)
+        context['question'] = question
+        return context
+    except Discussion.DoesNotExist:
+        return None
+
 def replyquestion(request, context):
     context = {'context':context}
     if request.method == 'POST':
