@@ -108,7 +108,7 @@ def login(request):
             try:
                 user = User.objects.all().filter(staffid = staffid, password =password).first()
                 if (not(user)):
-                    messages.error(request, 'Your ID is not found.')
+                    messages.error(request, 'Your information is incorrect.')
                     return render(request, 'login.html')
                 elif user.isactive == 1:
                     return redirect('mainpage_user', userid = user.id)
@@ -148,9 +148,13 @@ def forgotpassword(request):
     if request.method == 'POST':
         form = FormForgotPassword(request.POST)
         email = request.POST.get('email')
-        get_forgotpassword(request, email)
-        messages.success(request, 'Please check your email for your password.')
-        return redirect('login')
+        if not email:
+            messages.error(request, 'Empty email address, please try again.')
+            return render(request, 'forgotpassword.html')
+        else:
+            get_forgotpassword(request, email)
+            messages.success(request, 'Please check your email for your password.')
+            return redirect('login')
     else:
         form = FormUser(None)
     return render(request, 'forgotpassword.html', { 'form' : form })
@@ -212,16 +216,16 @@ def settings(request, userid):
                     #Lau Wan Jing: https://djangobook.com/django-tutorials/mastering-django-models/
                     User.objects.filter(id=userid).update(password=newpassword)
                     messages.success(request, 'Your password is changed successfully, please login with new password next time.')
-                    return render(request, 'settings.html')
+                    return render(request, 'settings.html', context)
                 else:
                     messages.error(request, 'Your new password and confirm new password are incorrect. Please try again.')
-                    return render(request, 'settings.html')
+                    return render(request, 'settings.html', context)
             else:
                 messages.error(request, 'Your password is incorrect. Please try again.')
-                return render(request, 'settings.html')
+                return render(request, 'settings.html', context)
         else:
             messages.error(request, 'Your password is invalid. Please try again.')
-            return render(request, 'settings.html')
+            return render(request, 'settings.html', context)
     else:
         return render(request, 'settings.html', context)
 
@@ -426,9 +430,6 @@ def deletecomment(request, userid):
     context = {'comment' : comment, 'userid': userid}
     return render(request, 'deletecomment.html', context)
 
-#LauWanJing part end
-#OhWenChi part start
-
 def discussionquestion(request, userid, id):
     questionComment = getdiscussionquestioninfo(id)
     context = {'questionComment': questionComment, 'userid': userid, 'discussionid': id}
@@ -454,6 +455,9 @@ def replyquestion(request, userid, discussionid):
     discussionQuestion = Discussion.objects.all().filter(id=discussionid).first()
     context = {'userid': userid, 'discussionQuestion': discussionQuestion, 'discussionid': discussionid}
     return render(request, 'replyquestion.html', context)
+
+#LauWanJing part end
+#OhWenChi part start
 
 def getquizzesinfo():
     quizlist = Quiz.objects.all().filter(isactive = 1)

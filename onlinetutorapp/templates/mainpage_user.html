@@ -44,7 +44,7 @@
                 <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button onclick="grades()">Grades</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
 
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
                 <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
@@ -87,20 +87,8 @@
                     else
                      return false ;
                     }
-                function courselist() {
-                    window.location.href = "http://127.0.0.1:8000/courselist"
-                }
-                function discussionboard() {
-                    window.location.href = "http://127.0.0.1:8000/discussionboard"
-                }
                 function grades() {
                     window.location.href = "http://127.0.0.1:8000/grades"
-                }
-                function quizzes() {
-                    window.location.href = "http://127.0.0.1:8000/quizzes"
-                }
-                function todolist() {
-                    window.location.href = "http://127.0.0.1:8000/todolist"
                 }
             </script>
 
