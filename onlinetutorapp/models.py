@@ -5,11 +5,10 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-
-# Lau Wan Jing: https://docs.djangoproject.com/en/dev/howto/legacy-databases/ --auto generated modelspy
 import random
 from django.db import models
 
+#Lau Wan Jing: https://docs.djangoproject.com/en/dev/howto/legacy-databases/ -- auto generated
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
@@ -95,7 +94,7 @@ class CaptchaCaptchastore(models.Model):
 class Coursematerial(models.Model):
     title = models.CharField(unique=True, max_length=100)
     description = models.CharField(max_length=255)
-    file = models.FileField(upload_to='onlinetutorapp/static/course', blank=True, null=True)
+    file = models.CharField(max_length=255, blank=True, null=True)
     isactive = models.IntegerField(blank=True, null=True, default=1)
     coursetopic = models.CharField(max_length=255)
 
@@ -280,37 +279,15 @@ class PostOfficeLog(models.Model):
         db_table = 'post_office_log'
 
 
-class Questionselection(models.Model):
-    quizquestionid = models.ForeignKey('Quizquestion', models.DO_NOTHING, db_column='quizquestionid')
-    selection = models.CharField(max_length=255)
-    answer = models.CharField(max_length=255)
-    isactive = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'questionselection'
-
-
 class Quiz(models.Model):
-    title = models.CharField(max_length=100)
-    duration = models.TimeField()
-    attempt = models.IntegerField()
-    isactive = models.IntegerField(blank=True, null=True)
+    question = models.CharField(unique=True, max_length=100)
+    selection = models.IntegerField(blank=True, null=True)
+    answer = models.IntegerField()
+    isactive = models.IntegerField(default=1)
 
     class Meta:
         managed = False
         db_table = 'quiz'
-
-
-class Quizquestion(models.Model):
-    quizid = models.ForeignKey(Quiz, models.DO_NOTHING, db_column='quizid')
-    question = models.CharField(max_length=255)
-    marks = models.IntegerField()
-    isactive = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'quizquestion'
 
 
 class Role(models.Model):
@@ -349,19 +326,6 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'user'
-
-
-class Userquizselection(models.Model):
-    userid = models.ForeignKey(User, models.DO_NOTHING, db_column='userid')
-    questionselectionid = models.ForeignKey(Questionselection, models.DO_NOTHING, db_column='questionselectionid')
-    answercorrect = models.IntegerField()
-    attemptcount = models.IntegerField()
-    score = models.IntegerField()
-    isactive = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'userquizselection'
 
 
 class Userrole(models.Model):

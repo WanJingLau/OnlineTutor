@@ -25,4 +25,5 @@ urlpatterns = [
     path('<int:userid>/addquestion', views.addquestion, name="addquestion"),
     path('<int:userid>/replyquestion/<int:discussionid>', views.replyquestion, name="replyquestion"),
     path('<int:userid>/discussionquestion/<int:id>', views.discussionquestion, name="discussionquestion"),
+    #quizzes url
 ]
