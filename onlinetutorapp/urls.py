@@ -25,9 +25,4 @@ urlpatterns = [
     path('<int:userid>/addquestion', views.addquestion, name="addquestion"),
     path('<int:userid>/replyquestion/<int:discussionid>', views.replyquestion, name="replyquestion"),
     path('<int:userid>/discussionquestion/<int:id>', views.discussionquestion, name="discussionquestion"),
-    
-    path('<int:userid>/quizzes', views.quizzes, name="quizzes"),
-    path('<int:userid>/addquiz', views.addquiz, name="addquiz"),
-    path('<int:userid>/deletequiz', views.deletequiz, name="deletequiz"),
-    path('<int:userid>/grades', views.grades, name="grades"),
 ]

@@ -58,6 +58,9 @@
                 function quizzes() {
                     window.location = "http://127.0.0.1:8000/quizzes";
                 }
+                function addmaterials() {
+                    window.location.href = `http://127.0.0.1:8000/addmaterials/${userid}`;
+                }
             </script>
 
             <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
@@ -79,13 +82,12 @@
 
             <p class="p4" style="display: inline-flex;">The subject materials are in three formats: pptx,pdf and mp4 files.</p>
 
-            {% if roleid == 2 %}
-            <button><a style="text-decoration: none; color:black" href="{% url 'addmaterials' userid %}"@{{userid}}>Add Materials</button></a>
+            {% if roleid == 1 or roleid == 2 %} 
+                <button><a style="text-decoration: none; color:black" href="{% url 'addmaterials' userid %}"@{{userid}}>Add Materials</a></button>
             {% endif %}
 
-            {% if roleid == 1 %}
-            <button><a style="text-decoration: none; color:black" href="{% url 'deletematerials' userid %}"@{{userid}}>Delete Materials</button></a>
-            <button><a style="text-decoration: none; color:black" href="{% url 'addmaterials' userid %}"@{{userid}}>Add Materials</button></a>
+            {% if roleid == 1 %} 
+            <button><a style="text-decoration: none; color:black" href="{% url 'deletematerials' userid %}"@{{userid}}>Delete Materials</a></button>
             {% endif %}
 
             <br><br>
