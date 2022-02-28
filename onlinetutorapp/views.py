@@ -1,8 +1,7 @@
 from django.core.mail import send_mail
-from django.db import connection
 from django.shortcuts import render, redirect
-from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Questionselection, Quiz, Todolist, User, Userrole, Role, Quizquestion
-from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormAddQuestion, FormReplyQuestion, FormAddQuiz, FormQuizquestion
+from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Todolist, User, Userrole, Role
+from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormAddQuestion, FormReplyQuestion
 from django.contrib import messages
 from django.contrib.postgres.search import *
 
@@ -29,10 +28,8 @@ def showedithomepagebutton_mainpage_user(request, userid):
     return render(request, 'mainpage_user.html', context)
 
 def get_userrole(userid):
-    userid = userid
-    content = Userrole.objects.raw('SELECT * FROM userrole WHERE userid = userid limit 1')
-    for userrole in content:
-        return userrole
+    content = Userrole.objects.get(userid = User.objects.get(id = userid))
+    return content
 
 def gethomeinfo():
     info = Homepage.objects.get(id = 1)
@@ -442,87 +439,3 @@ def replyquestion(request, userid, discussionid):
 
 #LauWanJing part end
 #OhWenChi part start
-
-def getquizzesinfo():
-    quizlist = Quiz.objects.all().filter(isactive = 1)
-    return quizlist
-
-def quizzes(request, userid):
-    userrole = get_userrole(userid)
-    quizlist = getquizzesinfo()
-    context = {'userid': userid, 'roleid' : userrole.roleid_id, 'quizlist': quizlist}
-    if request.method == 'POST':
-        if request.POST.get('attend'):
-            return redirect(request, "attendquiz.html", userid)
-        elif request.POST.get('addquiz'):
-            return redirect(request, "addquiz.html", userid)
-        elif request.POST.get('deletequiz'):
-            return redirect(request, "deletequiz.html", userid)
-    else:
-        return render(request, "quizzes.html", context)
-
-def attendquiz(request):
-    if request.method == 'POST':
-        form = FormQuizquestion(request.POST)
-        question = request.POST.get('question')
-        marks = request.POST.get('marks')
-        add = attendquiz(question=question,marks=marks)
-        add.save()
-        return render(request,"attendquiz.html",{'add':add})
-    else:
-        form = FormQuizquestion(None)
-    return render(request, 'attendquiz.html', { 'form' : form })
-
-def addquiz(request, quizid):
-    if request.method == 'POST':
-        form = FormAddQuiz(request.POST)
-        if form.is_valid():
-            addquiz = Quiz.objects.create(quizid = Quiz.objects.get(id=quizid), title = request.POST.get('title'), duration = request.POST.get('duration'), attempt = request.POST.get('attempt'))
-            addquiz.save()
-            messages.success(request, 'Quiz added successfully.')
-            return redirect(request, "addquiz.html")
-        else:
-            messages.error(request, 'Your information is invalid. Please try again.')
-        return render(request, "addquiz.html")
-    else:
-        form = FormAddQuiz(None)
-        return render(request, 'addquiz.html')
-
-def addquizquestion(request):
-    if request.method == 'POST':
-        form = FormQuizquestion(request.POST)
-        if form.is_valid():
-            form.save()
-            question = request.POST.get('question')
-            marks = request.POST.get('marks')
-            add = addquizquestion(question=question,marks=marks)
-            add.save()
-            messages.success('Quiz Question added successfully!')
-            return render(request,"addquizquestion.html",{'add':add})
-    else:
-        form = FormQuizquestion(None)
-    return render(request, 'addquizquestion.html', { 'form' : form })
-
-def deletequiz(request, userid):
-    id=request.POST.get('id')
-    Quizquestion.objects.filter(id=id, userid = User.objects.get(id=userid)).update(isactive = 0)
-    
-def grades(request, userid):
-    grades = getgradesinfo(userid)
-    grades['userid'] = userid
-    return render(request, "grades.html", grades)
-
-def checkanswer(request, questionselectionid):
-    checkanswer = Questionselection.objects.raw('SELECT * FROM questionselection')
-    context = {'checkanswer' : checkanswer}
-    context = Questionselection.objects.get(id=questionselectionid)
-    Questionselection.objects.filter(id = Questionselection.objects.get(id = questionselectionid)).update(selection = request.POST.get('selection'), answer = request.POST.get('answer'))
-    return render(request, 'checkanswer.html', context)
-
-def getgradesinfo(userid):
-    cursor = connection.cursor()
-    query = "Select * from userquizselection WHERE isactive=1"
-    cursor.execute(query)
-    list = [list for list in cursor.fetchall()]
-    list = [(list), userid]
-    return list

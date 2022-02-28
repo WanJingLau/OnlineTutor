@@ -44,7 +44,7 @@
                 <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
+                <button><a>Quizzes</button></a>
 
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
                 <button onclick="developing()">Grades</button>
@@ -133,18 +133,12 @@
                 </div>
             </div>
 
-            <!-- <p> Lau Wan Jing: https://code.sololearn.com/W4J5Vlx8AAI4/?ref=app 
-                https://www.w3schools.com/js/js_if_else.asp
-                show edit button if user role is admin </p> -->
-                
-            <script type = "text/javascript">
-                if (roleid == 1) {
-                    <img src="{% static 'img/edit.png' %}" align="right" onclick="edithomepage();" />
-                }
-                function edithomepage() {
-                    window.location.href = "http://127.0.0.1:8000/edithomepage";
-                }
-            </script>
+            <!-- <p> Lau Wan Jing: https://stackoverflow.com/a/36661426 -- show edit button if user role is admin </p> -->
+            {% if roleid == 1 %}
+            <div>
+                <a href="/edithomepage"><i class="fa fa-edit" style="font-size:30px;float:right;color:black"></i></a> 
+            </div>
+            {% endif %}
 
             <p class="p2">
                 {{currenttitle}}

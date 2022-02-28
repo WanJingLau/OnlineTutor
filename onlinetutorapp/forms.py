@@ -79,30 +79,3 @@ class FormQuestionselection(forms.ModelForm):
     class Meta:
         model= Questionselection
         fields= ["selection","answer"]
-
-class FormAddQuiz(forms.ModelForm):
-    class Meta:
-        model= Quiz
-        fields= ["title","duration","attempt"]
-
-class FormEditQuiz(forms.ModelForm):
-    class Meta:
-        model= Quiz
-        fields= ["title","duration","attempt"]
-
-class FormQuizquestion(forms.ModelForm):
-    class Meta:
-        model= Quizquestion
-        fields= ["question","marks"]
-
-class FormDeleteQuiz(forms.ModelForm):
-    class Meta:
-        model= Quizquestion
-        fields= ["question","marks"]
-
-class FormUserquizselection(forms.ModelForm):
-    class Meta:
-        model= Userquizselection
-        fields= ["answercorrect","attemptcount","score"]
-
-
