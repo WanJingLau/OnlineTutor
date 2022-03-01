@@ -305,15 +305,10 @@ def getcoursematerialinfo():
     try:
         coursemateriallist = Coursematerial.objects.all().filter(isactive = 1).order_by("coursetopic")
         for coursematerial in coursemateriallist:
-            coursematerial.file_url = coursematerial.file.url.replace("onlinetutorapp/static/", "")
+            coursematerial.file_url = coursematerial.file.replace("onlinetutorapp/static/", "")
         return coursemateriallist
     except Coursematerial.DoesNotExist:
         return None
-
-def getcoursepageinfo(request, userid):
-    materialinfo = getcoursematerialinfo()
-    info = {'materialinfo' : materialinfo, 'userid' : userid}
-    return (request, info)
 
 def coursepage(request, userid):
     userrole = get_userrole(userid)

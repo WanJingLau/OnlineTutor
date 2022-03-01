@@ -142,7 +142,7 @@
             </div>
             <br>
             {% endfor %}
-            <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+            <a href="{% url 'courselist' userid %}" class="button">Back</a>
         </div>
         </body>
         {% endblock content %}
