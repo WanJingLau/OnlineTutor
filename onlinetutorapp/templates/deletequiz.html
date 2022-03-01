@@ -31,7 +31,7 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a onclick="discussionboard()">Discussion Board</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
                 <button><a onclick="grades()">Grades</button></a>
@@ -48,15 +48,9 @@
                 // Lau Wan Jing: https://sebhastian.com/javascript-display-text/ -- alert box
                 function user() {
                     alert("You have logged in into the account.");
-                }
-                function discussionboard() {
-                    window.location = "http://127.0.0.1:8000/discussionboard";
-                }
+                }                
                 function grades() {
                     window.location = "http://127.0.0.1:8000/grades";
-                }
-                function quizzes() {
-                    window.location = "http://127.0.0.1:8000/quizzes";
                 }
             </script>
 
@@ -78,7 +72,8 @@
             <p class="p3">Quizzes</p>
             
             <br>
-            <p class="p4">Choose the question delete it.</p>
+            <p class="p4">Choose the quiz question to delete it.</p>
+            <br>
             <br>
 
             <script LANGUAGE="JavaScript">
@@ -95,14 +90,11 @@
             <form action="deletequiz" method="post">
                 {% csrf_token %}
 
-                <!-- Oh Wen Chi:https://stackoverflow.com/questions/15461811/html-canvas-with-scrollbar -->
-                <div style="max-height: 350px;max-width:1500px;overflow: scroll;">
-
-                <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
-                <p class="p5">Question:
+                <!-- Oh Wen Chi:https://www.w3schools.com/tags/tag_select.asp -->
+                <p class="p5">Quiz Question:
 
                 <select name="question" id="question">
-                    {% for i in quiz %}
+                    {% for i in quizquestionlist %}
                     <option>{{i.question}}</option>
                     {% endfor %}
                 </select>
@@ -110,31 +102,10 @@
 
                 <br>
                 <br>
-
-                <!-- Oh Wen Chi:https://www.w3schools.com/html/html_form_input_types.asp -->
-                <p class="p5">Question:
-                    <p class="p4">{{question}}
-
-                <br>
-        
-                <p class="p5">Answer Choices:
-                    <p class="p4">{{question}}
-    
-                <br>
-        
-                <!-- Oh Wen Chi:https://www.w3schools.com/tags/tag_center.asp -->
-                <p style="text-align:right;"><b>Marks:</b>
-                    <p value={{marks}}>{{marks}}
-                </p>
-    
-                <canvas width="512px" height="512px"></canvas>
-
-                <br>
-                <br>
             
                 <div class=buttoncontainer>
                     <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                    <INPUT TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'>
+                    <INPUT class="submit" TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'>
                 </div>
 
             </form>

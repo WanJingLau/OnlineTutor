@@ -1,7 +1,7 @@
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
-from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Todolist, User, Userrole, Role
-from .forms import FormAddMaterial, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormAddQuestion, FormReplyQuestion
+from onlinetutorapp.models import Coursematerial, Coursesubject, Discussion, Discussioncomment, Helpdesk, Homepage, Quiz, Todolist, User, Userrole, Role
+from .forms import FormAddMaterial, FormAddQuiz, FormForgotPassword, FormHelpdesk, FormTodolist, FormUser, FormAddQuestion, FormReplyQuestion
 from django.contrib import messages
 from django.contrib.postgres.search import *
 
@@ -305,15 +305,10 @@ def getcoursematerialinfo():
     try:
         coursemateriallist = Coursematerial.objects.all().filter(isactive = 1).order_by("coursetopic")
         for coursematerial in coursemateriallist:
-            coursematerial.file_url = coursematerial.file.url.replace("onlinetutorapp/static/", "")
+            coursematerial.file_url = coursematerial.file.replace("onlinetutorapp/static/", "")
         return coursemateriallist
     except Coursematerial.DoesNotExist:
         return None
-
-def getcoursepageinfo(request, userid):
-    materialinfo = getcoursematerialinfo()
-    info = {'materialinfo' : materialinfo, 'userid' : userid}
-    return (request, info)
 
 def coursepage(request, userid):
     userrole = get_userrole(userid)
@@ -439,3 +434,62 @@ def replyquestion(request, userid, discussionid):
 
 #LauWanJing part end
 #OhWenChi part start
+
+def getquizzesinfo():
+    quizlist = Quiz.objects.all().filter(isactive = 1)
+    return quizlist
+
+def quizzes(request, userid):
+    userrole = get_userrole(userid)
+    quizlist = getquizzesinfo()
+    context = {'userid': userid, 'roleid' : userrole.roleid_id, 'quizlist': quizlist}
+    return render(request, "quizzes.html", context)
+
+def addquiz(request, userid):
+    context = { 'userid' : userid }
+    if request.method == 'POST':
+        form = FormAddQuiz(request.POST)
+        if form.is_valid():
+            addquiz = Quiz.objects.create(question = request.POST.get('question'), answer = request.POST.get('answer'))
+            addquiz.save()
+            messages.success(request, 'Quiz added successfully.')
+            return render(request, "addquiz.html", context)
+        else:
+            messages.error(request, 'Your add quiz information is invalid. Please try again.')
+        return render(request, "addquiz.html", context)
+    else:
+        form = FormAddQuiz(None)
+        return render(request, 'addquiz.html', context)
+
+def getdeletequizinfo():
+    quizlist = Quiz.objects.all().filter(isactive = 1)
+    return quizlist
+
+def deletequiz(request, userid):
+    if request.method == 'POST':
+        question = request.POST.get('question')
+        findid = Quiz.objects.get(question = question)
+        Quiz.objects.filter(id=findid.id).update(isactive = 0)
+        messages.success(request, "Quiz deleted successfully.")
+    quizlist = getdeletequizinfo()
+    context = {'quizquestionlist' : quizlist, 'userid': userid}
+    return render(request, 'deletequiz.html', context)
+
+def getanswerquizinfo(id):
+    try:
+        question = Quiz.objects.all().filter(id=id, isactive=1)
+        return question
+    except Quiz.DoesNotExist:
+        return None
+
+def answerquiz(request, userid, id):
+    question = getanswerquizinfo(id)
+    context = {'question':question, 'userid':userid, 'id':id}
+    if request.method == 'POST':
+        Quiz.objects.filter(id=id).update(selection=request.POST.get('selection'))
+        question = Quiz.objects.get(id=id)
+        if question.selection == question.answer:
+            messages.success(request, "Yes, you answered the quiz correctly!")
+        else:
+            messages.error(request, 'Wrong answer, please try again.')
+    return render(request, 'answerquiz.html', context)

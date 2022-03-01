@@ -1,13 +1,13 @@
 <!DOCTYPE html>
     <html>
         {% load static %}
-
+        {% block content %}
         <head>
             <link rel="stylesheet" href="{% static 'css/styles.css' %}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-
+        {% include 'messages.html' %}
         <body>
         <div>
 
@@ -26,21 +26,20 @@
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button onclick="courselist()">Course List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
 
                 <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button onclick="grades()">Grades</button>
+                <button><a onclick="grades()">Grades</button></a>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button onclick="quizzes()">Quizzes</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button onclick="todolist()">To-Do List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
 
             </div>
 
@@ -62,69 +61,57 @@
             <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
                 style="float:right;width:160px;height:50px;"
             >
-            
-            <br>
+        
             <br>
             <br>
 
-            <p>
-                <img src="{% static 'img/grades.png' %}" alt="grades_icon"
-                style="float:left;width:50px;height:50px;">
-            </p>
+            <img src="{% static 'img/quizzes.png' %}" alt="quizzes_icon" style="float:left;width:50px;height:50px;">
 
-            <p class="p3">Grades</p>
+            <p class="p3">Quizzes</p>
 
             <br>
 
-            <p class="p4"> Please check the correct answer for each quiz!</p>
+            <p class="p4">Welcome to Quiz.</p>
 
             <br>
 
-            <!-- Oh Wen Chi:https://stackoverflow.com/questions/15461811/html-canvas-with-scrollbar -->
-         
-                <p class="p5">Question:</p>
+            <p class="p4">Please answer the Quiz.</p>
+            <br>
+            <br>
 
-                <style>
-                    .grades {
-                      background-color: white;
-                      color: black;
-                      border: 1px solid black;
-                      margin: 3px;
-                      padding: 3px;
-                    }
-                </style>
+            <form action="{% url 'answerquiz' userid id %}" method="post">
+                {% csrf_token %}
 
-                <div class="grades">
-                    <!-- Oh Wen Chi:https://www.youtube.com/watch?v=H1DUszPZakQ -->
-                    <form name="quiz" id="quiz">
-                        <div>
-                            <p style="text-align:left;">The decimal value of the hexadecimal number 777 is</p>
-                            <p style="text-align:left;"><input type="radio" name="question1" value="">19</p>
-                            <p style="text-align:left;"><input type="radio" name="question2" value="">1911</p>
-                            <p style="text-align:left;"><input type="radio" name="question3" value="">191</p>
-                            <p style="text-align:left;"><input type="radio" name="question4" value="">19111</p>
-                        </div>
-                    <form>
-                </div>
-                
-                <p class="p5">Answer:</p>
+                    <p class="p5">Quiz Question:
+
+                        {% for i in question %}
+                        <option>{{i.question}}</option>
+                        {% endfor %}
+                    </select>
+                    </p>
+
+                    <br>
+                    <!-- Oh Wen Chi:https://www.w3schools.com/tags/tag_select.asp -->
+                    <p class="p5">Answer:
+    
+                    <select name="selection" id="selection">
+                        <option value="1">True</option>
+                        <option value="0">False</option>
+                    </select>
+                    <br><br>
 
                 <br>
-                
-                <div class="grades">
-                <p style="text-align:left;">1911</p>
+
+                <div class=buttoncontainer>
+
+                    <p align="right">
+                    <button type="submit" class="submit">Submit</a></button></p>
+                    
                 </div>
 
-            <br>
-            <br>
-
-            <div class=buttoncontainer>
-                <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
-
-                <button type="submit" class="submit">Next</a>
-            </div>
+                </form>
 
         </div>
         </body>
-    </html>
-            
+        {% endblock content %}
+    </html> 
