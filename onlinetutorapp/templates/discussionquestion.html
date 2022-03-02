@@ -11,7 +11,7 @@
         <body>
         <div>
 
-            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
+            <!-- Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color -->
 
             <ul>
                 <p class="p1">E-Tutor</p>
@@ -20,26 +20,26 @@
                 <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
-            <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
+            <!-- Lau Wan Jing: second narvar bar as tab -->
 
             <div class="tab">
 
-                <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
+                <!-- Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</a></button>
 
-                <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
+                <!-- Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a>Discussion Board</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</a></button>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'grades' userid %}"@{{userid}}>Grades</button></a>
+                <button onclick="developing()">Grades</button>
 
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</a></button>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</a></button>
 
             </div>
 
@@ -48,16 +48,13 @@
                 function user() {
                     alert("You have logged in into the account.");
                 }
-                function grades() {
-                    window.location = "http://127.0.0.1:8000/grades";
-                }
-                function quizzes() {
-                    window.location = "http://127.0.0.1:8000/quizzes";
+                function developing() {
+                    alert("This feature being developing, you could not access it.");
                 }
             </script>
 
-            <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
-            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
+            <!-- Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
+            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file -->
             <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
                 style="float:right;width:160px;height:50px;"
             >
@@ -110,18 +107,20 @@
                 <div class="container3">
                     <p class="p5">{{questionComment.discussion.question}}</p>
                     <p>{{questionComment.discussion.description}}</p>
-                    <button style="float: right;"><a style="text-decoration: none; color:black" href="{% url 'replyquestion' userid discussionid %}"@{{userid}} @{{discussionid}}>Reply</button></a>
+                    <button style="float: right;"><a style="text-decoration: none; color:black" href="{% url 'replyquestion' userid discussionid %}"@{{userid}} @{{discussionid}}>Reply</a></button>
                 </div>
 
                 <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
                 {% for comment in questionComment %}
+
                 <div class="container4">
                     <p class="p5">Reply from {{comment.userid.name}}:</p>
                     <p class="p4">{{comment.comment}}</p>
                 </div>
+
                 {% endfor %}
+
             </form>
-            
             </div>
         </body>
         {% endblock content %}

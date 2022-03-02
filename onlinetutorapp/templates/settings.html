@@ -12,7 +12,7 @@
             {% include 'messages.html' %}
         <div>
 
-            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
+            <!-- Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color -->
 
             <ul>
                 <p class="p1">E-Tutor</p>
@@ -21,27 +21,26 @@
                 <li><a href="{% url 'mainpage_user' userid %}"@{{userid}}>Home Page</a></li>
             </ul>
 
-            <!-- <p> Lau Wan Jing: second narvar bar as tab </p> -->
+            <!-- Lau Wan Jing: second narvar bar as tab -->
 
             <div class="tab">
 
-                <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
+                <!-- Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button onclick="courselist()">Course List</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</a></button>
 
-                <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
+                <!-- Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button onclick="discussionboard()">Discussion Board</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</a></button>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button onclick="grades()">Grades</button>
+                <button onclick="developing()">Grades</button>
 
-                <!-- <p> Lau Wan Jing:  </p> -->
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button onclick="quizzes()">Quizzes</button>
+                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</a></button>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</a></button>
 
             </div>
 
@@ -50,26 +49,13 @@
                 function user() {
                     alert("You have logged in into the account.");
                 }
-                function courselist() {
-                    //Lau Wan Jing: need to redirect to courselist user
-                    window.location = "http://127.0.0.1:8000/courselist";
-                }
-                function discussionboard() {
-                    //Lau Wan Jing: need to redirect to discussionboard user
-                    window.location = "http://127.0.0.1:8000/discussionboard";
-                }
-                function grades() {
-                    //Lau Wan Jing: need to redirect to grades user
-                    window.location = "http://127.0.0.1:8000/grades";
-                }
-                function quizzes() {
-                    //Lau Wan Jing: need to redirect to quizzes user
-                    window.location = "http://127.0.0.1:8000/quizzes";
+                function developing() {
+                    alert("This feature being developing, you could not access it.");
                 }
             </script>
 
-            <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
-            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
+            <!-- Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
+            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file -->
             <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
                 style="float:right;width:160px;height:50px;"
             >
@@ -97,7 +83,7 @@
             <br>
 
             <form action="settings" method="post">
-                <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
+                <!-- Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token -->
 
                 {% csrf_token %}
 
@@ -126,14 +112,13 @@
                 <input type="password" name="connewpass" value="" size="50"/>
                 <br>
 
-                <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+                <!-- Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos -->
                 <div class=buttoncontainer>
                     <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
                     <input type="submit" class="submit" value="Submit"></input>
                 </div>
 
             </form>
-
         </div>
         </body>
         {% endblock content %}
