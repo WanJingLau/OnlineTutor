@@ -17,8 +17,8 @@
                 <li><a onclick="logout()" href="/">Home Page</a></li>
             </ul>
 
-            <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
-            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
+            <!-- Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
+            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file -->
             <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
                 style="float:right;width:160px;height:50px;"
             >
@@ -63,7 +63,8 @@
                 }
             </script>
             <form action="edithomepage" method="post" onchange="refresh()">
-                <!-- <p> Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token jinja </p> -->
+
+                <!-- Lau Wan Jing: https://www.youtube.com/watch?v=OTmQOjsl0eg&ab_channel=Telusko -- crsf token -->
 
                 {% csrf_token %}
 
@@ -78,7 +79,7 @@
                     File:
                 </p>
 
-                <!-- <p> Lau Wan Jing: https://www.educba.com/combobox-in-html/ -- combo box</p> -->
+                <!-- Lau Wan Jing: https://www.educba.com/combobox-in-html/ -- combo box -->
                 <select class="combo" name="file" id="file">
                     <option value="Select" selected="selected" disabled>Select....</option>
                     <option value="file1" name="file1">File1</option>
@@ -106,7 +107,7 @@
                 <br>
                 <br>
 
-                <!-- <p> Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos </p> -->
+                <!-- Lau Wan Jing: https://stackoverflow.com/questions/524992/how-to-implement-a-back-link-on-django-templates --back button by Author:Kalanos -->
                 <div class=buttoncontainer>
                     <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
                     <input type="submit" class="submit" value="Submit"></input>

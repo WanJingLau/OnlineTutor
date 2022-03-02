@@ -11,7 +11,7 @@
         <body>
         <div>
 
-            <!-- <p> Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color </p> -->
+            <!-- Lau Wan Jing: https://www.tutorialspoint.com/How-to-set-background-color-in-HTML -- Add background color -->
 
             <ul>
                 <p class="p1">E-Tutor</p>
@@ -24,22 +24,22 @@
 
             <div class="tab">
 
-                <!-- <p> Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon </p> -->
+                <!-- Lau Wan Jing: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_navbar_icon -->
                 <i class="fa fa-fw fa-book"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'courselist' userid %}"@{{userid}}>Course List</a></button>
 
-                <!-- <p> Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments </p> -->
+                <!-- Lau Wan Jing: https://www.w3schools.com/icons/tryit.asp?filename=tryicons_fa-comments -->
                 <i class="fa fa-comments"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'discussionboard' userid %}"@{{userid}}>Discussion Board</a></button>
 
                 <i class="fa fa-star"style="font-size:25px;"></i>
-                <button><a onclick="grades()">Grades</button></a>
+                <button onclick="developing()">Grades</button>
 
                 <i class="fa fa-fw fa-trophy"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'quizzes' userid %}"@{{userid}}>Quizzes</a></button>
 
                 <i class="fa fa-fw fa-tasks"style="font-size:25px;"></i>
-                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</button></a>
+                <button><a style="text-decoration: none; color:black" href="{% url 'todolist' userid %}"@{{userid}}>To-Do List</a></button>
 
             </div>
 
@@ -55,20 +55,14 @@
                     alert("File is too big!");
                     file.value = "";
                     };
-                };
-                function discussionboard() {
-                    window.location = "http://127.0.0.1:8000/discussionboard";
                 }
-                function grades() {
-                    window.location = "http://127.0.0.1:8000/grades";
-                }
-                function quizzes() {
-                    window.location = "http://127.0.0.1:8000/quizzes";
+                function developing() {
+                    alert("This feature being developing, you could not access it.");
                 }
             </script>
 
-            <!-- <p> Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
-            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file </p> -->
+            <!-- Lau Wan Jing: https://www.w3schools.com/html/tryit.asp?filename=tryhtml_images_float -- Insert images 
+            https://docs.djangoproject.com/en/4.0/howto/static-files/ -- static file -->
             <img src="{% static 'img/INTILogo.png' %}" alt="Inti Penang Logo"
                 style="float:right;width:160px;height:50px;"
             >
@@ -96,7 +90,7 @@
                 <br>
             
                 <p class="p5">Chapter:</p>
-                    <input type="text" id="coursetopic" name="coursetopic" size="80"/>
+                <input type="text" id="coursetopic" name="coursetopic" size="80"/>
                 <br>
                 <br>
 
@@ -107,7 +101,7 @@
                 <!-- Oh Wen Chi:https://www.w3schools.com/tags/att_input_type_file.asp 
                 Lau Wan Jing file less than 100MB https://stackoverflow.com/questions/5697605/limit-the-size-of-a-file-upload-html-input-element-->
                 <p class="p5">Upload File(less than 100MB):</p>
-                <input type="file" id="myfile" name="myfile" onchange="checkFileSize()" enctype="multipart/form-data">
+                <input type="file" id="myfile" name="myfile" onchange="checkFileSize()" enctype="multipart/form-data"/>
 
                 <br>
                 <br>
