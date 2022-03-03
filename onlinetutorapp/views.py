@@ -391,6 +391,7 @@ def deletequestion(request, userid):
         question = request.POST.get('question')
         findid = Discussion.objects.get(question = question)
         Discussion.objects.filter(id=findid.id).update(isactive = 0)
+        Discussioncomment.objects.filter(discussionid=findid.id).update(isactive = 0)
         messages.success(request, "Question deleted.")
     discussionlist = getdiscussioninfo()
     context = {'discussionlist' : discussionlist, 'userid': userid}
