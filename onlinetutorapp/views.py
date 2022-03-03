@@ -297,7 +297,7 @@ def getcourselistinfo(userid):
 
 def courselist(request, userid):
     subject = getcourselistinfo(userid)
-    ##Lau Wan Jing: join userid and subject into the context and pass to html
+    #Lau Wan Jing: join userid and subject into the context and pass to html
     subject['userid'] = userid
     return render(request, "courselist.html", subject)
 
@@ -305,7 +305,7 @@ def getcoursematerialinfo():
     try:
         coursemateriallist = Coursematerial.objects.all().filter(isactive = 1).order_by("coursetopic")
         for coursematerial in coursemateriallist:
-            coursematerial.file_url = coursematerial.file.replace("onlinetutorapp/static/", "")
+            coursematerial.file_url = coursematerial.file.url.replace("onlinetutorapp/static/", "")
         return coursemateriallist
     except Coursematerial.DoesNotExist:
         return None
