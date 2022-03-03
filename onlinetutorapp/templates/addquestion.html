@@ -88,8 +88,8 @@
                 <br>
             
                 <div class=buttoncontainer>
-                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Cancel</a>
-                    <button><a type="submit" class="submit">Submit</a></button>
+                    <a href="{% url 'discussionboard' userid %}"@{{userid}} class="button">Cancel</a>
+                    <button type="submit" class="submit">Submit</button>
                 </div>
 
             </form>

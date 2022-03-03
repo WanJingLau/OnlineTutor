@@ -104,7 +104,7 @@
                 <br>
             
                 <div class=buttoncontainer>
-                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+                    <a href="{% url 'discussionboard' userid %}"@{{userid}} class="button">Back</a>
                     <INPUT class="submit" TYPE='submit' value='Delete' name='delete' onClick='return confirmSubmit()'>
                 </div>
 

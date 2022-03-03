@@ -109,16 +109,20 @@
                     <p>{{questionComment.discussion.description}}</p>
                     <button style="float: right;"><a style="text-decoration: none; color:black" href="{% url 'replyquestion' userid discussionid %}"@{{userid}} @{{discussionid}}>Reply</a></button>
                 </div>
-
+                <div style="max-height: 270px;max-width:1550px;overflow: scroll;">
                 <!-- Oh Wen Chi:https://www.w3schools.com/howto/howto_css_chat.asp -->
                 {% for comment in questionComment %}
-
                 <div class="container4">
                     <p class="p5">Reply from {{comment.userid.name}}:</p>
                     <p class="p4">{{comment.comment}}</p>
                 </div>
-
                 {% endfor %}
+                <canvas width="512px" height=auto></canvas>
+                </div>
+                <br>
+                <div class=buttoncontainer>
+                    <a href="{% url 'discussionboard' userid %}"@{{userid}} class="button">Back</a>
+                </div>
 
             </form>
             </div>

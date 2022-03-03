@@ -106,7 +106,7 @@
                 <br>
 
                 <div class=buttoncontainer>
-                    <a href="{{request.META.HTTP_REFERER|escape}}" class="button">Back</a>
+                    <a href="{% url 'discussionboard' userid %}"@{{userid}} class="button">Back</a>
                 </div>
 
             </form>
