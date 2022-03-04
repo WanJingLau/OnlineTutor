@@ -74,9 +74,10 @@
             <br>
             <br>
             
-            <div style="border: 1px solid black; background: lightgrey; height: 0.6cm;"><p class="p5" style="display: inline-flex;">{{name}}</p>
-                    <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
-                    <button><a style="text-decoration: none; color:black; float: right" href="{% url 'coursepage' userid %}"@{{userid}}> View</a></button>
+            <div style="border: 1px solid black; background: lightgrey; height: 1cm; padding-top: 0.4cm; padding-bottom: 0.1cm;">
+                <p class="p5" style="display: inline-flex;">{{name}}</p>
+                <!-- Oh Wen Chi:https://www.w3schools.com/jsref/event_onclick.asp -->
+                <button><a style="text-decoration: none; color:black; float: right;" href="{% url 'coursepage' userid %}"@{{userid}}> View</a></button>
             </div>
         
         </div>
